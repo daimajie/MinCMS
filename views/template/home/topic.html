@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>semantic ui</title>
+
+    <!-- semantic -->
+    <link rel="stylesheet" type="text/css" href="assets/libs/semantic/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css">
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--top-nav-->
+<section id="top">
+    <!--导航-->
+    <div class="main-nav">
+        <div class="ui container">
+            <div class="ui inverted menu navs">
+                <div class="item">
+                    <a href="/">DAIMAJIE.COM</a>
+                </div>
+                <a class="yellow item active">首页</a>
+                <a class="olive item">话题</a>
+                <a class="green item">随笔</a>
+                <a class="teal item">关于我</a>
+
+                <div class="right menu">
+                    <!--登录状态-->
+                    <div class="ui dropdown item">
+                        Language <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a class="item">英语</a>
+                            <a class="item">俄语</a>
+                            <a class="item">西班牙语</a>
+                        </div>
+                    </div>
+                    <!--游客状态-->
+                    <!--<div class="item">
+                        <div class="ui mini icon buttons">
+                            <button class="ui teal button">
+                                登录
+                            </button>
+                            <button class="ui brown button">
+                                注册
+                            </button>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--搜索-->
+    <div class="search ui container">
+        <div class="search-wrap">
+            <form name="formSearch" action="/" method="post">
+                <div class="input-search">
+                    <div class="icon-search"><img src="https://static3w.kuaikanmanhua.com/static/img/search_5e7251b.png" alt="search"></div>
+                    <input type="text" id="txtKey" name="keyword" class="txt" placeholder="搜索文章标题" autocomplete="off" value="">
+                    <input type="submit" name="button" id="btnSearch" value="搜索" class="btn">
+                </div>
+            </form>
+        </div>
+        <div class="search-cover"></div>
+    </div>
+</section>
+<!--/top-nav-->
+
+<!--content-->
+<section id="content">
+    <div class="ui container">
+        <div class="conts">
+            <div class="ui stackable four column grid">
+                <div class="eleven wide column">
+                    <h4 class="ui dividing header">
+                        <div class="ui breadcrumb">
+                            <a class="section">首页</a>
+                            <div class="divider"> / </div>
+                            <a class="section">分类</a>
+                            <div class="divider"> / </div>
+                            <a class="section">话题</a>
+                            <div class="divider"> / </div>
+                            <div class="active section">心情日记</div>
+                        </div>
+                    </h4>
+                    <ul class="articles">
+                        <li class="article have-img">
+                            <a class="article-img" href="#" target="_blank">
+                                <img src="assets/img/article_img.jpg" alt="">
+                            </a>
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">
+                                    抖音，互联网时代的三俗农村聚集地
+                                </a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article">
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">抖音，互联网时代的三俗农村聚集地</a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article have-img">
+                            <a class="article-img" href="#" target="_blank">
+                                <img src="assets/img/article_img.jpg" alt="">
+                            </a>
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">
+                                    抖音，互联网时代的三俗农村聚集地
+                                </a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article">
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">抖音，互联网时代的三俗农村聚集地</a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article have-img">
+                            <a class="article-img" href="#" target="_blank">
+                                <img src="assets/img/article_img.jpg" alt="">
+                            </a>
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">
+                                    抖音，互联网时代的三俗农村聚集地
+                                </a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article">
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">抖音，互联网时代的三俗农村聚集地</a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article have-img">
+                            <a class="article-img" href="#" target="_blank">
+                                <img src="assets/img/article_img.jpg" alt="">
+                            </a>
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">
+                                    抖音，互联网时代的三俗农村聚集地
+                                </a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article">
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">抖音，互联网时代的三俗农村聚集地</a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article have-img">
+                            <a class="article-img" href="#" target="_blank">
+                                <img src="assets/img/article_img.jpg" alt="">
+                            </a>
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">
+                                    抖音，互联网时代的三俗农村聚集地
+                                </a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="article">
+                            <div class="content">
+                                <a class="title titled" target="_blank" href="#">抖音，互联网时代的三俗农村聚集地</a>
+                                <p class="abstract">
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                    网上有一句话是这么说的“中国傻哔千千万万，抖音快手各一半” 我是认同的！ 抖音在2016年底上线的时候就了解过一些，那时候就觉得上面发的一些东西...
+                                </p>
+                                <div class="meta">
+                                    <img class="source-profile ui avatar image" src="assets/img/photo.jpeg">
+                                    <a class="nickname" target="_blank" href="#">萌神木木</a>
+                                    <span>933评</span>
+                                    <span>刚刚</span>
+                                    <span class="wemedia-icon">话题</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!--pager-->
+                    <div class="ui pagination menu tiny">
+                        <a class="item active">
+                            1
+                        </a>
+                        <div class="disabled item">
+                            ...
+                        </div>
+                        <a class="item">
+                            10
+                        </a>
+                        <a class="item">
+                            11
+                        </a>
+                        <a class="item">
+                            12
+                        </a>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <!--话题信息-->
+                    <div class="side-bar info">
+                        <h4 class="ui dividing header">
+                            当前话题
+                        </h4>
+                        <div class="ui items">
+                            <div class="item">
+                                <div class="content">
+                                    <a class="header">Mysql笔录</a>
+                                    <div class="description">
+                                        <p>MySQL是一个关系型数据库管理系统，由瑞典MySQL AB 公司开发，目前属于 Oracle 旗下产品...</p>
+                                        <div class="extra">
+                                            <div class="ui green label">完结</div>
+                                            <div class="ui yellow label"><i class="file outline icon"></i> 收录59篇</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--云标签-->
+                    <div class="side-bar tags">
+                        <h4 class="ui dividing header">
+                            话题标签
+                        </h4>
+                        <a class="ui tag label">好的</a>
+                        <a class="ui tag label">坏的</a>
+                        <a class="ui tag label">北方的狼</a>
+                        <a class="ui tag label">南方的虎</a>
+                        <a class="ui tag label">非洲的狮子</a>
+                        <a class="ui tag label">自家的猫</a>
+                        <a class="ui tag label">别人家的狗崽子</a>
+                        <a class="ui tag label">岛国的人</a>
+                        <a class="ui tag label">好的</a>
+                        <a class="ui tag label">坏的</a>
+                        <a class="ui tag label">北方的狼</a>
+                        <a class="ui tag label">南方的虎</a>
+                        <a class="ui tag label">非洲的狮子</a>
+                        <a class="ui tag label">自家的猫</a>
+                        <a class="ui tag label">别人家的狗崽子</a>
+                        <a class="ui tag label">岛国的人</a>
+                        <a class="ui tag label">好的</a>
+                        <a class="ui tag label">坏的</a>
+                        <a class="ui tag label">北方的狼</a>
+                        <a class="ui tag label">南方的虎</a>
+                        <a class="ui tag label">非洲的狮子</a>
+                        <a class="ui tag label">自家的猫</a>
+                        <a class="ui tag label">别人家的狗崽子</a>
+                        <a class="ui tag label">岛国的人</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/content-->
+
+<!--footer-->
+<secation id="footer">
+    <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+            <div class="ui stackable inverted divided equal height stackable grid">
+                <div class="three wide column">
+                    <h4 class="ui inverted header">关于</h4>
+                    <div class="ui inverted link list">
+                        <a href="homepage.php#" class="item">Sitemap</a>
+                        <a href="homepage.php#" class="item">Contact Us</a>
+                        <a href="homepage.php#" class="item">Religious Ceremonies</a>
+                        <a href="homepage.php#" class="item">Gazebo Plans</a>
+                    </div>
+                </div>
+                <div class="three wide column">
+                    <h4 class="ui inverted header">服务</h4>
+                    <div class="ui inverted link list">
+                        <a href="homepage.php#" class="item">Banana Pre-Order</a>
+                        <a href="homepage.php#" class="item">DNA FAQ</a>
+                        <a href="homepage.php#" class="item">How To Access</a>
+                        <a href="homepage.php#" class="item">Favorite X-Men</a>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <h4 class="ui inverted header">页脚</h4>
+                    <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</secation>
+<!--/footer-->
+
+
+
+
+<script src="assets/libs/jquery/jquery-3.3.1.min.js"></script>
+<script src="assets/libs/semantic/semantic.min.js"></script>
+<script src="assets/libs/requirejs/require.js"></script>
+</body>
+</html>
