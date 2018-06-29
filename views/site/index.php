@@ -1,6 +1,8 @@
 <?php
 
 /* @var $this yii\web\View */
+use app\assets\RequireJsAsset;
+RequireJsAsset::register($this);
 
 $this->title = 'My Yii Application';
 ?>

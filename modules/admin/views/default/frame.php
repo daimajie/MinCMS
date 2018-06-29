@@ -41,7 +41,25 @@ use yii\helpers\Url;
                             </a>
                         </div>
                     </div>
-
+                    <!--菜单-->
+                    <div class="item">
+                        <a class=" title"><i class="align justify icon"></i><i class="dropdown icon"></i>内容管理</a>
+                        <div class=" content">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['content/category/index'])?>">
+                                <i class="flag icon"></i>
+                                分类
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['content/topic/index'])?>">
+                                <i class="sticky note outline icon"></i>
+                                话题
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['content/article/index'])?>">
+                                <i class="send outline icon"></i>
+                                文章
+                            </a>
+                        </div>
+                    </div>
+                    <!--/菜单-->
                     <div class="item">
                         <a class=" title"><i class="th icon"></i><i class="dropdown icon"></i>页面布局</a>
                         <div class=" content">
@@ -153,7 +171,13 @@ use yii\helpers\Url;
         </div>
         <div class="hou-page-nav">
             <div class="title-box">
-                <h1>控制台</h1>
+                <div class="ui breadcrumb">
+                    <a class="section">首页</a>
+                    <i class="right chevron icon divider"></i>
+                    <a class="section">分类管理</a>
+                    <i class="right arrow icon divider"></i>
+                    <div class="active section">新建分类</div>
+                </div>
             </div>
 
         </div>

@@ -2,7 +2,6 @@
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
 use yii\helpers\Html;
 use app\assets\AdminAsset;
 use app\assets\RequireJsAsset;
@@ -25,9 +24,28 @@ AdminAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<?= $content?>
+
+<?php
+
+//提示信息
+if(
+    Yii::$app->session->hasFlash('success') ||
+    Yii::$app->session->hasFlash('error')
+){
+    echo $this->render('_alert');
+}
+
+//内容
+echo $content;
+?>
 
 <?php $this->endBody() ?>
+<script>
+    //关闭提示信息
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
+    });
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>

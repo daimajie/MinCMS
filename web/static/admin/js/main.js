@@ -6,11 +6,15 @@ define('jquery',function(){
 });
 
 requirejs.config({
-    baseUrl: '/static/admin/js',
+    urlArgs: "r=" + (new Date()).getTime(),
+    //baseUrl: '/static/admin/js/',
     paths: {
-        'mods':'mods',
-        'modules':'modules',
-        // 'libs':'libs'
+        'mods': '/static/admin/js/mods',
+        'modules': '/static/admin/js/modules',
+        'libs': '/static/libs',
+
+        //插件
+        'uploader': '/static/libs/uploader/jquery.dm-uploader'
     }
 });
 
