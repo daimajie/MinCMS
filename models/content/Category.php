@@ -5,6 +5,7 @@ namespace app\models\content;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\FileHelper;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%category}}".
@@ -27,13 +28,6 @@ class Category extends \yii\db\ActiveRecord
         ];
     }
 
-    //绑定事件(修改分类后如果图片有变化删除旧图片，删除分类时删除图片)
-    /*public function init()
-    {
-        parent::init();
-        $this->on(self::EVENT_BEFORE_UPDATE, 'updateImg');
-        $this->on(self::EVENT_BEFORE_DELETE, 'deleteImg');
-    }*/
 
     /**
      * {@inheritdoc}
@@ -90,7 +84,7 @@ class Category extends \yii\db\ActiveRecord
     }
 
     /**
-     * 删除制定图片根据给定的图片记录
+     * 删除指定图片根据给定的图片记录
      * @param $image string #图片记录
      * @return bool
      */
@@ -133,5 +127,22 @@ class Category extends \yii\db\ActiveRecord
              ->where(['in', 'id', $cats_id])
              ->asArray()
              ->column();
+     }
+
+    /**
+     * 根据关键字搜索分类 返回下拉列表相关格式数据 最多10条数据
+     * @param $key string #关键字
+     * @return array #分类数据
+     */
+     public static function searchCatsByKey($key){
+         $query = static::find()->select(['name','value'=>'id','text'=>'name']);
+
+         //添加筛选条件
+         if (!empty($key)){
+             $query->andWhere(['like', 'name', $key]);
+         }
+
+         return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
+
      }
 }

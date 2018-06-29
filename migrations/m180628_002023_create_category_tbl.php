@@ -23,6 +23,13 @@ class m180628_002023_create_category_tbl extends Migration
             'updated_at' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('修改时间'),
         ],'engine=innodb charset=utf8');
 
+        //创建索引
+        $this->createIndex(
+            'idx-category-name',
+            self::TBL_NAME,
+            'name'
+        );
+
 
     }
 

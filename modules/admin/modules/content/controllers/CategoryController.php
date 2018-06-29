@@ -4,8 +4,11 @@ use app\models\content\Category;
 use app\models\content\SearchCategory;
 use app\modules\admin\controllers\BaseController;
 use Yii;
+use yii\base\Exception;
 use yii\web\BadRequestHttpException;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * 后台内容控制器
@@ -136,5 +139,31 @@ class CategoryController extends BaseController
         return $this->redirect(['index']);
 
     }
+
+    //搜索分类
+    public function actionSearchCats(){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        try{
+            if(!Yii::$app->request->isAjax)
+                throw new MethodNotAllowedHttpException('请求方式不被允许。');
+
+            $key  = Yii::$app->request->get('key','');
+
+            $datas = Category::searchCatsByKey($key);
+
+            return [
+                'success' => true,
+                'results' => $datas
+            ];
+
+        }catch (Exception $e){
+            //调至首页
+            return $this->redirect(['/']);
+        }
+
+    }
+
+
+
 
 }

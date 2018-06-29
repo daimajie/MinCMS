@@ -62,6 +62,7 @@ use yii\widgets\ActiveForm;
                             ],
                             'id',
                             'name',
+                            'count',
                             'created_at:date',
                             'updated_at:date',
                             [
@@ -103,7 +104,7 @@ require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         //删除询问框
         $('.del-btn').click(function(){
             var that = $(this);
-            modal.confirm("您确定要删除该分类马？",{
+            modal.confirm("您确定要删除该分类吗？",{
                 inPage:false
             },function(ele,obj){
                 window.location = that.attr('href');
@@ -121,7 +122,7 @@ require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         $('#batch-del').on('click',function(){
             $('button.close').click();
             
-            modal.confirm("您确定要删除这些分类马？",{
+            modal.confirm("您确定要删除这些分类吗？",{
                 inPage:false
             },function(ele,obj){
                 $('#batch-form').submit();

@@ -11,8 +11,10 @@ use yii\web\UploadedFile;
 
 class UploadAction extends Action
 {
-    /*剪切尺寸*/
+    //剪切尺寸
     public $shearSize = [];
+    //保存目录
+    public $subDir = 'category';
 
     public function run()
     {
@@ -32,7 +34,7 @@ class UploadAction extends Action
             }
 
             //剪切并删除原图
-            if(!$model->shearImg($this->shearSize, 'category')){
+            if(!$model->shearImg($this->shearSize, $this->subDir)){
                 throw new Exception($model->getFirstError('imageFile'));
             }
 
