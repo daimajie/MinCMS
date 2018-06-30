@@ -41,7 +41,7 @@ class UploadAction extends Action
             //返回数据
             return [
                 'errno' => 0,
-                'message' => '上传成功。',
+                'message' => '上传图片成功。',
                 'url' =>  $model->saveDir . $model->newName
             ];
         }catch (MethodNotAllowedHttpException $e){

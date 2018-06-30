@@ -38,7 +38,7 @@ class Category extends \yii\db\ActiveRecord
             [['name','desc','image'], 'required'],
             //[['count', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 18],
-            [['name'], 'unique', 'message' => '该分类已经存在。'],
+            [['name'], 'unique', 'message' => '该分类已经存在。'],//唯一性
             [['desc'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 125],
         ];
@@ -134,7 +134,7 @@ class Category extends \yii\db\ActiveRecord
      * @param $key string #关键字
      * @return array #分类数据
      */
-     public static function searchCatsByKey($key){
+     public static function searchByKey($key){
          $query = static::find()->select(['name','value'=>'id','text'=>'name']);
 
          //添加筛选条件

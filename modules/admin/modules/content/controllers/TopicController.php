@@ -21,6 +21,10 @@ class TopicController extends BaseController{
                 //子目录
                 'subDir' => 'topic'
             ],
+            'search' => [
+                'class' => 'app\components\actions\SearchAction',
+                'model' => 'app\models\content\Topic'
+            ]
         ];
     }
 
@@ -30,7 +34,7 @@ class TopicController extends BaseController{
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         //下拉框初始数据
-        $selectArr = ['' => '搜索分类名'];
+        $selectArr = ['' => '按分类搜索'];
         if(isset($searchModel->category_id) && $searchModel->category_id > 0){
             $selectArr[$searchModel->category_id] = Category::find()
                 ->where(['id'=>$searchModel->category_id])
@@ -57,7 +61,7 @@ class TopicController extends BaseController{
                 Yii::$app->session->setFlash('success', '创建话题成功。');
                 return $this->redirect(['index']);
             }
-            Yii::$app->session->setFlash('error', '创建话题失败，请重试。');
+            //创建失败 显示表单及错误信息
         }
 
         $selectArr = ['' => '选择所属分类'];
@@ -122,7 +126,7 @@ class TopicController extends BaseController{
         $topics_id = Yii::$app->request->post('topics_id');
 
         //检测参数
-        if(empty($topics_id)){
+        if(empty($topics_id) || !is_array($topics_id)){
             Yii::$app->session->setFlash('error', '请选择要删除的话题。');
             return $this->redirect(['index']);
         }

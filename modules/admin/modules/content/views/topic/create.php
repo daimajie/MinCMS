@@ -118,7 +118,7 @@ use yii\widgets\ActiveForm;
 
 <?php
 $upPath = Url::to(['upload']);
-$searchCats = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/category/search-cats','action'=>'search']);
+$searchCats = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/category/search','action'=>'search']);
 
 $this->registerCss("body {padding:20px;} .help-block{color:#DB2828!important}");
 $jsStr = <<<JS
@@ -152,7 +152,7 @@ $jsStr = <<<JS
                     //禁用上传按钮
                     $('#up_btn').addClass('disabled');
                 }
-                modal.alert('图片上传成功。',{inPage:false});
+                modal.alert(data.message,{inPage:false});
             }
         });
     })

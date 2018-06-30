@@ -15,7 +15,7 @@ class m180628_002023_create_category_tbl extends Migration
     {
         $this->createTable(self::TBL_NAME,[
             'id' => $this->primaryKey()->unsigned()->comment('主键'),
-            'name' => $this->string(18)->notNull()->defaultValue('')->comment('分类名'),
+            'name' => $this->string(18)->unique()->notNull()->defaultValue('')->comment('分类名'),
             'desc' => $this->string(255)->notNull()->defaultValue('')->comment('描述'),
             'image' => $this->string(125)->notNull()->defaultValue('')->comment('图片'),
             'count' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('话题总数'),

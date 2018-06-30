@@ -36,7 +36,7 @@ use yii\helpers\Url;
                         <a class="title"><i class="home icon"></i><i class="dropdown icon"></i>后台主页</a>
                         <div class="content">
                             <a class="item" target="contentFrame" href="pages/bootstrap.html">
-                                <i class="tachometer alternate icon"></i>
+                                <i class="ui setting icon"></i>
                                 控制台
                             </a>
                         </div>
@@ -52,6 +52,10 @@ use yii\helpers\Url;
                             <a class="item" target="contentFrame" href="<?= Url::to(['content/topic/index'])?>">
                                 <i class="sticky note outline icon"></i>
                                 话题
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['content/tag/index'])?>">
+                                <i class="ui tag icon"></i>
+                                标签
                             </a>
                             <a class="item" target="contentFrame" href="<?= Url::to(['content/article/index'])?>">
                                 <i class="send outline icon"></i>
@@ -172,11 +176,7 @@ use yii\helpers\Url;
         <div class="hou-page-nav">
             <div class="title-box">
                 <div class="ui breadcrumb">
-                    <a class="section">首页</a>
-                    <i class="right chevron icon divider"></i>
-                    <a class="section">分类管理</a>
-                    <i class="right arrow icon divider"></i>
-                    <div class="active section">新建分类</div>
+                    <a href="<?= Url::to([''])?>" class="section"><i class="ui icon setting"></i>控制台</a>
                 </div>
             </div>
 

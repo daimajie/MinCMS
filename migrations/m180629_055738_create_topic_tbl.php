@@ -33,7 +33,7 @@ class m180629_055738_create_topic_tbl extends Migration
             'name'
         );
 
-        $this->addForeignKey(
+        /*$this->addForeignKey(
             'fk-topic-category_id',
             self::TBL_NAME,
             'category_id',
@@ -42,7 +42,7 @@ class m180629_055738_create_topic_tbl extends Migration
             'NO ACTION'
         );
 
-        /*$this->addForeignKey(
+        $this->addForeignKey(
             'fk-topic-user_id',
             self::TBL_NAME,
             'user_id',

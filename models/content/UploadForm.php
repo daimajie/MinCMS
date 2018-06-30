@@ -22,11 +22,15 @@ class UploadForm extends Model
     public function rules()
     {
         return [
+            [['imageFile'], 'image', 'skipOnEmpty' => false],
             [['imageFile'], 'image',
-                'skipOnEmpty' => false,
                 'extensions' => 'png, jpg, jpeg, gif',
+                'message' => '图片格式不正确。'
+            ],
+            [['imageFile'], 'image',
                 'minWidth' => 300, 'maxWidth' => 1000,
                 'minHeight' => 240, 'maxHeight' => 1000,
+                'message' => '图片应最小300*240，最大1000*1000像素。'
             ],
         ];
     }

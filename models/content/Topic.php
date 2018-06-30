@@ -34,7 +34,25 @@ class Topic extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 18],
             [['desc'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 125],
+
+            [['name'], 'checkUnique',],
         ];
+    }
+
+    /**
+     * 在一个分类下不能重名话题 验证唯一性
+     * @param $attr string #数姓名
+     * @param $val mixed #属性值
+     */
+    public function checkUnique($attr){
+
+        if(!$this->hasErrors()){
+            //检测是否存在
+            $exist = static::find()->where(['name' => $this->$attr])->count();
+            if($exist > 0)
+                $this->addError($attr, '所选分类下已经存在该话题。');
+        }
+
     }
 
     //自动完成 创建者 和时间戳
@@ -144,6 +162,22 @@ class Topic extends \yii\db\ActiveRecord
             ->where(['in', 'id', $topics_id])
             ->asArray()
             ->column();
+    }
+
+    /**
+     * 搜索下拉框数据 话题搜索
+     * @param $key string #搜索关键字
+     * @return array #话题数据
+     */
+    public static function searchByKey($key){
+        $query = static::find()->select(['name','value'=>'id','text'=>'name']);
+
+        //添加筛选条件
+        if (!empty($key)){
+            $query->andWhere(['like', 'name', $key]);
+        }
+
+        return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
     }
 
 

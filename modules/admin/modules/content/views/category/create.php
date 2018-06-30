@@ -124,7 +124,7 @@ $jsStr = <<<JS
                     //禁用上传按钮
                     $('#up_btn').addClass('disabled');
                 }
-                modal.alert('图片上传成功。',{inPage:false});
+                modal.alert(data.message,{inPage:false});
             }
         });
     })
