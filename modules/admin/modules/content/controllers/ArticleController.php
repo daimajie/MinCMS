@@ -45,6 +45,14 @@ class ArticleController extends BaseController
         $model = new ArticleForm();
         $selectArr = ['' => '选择所属话题'];
 
+        if(Yii::$app->request->isPost){
+            if($model->load(Yii::$app->request->post()) && $model->store()){
+                Yii::$app->session->setFlash('success', '新建文章成功，等待审核中。');
+                return $this->redirect(['index']);
+            }
+            //新建失败 显示表单及错误
+        }
+
 
         return $this->render('create',[
             'model' => $model,

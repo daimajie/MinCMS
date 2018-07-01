@@ -78,13 +78,34 @@ use yii\widgets\ActiveForm;
                         ?>
 
                         <!--类型-->
-                        <?=
-                        $form->field($model, 'type', ['options'=>['tag'=>false]])->radioList([
-                            '0' => '原创',
-                            '1' => '翻译',
-                            '2' => '转载',
-                        ]);
+                        <?php
+                        $nth1 = $model->isNewRecord || $model->type === 0 ? 'checked' : '';
+                        $nth2 = $model->type === 1 ? 'checked' : '';
+                        $nth3 = $model->type === 2 ? 'checked' : '';
                         ?>
+                        <div class="grouped fields">
+                            <label for="fruit">文章类型</label>
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input name="ArticleForm['type']" type="radio" name="fruit" checked="" tabindex="0" class="hidden">
+                                        <label>原创</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input name="ArticleForm['type']" type="radio" name="fruit" tabindex="1" class="hidden">
+                                        <label>翻译</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input name="ArticleForm['type']" type="radio" name="fruit" tabindex="2" class="hidden">
+                                        <label>转载</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!--推荐-->
                         <?php
@@ -93,7 +114,7 @@ use yii\widgets\ActiveForm;
                         <div class="field">
                             <label>好文推荐</label>
                             <div class="ui checkbox">
-                                <input type="checkbox" <?= $checked?> tabindex="0" class="hidden">
+                                <input name="ArticleForm['recommend']" type="checkbox" <?= $checked?> tabindex="0" class="hidden">
                                 <label>推荐文章</label>
                             </div>
                         </div>
@@ -107,20 +128,22 @@ use yii\widgets\ActiveForm;
                     <div class="panel-content">
 
                         <!--可选标签-->
-                        <?=
-                        $form->field($model, 'tags', ['options'=>['tag'=>false]])->checkboxList([
-                                '1' => 'tag1',
-                                '2' => 'tag2',
-                                '3' => 'tag3',
-                        ],[]);
-                        ?>
+                        <div class="field">
+                            <label>可用标签</label>
+                            <div id="tags_container">
+                                <div class="ui mini message olive">请选择话题，即可显示可用标签。</div>
+                            </div>
+
+                        </div>
 
                         <!--新建标签-->
                         <?=
-                        $form->field($model, 'newTags', ['options'=>['tag'=>false]])->textInput([
+                        $form->field($model, 'newTags', [
+                                'options'=>['tag'=>false],
+                        ])->textInput([
                                 'placeholder' => '新建标签,如：嘻嘻,哈哈。'
                         ])->hint('多个标签用逗号(英文)分割，最多可同时建3个标签。',[
-                                'class' => 'red'
+                                'class' => 'help-block',
                         ]);
                         ?>
 
@@ -137,7 +160,8 @@ use yii\widgets\ActiveForm;
                         $form->field($model, 'content',['options'=>[
                             'tag' => false
                         ]])->textarea([
-                            'rows' => 3
+                            'rows' => 3,
+                            'id' => 'editor'
                         ]);
                         ?>
                         <?= Html::submitButton('点击发布',['class'=>'ui mini green button'])?>
@@ -155,10 +179,11 @@ use yii\widgets\ActiveForm;
 <?php
 $upPath = Url::to(['upload']);
 $searchCats = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/topic/search','action'=>'search']);
+$getTags = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/tag/get-tags','action'=>'gets']);
 
 $this->registerCss("body {padding:20px;} .help-block{color:#DB2828!important}");
 $jsStr = <<<JS
-    require(['mods/modal','uploader'],function(modal){
+    require(['mods/modal'/*,'simplemdeCss'*/,'simplemde','uploader','jSmart'],function(modal/*,simplemdeCss*/,SimpleMDE){
         
         //搜索下拉框
         $('#search-select').dropdown({
@@ -167,6 +192,25 @@ $jsStr = <<<JS
             apiSettings: {
                 url: "{$searchCats}&key={query}"
             },
+            onChange:function(value, text){
+                $.ajax({
+                    url : "{$getTags}",
+                    type : 'post',
+                    data : {'topic_id':value},
+                    success : function(d){
+                        console.log(d);
+                        
+                        //渲染模板
+                        var tplText = $('#tags_tpl').html();
+                        var compiled = new jSmart(tplText);
+                        var output = compiled.fetch({'data':d.data});
+                        
+                        //填充数据
+                        $('#tags_container').html(output);
+                    } 
+                });
+            }
+            
             
         });
         
@@ -191,7 +235,32 @@ $jsStr = <<<JS
                 modal.alert(data.message,{inPage:false});
             }
         });
+        
+        //编辑器
+        var simplemde2 = new SimpleMDE({
+            element: $("#editor")[0],
+            indentWithTabs: false,
+            tabSize: 4,
+            status: false,
+            autosave: {
+                enabled: false
+            },
+            spellChecker: false,
+            renderingConfig: {
+                codeSyntaxHighlighting: true
+            }
+        });
     })
 JS;
 $this->registerJs($jsStr);
 ?>
+<script id="tags_tpl" type="text/x-jsmart-tmpl">
+{foreach $data as $id => $name}
+    <a class="ui label">
+        <input type="checkbox" name="Article['tags']" id="tag_{$id}" value="{$id}">
+        <label for="tag_{$id}">{$name}</label>
+    </a>
+{foreachelse}
+    <div class="ui mini yellow message">暂无可用标签，可选择新建标签</div>
+{/foreach}
+</script>

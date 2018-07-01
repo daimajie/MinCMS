@@ -31,7 +31,7 @@ class Topic extends \yii\db\ActiveRecord
             [['finished'], 'default', 'value'=>0],
             [['category_id'], 'exist', 'targetClass'=>'app\models\content\Category', 'targetAttribute' => 'id'],
 
-            [['name'], 'string', 'max' => 18],
+            [['name'], 'string', 'max' => 18, 'min'=>3],
             [['desc'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 125],
 

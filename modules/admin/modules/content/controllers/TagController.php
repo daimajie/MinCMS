@@ -5,9 +5,12 @@ use app\models\content\SearchTag;
 use app\models\content\Tag;
 use app\models\content\Topic;
 use app\modules\admin\controllers\BaseController;
+use yii\base\Exception;
 use yii\web\BadRequestHttpException;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
 use Yii;
+use yii\web\Response;
 
 class TagController extends BaseController
 {
@@ -151,6 +154,30 @@ class TagController extends BaseController
             throw new NotFoundHttpException('没有相关数据。');
 
         return $model;
+    }
+
+    //根据话题id 获取其下所有标签
+    public function actionGetTags(){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        try{
+            if(!Yii::$app->request->isAjax)
+                throw new MethodNotAllowedHttpException('请求方式不被允许。');
+
+            //获取 参数
+            $topic_id = (int)Yii::$app->request->post('topic_id');
+
+            //获取标签
+            $data = Tag::getTagsByTopic($topic_id);
+
+            return [
+                'errno' => 0,
+                'data' => $data
+            ];
+        }catch (MethodNotAllowedHttpException $e){
+            return $this->redirect(['/']);
+        }catch (Exception $e){
+            return ['errno'=>1, 'message'=>$e->getMessage()];
+        }
     }
 
 

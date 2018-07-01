@@ -4,6 +4,7 @@ namespace app\models\content;
 
 use Yii;
 use yii\behaviors\BlameableBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -88,6 +89,24 @@ class Tag extends \yii\db\ActiveRecord
     public function getTopic(){
         return $this->hasOne(Topic::className(), ['id' => 'topic_id'])
             ->select(['id', 'name']);
+    }
+
+    /**
+     * 根据提供的话题id获取其下所有标签数据
+     * @param $topic_id int #话题id
+     * @return array #话题下所有标签，如果没有返回孔氏族
+     */
+    public static function getTagsByTopic($topic_id){
+        $data = static::find()
+            ->select(['id','name'])
+            ->where(['topic_id'=>$topic_id])
+            ->asArray()
+            ->all();
+        $tmp = [];
+        foreach ($data as $id => $name){
+            $tmp[$name['id']] = $name['name'];
+        }
+        return $tmp;
     }
 
 
