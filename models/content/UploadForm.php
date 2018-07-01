@@ -15,7 +15,6 @@ class UploadForm extends Model
      */
     public $imageFile;  //文件实例
     public $fullPath;   //上船后的文件全路径
-    //public $savePath;   //剪切后保存的路径
     public $newName;    //新文件名
     public $saveDir;    //最后保存的目录（$saveDir . $newName 用于数据存储）
 
@@ -37,14 +36,15 @@ class UploadForm extends Model
 
     /**
      * 上传图片
+     * @param $randDir bool #是否创建日期子目录
      * @return bool
      */
-    public function upload()
+    public function upload($randDir = false)
     {
         if ($this->validate()) {
 
             //得到上传路径
-            if(!$upPath = $this->getUploadPath()){
+            if(!$upPath = $this->getUploadPath($randDir)){
                 $this->addError('imageFile', '上传目录创建失败。');
                 return false;
             }
@@ -80,7 +80,7 @@ class UploadForm extends Model
      * @param $subDir $string #是否创建随机子目录
      * @return bool|string #成功返回上传路径失败返回false
      */
-    private function getUploadPath($dir='tempPath', $subDir=false){
+    private function getUploadPath($subDir, $dir='tempPath'){
         //上传目录是否合法
         if(!in_array($dir, Yii::$app->params['imgPath']['allowPath'])){
             return false;
@@ -114,9 +114,10 @@ class UploadForm extends Model
      * 剪切图片并删除原图片。
      * @param $size array #剪切尺寸【1：width, 2:height】
      * @param $dir string #分类目录 如：category，topic，article
+     * @param $randDir bool #是否划分日期目录
      * @return string #图片url地址
      */
-    public function shearImg($size, $dir){
+    public function shearImg($size, $dir, $randDir){
 
         if(empty($size) || !is_array($size) || count($size) !== 2){
             $this->addError('imageFile', '参数错误。');
@@ -130,7 +131,7 @@ class UploadForm extends Model
         }
 
         //得到保存路径
-        if(!$savePath = $this->getUploadPath($dir, true)){
+        if(!$savePath = $this->getUploadPath($randDir, $dir)){
             $this->addError('imageFile', '保存目录创建失败。');
             return false;
         }

@@ -93,6 +93,12 @@ class Topic extends \yii\db\ActiveRecord
         return $this->hasOne(Category::className(), ['id' => 'category_id'])
             ->select(['id','name']);
     }
+    //关联标签
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['topic_id' => 'id'])
+            ->select(['id','name']);
+    }
 
 
     /**

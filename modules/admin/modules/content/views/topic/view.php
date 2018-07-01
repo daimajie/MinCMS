@@ -57,6 +57,16 @@ use yii\widgets\DetailView;
                                         return Html::img(Yii::$app->params['imgPath']['imgUrl'] . '/' . $model->image,['class'=>'ui small image']);
                                     }
                                 ],
+                                [
+                                    'label' => '包含标签',
+                                    'value' => function($model){
+                                        $str = '';
+                                        foreach($model->tags as $tag){
+                                            $str .= $tag->name;
+                                        }
+                                        return $str;
+                                    }
+                                ],
                                 'desc:html',
                                 'user_id',
                                 'created_at:datetime',

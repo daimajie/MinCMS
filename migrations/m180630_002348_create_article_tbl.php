@@ -17,10 +17,12 @@ class m180630_002348_create_article_tbl extends Migration
             'id' => $this->primaryKey()->unsigned()->comment('主键'),
             'title' => $this->string(125)->notNull()->defaultValue('')->comment('文章标题'),
             'brief' => $this->string(512)->notNull()->defaultValue('')->comment('文章简介'),
+            'image' => $this->string(125)->notNull()->defaultValue('')->comment('文章图片'),
             'type' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('文章类型'),
             'words' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('字数'),
 
             'recommend' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('推荐'),
+            'check' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('审查'),
             'draft' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('草稿箱'),
             'recycle' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('回收站'),
 

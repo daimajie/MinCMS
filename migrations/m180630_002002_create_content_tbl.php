@@ -15,7 +15,7 @@ class m180630_002002_create_content_tbl extends Migration
     {
         $this->createTable(self::TBL_NAME,[
             'id' => $this->primaryKey()->unsigned()->comment('主键'),
-            'content' => $this->text()->comment('文章年内容 '),
+            'content' => $this->text()->comment('文章内容 '),
         ],'engine=innodb default charset=utf8');
     }
 

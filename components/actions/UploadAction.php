@@ -15,6 +15,9 @@ class UploadAction extends Action
     public $shearSize = [];
     //保存目录
     public $subDir = 'category';
+    //生成日期分组子目录
+    public $randDir = true;
+
 
     public function run()
     {
@@ -34,7 +37,7 @@ class UploadAction extends Action
             }
 
             //剪切并删除原图
-            if(!$model->shearImg($this->shearSize, $this->subDir)){
+            if(!$model->shearImg($this->shearSize, $this->subDir, $this->randDir)){
                 throw new Exception($model->getFirstError('imageFile'));
             }
 
