@@ -6,6 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\FileHelper;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "{{%topic}}".
@@ -42,13 +43,15 @@ class Topic extends \yii\db\ActiveRecord
     /**
      * 在一个分类下不能重名话题 验证唯一性
      * @param $attr string #数姓名
-     * @param $val mixed #属性值
      */
     public function checkUnique($attr){
 
         if(!$this->hasErrors()){
             //检测是否存在
-            $exist = static::find()->where(['name' => $this->$attr])->count();
+            $exist = static::find()
+                ->where(['name' => $this->$attr])
+                ->andWhere(['category_id' => $this->category_id])
+                ->count();
             if($exist > 0)
                 $this->addError($attr, '所选分类下已经存在该话题。');
         }
@@ -85,6 +88,21 @@ class Topic extends \yii\db\ActiveRecord
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
         ];
+    }
+
+    //钩子函数
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        //分类count累加
+        if($this->isNewRecord)
+            Category::updateAllCounters(['count'=>1], ['id'=>$this->category_id]);
+    }
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        //分类count累减
+        Category::updateAllCounters(['count'=>-1], ['id'=>$this->category_id]);
     }
 
     //关联分类
@@ -184,6 +202,26 @@ class Topic extends \yii\db\ActiveRecord
         }
 
         return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
+    }
+
+    /**
+     * 检测是否允许删除话题（话题下包含文章则不允许删除）
+     * @params $ids int|array #检测的话题id或id集合
+     * @return bool #允许删除返回true 否则false
+     */
+    public static function isAllowDelete($ids){
+        if(is_numeric($ids) && $ids > 0){
+            //id
+            return !(bool) Article::find()->where(['topic_id'=>$ids])->count();
+
+        }elseif(is_array($ids)){
+            //id集合
+            return !(bool) Article::find()->where(['in', 'topic_id', $ids])->count();
+
+        }else{
+            return false;
+        }
+
     }
 
 

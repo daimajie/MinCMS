@@ -145,4 +145,22 @@ class Category extends \yii\db\ActiveRecord
          return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
 
      }
+
+     /**
+      * 检测是否允许删除（包含话题的分类不允许删除）
+      * @param $ids int|array #分类id或分类id集合
+      * @return bool #是否允许删除
+      */
+     public static function isAllowDelete($ids){
+         if (is_numeric($ids) && $ids > 0){
+             //ids是一个整形
+             return !(bool) Topic::find()->where(['category_id'=>$ids])->count();
+
+         }elseif(is_array($ids)){
+             //ids是一个id集合
+             return !(bool) Topic::find()->where(['in', 'category_id', $ids])->count();
+         }else{
+             return false;
+         }
+     }
 }

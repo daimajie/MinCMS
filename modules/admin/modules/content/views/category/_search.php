@@ -4,7 +4,7 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-<div class="right menu">
+<div class="menu" style="float: right;">
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',

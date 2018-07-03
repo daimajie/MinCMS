@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\content\Tag;
 
 ?>
 
@@ -10,7 +11,7 @@ use yii\widgets\ActiveForm;
             <div class="sixteen wide column">
                 <div class="panel">
                     <div class="panel-content" style="padding: 10px 15px;">
-                        <div class="ui secondary  menu">
+                        <div class="ui secondary">
                             <div class="ui compact menu">
                                 <?= Html::a('<i class="reply icon"></i>返回', ['index'], ['class' => 'item']) ?>
                             </div>
@@ -31,6 +32,10 @@ use yii\widgets\ActiveForm;
             ]
 
         ]);
+        echo $form->field($model, 'draft',['options'=>['tag'=>false]])->textInput([
+           'id'=>'id_draft',
+           'type' => 'hidden',
+        ])->label(false);
         ?>
         <div class="ui grid">
             <div class="ten wide column">
@@ -78,47 +83,25 @@ use yii\widgets\ActiveForm;
                         ?>
 
                         <!--类型-->
-                        <?php
-                        $nth1 = $model->isNewRecord || $model->type === 0 ? 'checked' : '';
-                        $nth2 = $model->type === 1 ? 'checked' : '';
-                        $nth3 = $model->type === 2 ? 'checked' : '';
+                        <?=
+                        $form->field($model, 'type',[
+                                'options' => ['tag'=>false]
+                        ])->radioList([
+                                '0' => '原创',
+                                '1' => '翻译',
+                                '2' => '转载'
+                        ]);
                         ?>
-                        <div class="grouped fields">
-                            <label for="fruit">文章类型</label>
-                            <div class="inline fields">
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input name="ArticleForm['type']" type="radio" name="fruit" checked="" tabindex="0" class="hidden">
-                                        <label>原创</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input name="ArticleForm['type']" type="radio" name="fruit" tabindex="1" class="hidden">
-                                        <label>翻译</label>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input name="ArticleForm['type']" type="radio" name="fruit" tabindex="2" class="hidden">
-                                        <label>转载</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!--推荐-->
-                        <?php
-                        $checked = $model->recommend === 1 ? 'checked' : '';
+                        <?=
+                        $form->field($model, 'recommend', [
+                            'options'=>[
+                                'tag'=>false
+                            ],
+                            'template' => '{input}'
+                        ])->checkbox()->label('是否推荐此文章');
                         ?>
-                        <div class="field">
-                            <label>好文推荐</label>
-                            <div class="ui checkbox">
-                                <input name="ArticleForm['recommend']" type="checkbox" <?= $checked?> tabindex="0" class="hidden">
-                                <label>推荐文章</label>
-                            </div>
-                        </div>
-
 
                     </div>
                 </div>
@@ -131,9 +114,25 @@ use yii\widgets\ActiveForm;
                         <div class="field">
                             <label>可用标签</label>
                             <div id="tags_container">
+                                <?php
+                                if(empty($selectTag)):
+                                ?>
                                 <div class="ui mini message olive">请选择话题，即可显示可用标签。</div>
+                                <?php
+                                else:
+                                echo $form->field($model, 'tags', [
+                                    'options'=>['tag'=>false],
+                                    //'template' => '{input}{error}'
+                                ])->checkboxList(
+                                    Tag::find()
+                                        ->select(['name'])
+                                        ->where(['topic_id'=>$model->topic_id])
+                                        ->indexBy('id')
+                                        ->column()
+                                )->label(false);
+                                endif;
+                                ?>
                             </div>
-
                         </div>
 
                         <!--新建标签-->
@@ -142,9 +141,7 @@ use yii\widgets\ActiveForm;
                                 'options'=>['tag'=>false],
                         ])->textInput([
                                 'placeholder' => '新建标签,如：嘻嘻,哈哈。'
-                        ])->hint('多个标签用逗号(英文)分割，最多可同时建3个标签。',[
-                                'class' => 'help-block',
-                        ]);
+                        ])->hint('多个标签用逗号(英文)分割，最多可同时建3个标签。');
                         ?>
 
                     </div>
@@ -164,8 +161,8 @@ use yii\widgets\ActiveForm;
                             'id' => 'editor'
                         ]);
                         ?>
-                        <?= Html::submitButton('点击发布',['class'=>'ui mini green button'])?>
-                        <?= Html::submitButton('存为草稿',['class'=>'ui mini orange button'])?>
+                        <?= Html::submitButton('点击发布',['class'=>'ui mini green button','id'=>'publish_btn'])?>
+                        <?= Html::submitButton('存为草稿',['class'=>'ui mini orange button','id'=>'draft_btn'])?>
                         <?= Html::resetButton('重置',['class'=>'ui mini brown disabled button'])?>
                     </div>
                 </div>
@@ -177,11 +174,17 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php
+/*css*/
+$cssStr = <<<CSS
+    body {padding:20px;} .help-block{color:#DB2828!important}#articleform-tags label{border:1px solid #ddd;background-color: #efefef;padding: 5px 8px;vertical-align: center;border-radius: 3px;}
+CSS;
+$this->registerCss($cssStr);
+
+/*js*/
 $upPath = Url::to(['upload']);
 $searchCats = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/topic/search','action'=>'search']);
 $getTags = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/tag/get-tags','action'=>'gets']);
 
-$this->registerCss("body {padding:20px;} .help-block{color:#DB2828!important}");
 $jsStr = <<<JS
     require(['mods/modal'/*,'simplemdeCss'*/,'simplemde','uploader','jSmart'],function(modal/*,simplemdeCss*/,SimpleMDE){
         
@@ -215,7 +218,7 @@ $jsStr = <<<JS
         });
         
         //单选框
-        $('.ui.checkbox').checkbox();
+        //$('.ui.checkbox').checkbox();
         
         //文件上传
         $('#single-upload').dmUploader({ //
@@ -250,17 +253,30 @@ $jsStr = <<<JS
                 codeSyntaxHighlighting: true
             }
         });
+        
+        //存为草稿 或直接发布
+        $('#draft_btn').on('click', function(){
+            $('#id_draft').prop('value',1);
+        });
+        $('#publish_btn').on('click', function(){
+            $('#id_draft').prop('value',0);
+        });
     })
 JS;
 $this->registerJs($jsStr);
 ?>
 <script id="tags_tpl" type="text/x-jsmart-tmpl">
+<div id="articleform-tags">
 {foreach $data as $id => $name}
-    <a class="ui label">
-        <input type="checkbox" name="Article['tags']" id="tag_{$id}" value="{$id}">
-        <label for="tag_{$id}">{$name}</label>
-    </a>
+    <label>
+        <input type="checkbox" name="ArticleForm[tags][]" value="{$id}">
+        {$name}
+    </label>
 {foreachelse}
     <div class="ui mini yellow message">暂无可用标签，可选择新建标签</div>
 {/foreach}
+</div>
 </script>
+
+
+

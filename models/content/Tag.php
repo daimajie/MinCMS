@@ -35,8 +35,26 @@ class Tag extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 12],
 
             //检测该话题下包含的标签是否达到上限
-            [['topic_id'], 'checkUpperLimit']
+            [['topic_id'], 'checkUpperLimit'],
+
+            //每个话题下标签确保唯一性
+            [['name'], 'checkUnique'],
         ];
+    }
+
+    /**
+     * 每个话题内的标签必须是唯一的
+     */
+    public function checkUnique($attr){
+        if(!$this->hasErrors()){
+            //检测是否存在
+            $exist = static::find()
+                ->where(['name' => $this->$attr])
+                ->andWhere(['topic_id' => $this->topic_id])
+                ->count();
+            if($exist > 0)
+                $this->addError($attr, '所选话题下已经存在该标签。');
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ define('jquery',function(){
 });
 
 requirejs.config({
-    urlArgs: "r=" + (new Date()).getTime(),
+    //urlArgs: "r=" + (new Date()).getTime(),
     //baseUrl: '/static/admin/js/',
     paths: {
         'mods': '/static/admin/js/mods',

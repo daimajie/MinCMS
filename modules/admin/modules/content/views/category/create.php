@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
         <div class="sixteen wide column">
             <div class="panel">
                 <div class="panel-content" style="padding: 10px 15px;">
-                    <div class="ui secondary  menu">
+                    <div class="ui secondary">
                         <div class="ui compact menu">
                             <?= Html::a('<i class="reply icon"></i>返回', ['index'], ['class' => 'item']) ?>
                         </div>

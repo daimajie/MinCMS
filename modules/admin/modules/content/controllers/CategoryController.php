@@ -89,12 +89,16 @@ class CategoryController extends BaseController
     public function actionDelete($id){
         $model = static::getModel($id);
 
-        if(Category::deleteImg($model->image) && $model->delete()){
-            //删除成功
-            Yii::$app->session->setFlash('success', '删除分类成功。');
-        }else
-            //删除失败
-            Yii::$app->session->setFlash('error', '删除分类失败，请重试。');
+        if(Category::isAllowDelete($id)){
+            if(Category::deleteImg($model->image) && $model->delete()){
+                //删除成功
+                Yii::$app->session->setFlash('success', '删除分类成功。');
+            }else
+                //删除失败
+                Yii::$app->session->setFlash('error', '删除分类失败，请重试。');
+        }else{
+            Yii::$app->session->setFlash('error', '请先删除该分类下所有话题。');
+        }
 
         return $this->redirect(['index']);
 
@@ -125,18 +129,25 @@ class CategoryController extends BaseController
             return $this->redirect(['index']);
         }
 
-        //获取所有图片信息
-        $images = Category::getImgByIds($cats_id);
+        //检测是否允许删除
+        if(Category::isAllowDelete($cats_id)){
+            //获取所有图片信息
+            $images = Category::getImgByIds($cats_id);
 
-        //删除图片
-        Category::batchDeleteImg($images);
+            //删除图片
+            Category::batchDeleteImg($images);
 
-        //删除记录
-        if(Category::deleteAll(['in', 'id', $cats_id]) === false){
-            Yii::$app->session->setFlash('error', '删除分类信息失败，请重试。');
+            //删除记录
+            if(Category::deleteAll(['in', 'id', $cats_id]) === false){
+                Yii::$app->session->setFlash('error', '删除分类信息失败，请重试。');
+            }else{
+                Yii::$app->session->setFlash('success', '批量删除分类成功。');
+            }
         }else{
-            Yii::$app->session->setFlash('success', '批量删除分类成功。');
+            Yii::$app->session->setFlash('error', '请先删除这些分类下的所有话题。');
         }
+
+
         return $this->redirect(['index']);
 
     }

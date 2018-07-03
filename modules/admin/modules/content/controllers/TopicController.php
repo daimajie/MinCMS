@@ -2,6 +2,7 @@
 namespace app\modules\admin\modules\content\controllers;
 use app\models\content\Category;
 use app\models\content\SearchTopic;
+use app\models\content\Tag;
 use app\models\content\Topic;
 use app\modules\admin\controllers\BaseController;
 use Yii;
@@ -110,12 +111,23 @@ class TopicController extends BaseController{
     public function actionDelete($id){
         $model = static::getModel($id);
 
-        if(Topic::deleteImg($model->image) && $model->delete()){
-            //删除成功
-            Yii::$app->session->setFlash('success', '删除话题成功。');
-        }else
-            //删除失败
-            Yii::$app->session->setFlash('error', '删除话题失败，请重试。');
+        //检测是否允许删除
+        if(Topic::isAllowDelete($id)){
+            if(Topic::deleteImg($model->image) && $model->delete()){
+
+                //删除该话题下所有的标签
+                Tag::deleteAll(['topic_id'=>$id]);
+
+                //删除成功
+                Yii::$app->session->setFlash('success', '删除话题成功。');
+            }else
+                //删除失败
+                Yii::$app->session->setFlash('error', '删除话题失败，请重试。');
+        }else{
+            Yii::$app->session->setFlash('error', '请先删除该话题下所有文章。');
+        }
+
+
 
         return $this->redirect(['index']);
 
@@ -131,6 +143,12 @@ class TopicController extends BaseController{
             return $this->redirect(['index']);
         }
 
+        //检测是否允许删除
+        if(!Topic::isAllowDelete($topics_id)){
+            Yii::$app->session->setFlash('error', '请先删除这些话题下的所有文章。');
+            return $this->redirect(['index']);
+        }
+
         //获取所有图片信息
         $images = Topic::getImgByIds($topics_id);
 
@@ -138,10 +156,14 @@ class TopicController extends BaseController{
         Topic::batchDeleteImg($images);
 
         //删除记录
-        if(Topic::deleteAll(['in', 'id', $topics_id]) === false){
-            Yii::$app->session->setFlash('error', '删除话题信息失败，请重试。');
-        }else{
+        if(Topic::deleteAll(['in', 'id', $topics_id]) !== false){
+
+            //删除这些话题下所有的标签
+            Tag::deleteAll(['in', 'topic_id', $topics_id]);
+
             Yii::$app->session->setFlash('success', '批量删除话题成功。');
+        }else{
+            Yii::$app->session->setFlash('error', '删除话题信息失败，请重试。');
         }
         return $this->redirect(['index']);
     }
