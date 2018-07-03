@@ -13,5 +13,8 @@ return [
     //一个话题下允许有多少个标签
     'tagUpperLimit' => 35,
 
+    //默认头像
+    'image' => '/static/home/img/avatar.jpg',
+
 
 ];

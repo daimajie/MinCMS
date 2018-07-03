@@ -20,7 +20,7 @@ use yii\helpers\Url;
         <div class="hou-side" id="hou-side">
             <div class="hou-user">
                 <div class="hou-user-avatar">
-                    <img src="https://semantic-ui.com/images/avatar/large/veronika.jpg" alt="">
+                    <img src="/static/home/img/avatar.jpg" alt="">
                 </div>
                 <div class="hou-user-info">
                     <a href="" class="nickname">
@@ -65,15 +65,19 @@ use yii\helpers\Url;
                     </div>
                     <!--/菜单-->
                     <div class="item">
-                        <a class=" title"><i class="th icon"></i><i class="dropdown icon"></i>页面布局</a>
+                        <a class=" title"><i class="group icon"></i><i class="dropdown icon"></i>用户管理</a>
                         <div class=" content">
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/container/index.html">
-                                <i class="th icon"></i>
-                                容器
+                            <a class="item" target="contentFrame" href="<?= Url::to(['member/user/index'])?>">
+                                <i class="user icon"></i>
+                                用户
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/container/grid.html">
-                                <i class="chess board icon"></i>
-                                网格
+                            <a class="item" target="contentFrame" href="<?= Url::to(['member/rbac/index'])?>">
+                                <i class="privacy icon"></i>
+                                权限
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['member/author/index'])?>">
+                                <i class="paint brush icon"></i>
+                                作者
                             </a>
                         </div>
                     </div>
