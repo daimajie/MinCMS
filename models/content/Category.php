@@ -159,8 +159,8 @@ class Category extends \yii\db\ActiveRecord
          }elseif(is_array($ids)){
              //ids是一个id集合
              return !(bool) Topic::find()->where(['in', 'category_id', $ids])->count();
-         }else{
-             return false;
          }
+
+         return false;
      }
 }

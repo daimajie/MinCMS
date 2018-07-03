@@ -82,6 +82,66 @@ class TagController extends BaseController
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 //修改完成
                 Yii::$app->session->setFlash('success', '修改标签成功。');
+                //跳转
+                if(Yii::$app->request->get('action') === 'ajax')
+                    return $this->redirect(['topic/index','id'=>$model->topic_id]);
+                else
+                    return $this->redirect(['index']);
+            }
+            //修改失败 显示表单
+        }
+
+
+        //获取所属分类信息
+        if($model->topic_id){
+            $selectArr[$model->topic_id] = Topic::find()
+                ->where(['id'=>$model->topic_id])
+                ->select('name')->scalar();
+        }
+
+        if(Yii::$app->request->isAjax){
+            return $this->render('create',[
+                'model' => $model,
+                'selectArr' => $selectArr
+            ]);
+        }else{
+            return $this->renderAjax('create',[
+                'model' => $model,
+                'selectArr' => $selectArr
+            ]);
+        }
+
+    }
+
+    //删除
+    public function actionDelete($id){
+        $model = static::getModel($id);
+
+        //删除标签及文章标签关联数据
+        if($model->delete()) {
+            //删除文章标签关联数据
+            ArticleTag::deleteAll(['tag_id' => $id]);
+
+            //删除成功
+            Yii::$app->session->setFlash('success', '删除标签成功。');
+
+        }else
+            //删除失败
+            Yii::$app->session->setFlash('error', '删除失败，请重试。');
+
+        return $this->redirect(['index']);
+    }
+
+    //ajax 编辑标签
+    /*public function actionAjaxEdit($id){
+        //请求表单
+        $model = static::getModel($id);
+
+        if(Yii::$app->request->isPost){
+            //保存数据请求
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                //修改完成
+                Yii::$app->session->setFlash('success', '修改标签成功。');
                 return $this->redirect(['index']);
             }
             //修改失败 显示表单
@@ -94,29 +154,39 @@ class TagController extends BaseController
                 ->where(['id'=>$model->topic_id])
                 ->select('name')->scalar();
         }
-        return $this->render('create',[
+        return $this->renderAjax('create',[
             'model' => $model,
             'selectArr' => $selectArr
         ]);
-    }
+    }*/
 
-    //删除
-    public function actionDelete($id){
-        $model = static::getModel($id);
+    //ajax 删除标签
+    public function actionAjaxDelete(){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        try{
+            if(!Yii::$app->request->isAjax)
+                throw new MethodNotAllowedHttpException('请求方式不被允许。');
 
-        //删除标签及文章标签关联数据
-        if($model->delete()) {
-            //删除文章标签关联数据
-            ArticleTag::deleteAll(['tag_id' => $model->id]);
+            $id = Yii::$app->request->post('tag_id');
+
+            $model = static::getModel($id);
+
+            if($model->delete() === false){
+                throw new Exception('删除标签失败，请重试。');
+            }
+
+            //删除标签文章关联数据
+            ArticleTag::deleteAll(['tag_id' => $id]);
 
             //删除成功
-            Yii::$app->session->setFlash('success', '删除标签成功。');
+            return ['errno'=>0, 'message'=>'删除标签成功。'];
 
-        }else
-            //删除失败
-            Yii::$app->session->setFlash('error', '删除失败，请重试。');
+        }catch (MethodNotAllowedHttpException $e){
+            return $this->redirect(['/']);
+        }catch (Exception $e){
+            return ['errno'=>1,'message'=>$e->getMessage()];
 
-        return $this->redirect(['index']);
+        }
     }
 
     //批量删除

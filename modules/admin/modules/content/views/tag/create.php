@@ -6,6 +6,9 @@ use yii\widgets\ActiveForm;
 ?>
 
     <div class="ui fluid container">
+        <?php
+        if(!Yii::$app->request->isAjax):
+        ?>
         <div class="ui grid">
             <div class="sixteen wide column">
                 <div class="panel">
@@ -19,14 +22,21 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
         </div>
+        <?php
+        endif;
+        ?>
+
         <div class="ui grid">
             <div class="sixteen wide column">
                 <div class="panel" style="padding-top: 20px;">
                     <div class="panel-content">
 
-                        <?php $form = ActiveForm::begin([
+                        <?php
+                            $action = Yii::$app->request->get('action','get');
+                            $form = ActiveForm::begin([
+                            'action' => Url::current(['id'=>$model->id, 'action'=>$action]),
                             'id' => 'category',
-                            'enableClientScript' => false,
+                            'enableAjaxValidation' => true,
                             'options' => [
                                 'class'=>'ui form'
                             ],

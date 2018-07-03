@@ -205,23 +205,27 @@ class Topic extends \yii\db\ActiveRecord
     }
 
     /**
-     * 检测是否允许删除话题（话题下包含文章则不允许删除）
+     * 检测是否允许删除话题（话题下包含文章或标签则不允许删除）即话题为空才允许删除
      * @params $ids int|array #检测的话题id或id集合
      * @return bool #允许删除返回true 否则false
      */
     public static function isAllowDelete($ids){
         if(is_numeric($ids) && $ids > 0){
             //id
-            return !(bool) Article::find()->where(['topic_id'=>$ids])->count();
+            $hasArticles = Article::find()->where(['topic_id'=>$ids])->count();
+            $hasTags = Tag::find()->where(['topic_id'=>$ids])->count();
+
+            return !($hasArticles || $hasTags);
 
         }elseif(is_array($ids)){
             //id集合
-            return !(bool) Article::find()->where(['in', 'topic_id', $ids])->count();
+            $hasArticles = Article::find()->where(['in', 'topic_id', $ids])->count();
+            $hasTags = Tag::find()->where(['in','topic_id',$ids])->count();
 
-        }else{
-            return false;
+            return !($hasArticles || $hasTags);
+
         }
-
+        return false;
     }
 
 
