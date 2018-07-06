@@ -41,7 +41,7 @@ use yii\widgets\ActiveForm;
                     echo $form->field($model, 'name',['options'=>[
                         'tag' => false
                     ]])->textInput([
-                        'placeholder' => '名称'
+                        'placeholder' => '权限名或路由ID'
                     ]);
 
                     echo $form->field($model, 'type',['options'=>[
@@ -52,6 +52,12 @@ use yii\widgets\ActiveForm;
                         '2' => '权限'
                     ],[
                         'id'=>'select_type'
+                    ]);
+
+                    echo $form->field($model, 'description',['options'=>[
+                        'tag' => false
+                    ]])->textInput([
+                        'placeholder' => '描述'
                     ]);
 
                     echo $form->field($model, 'ruleName',['options'=>[

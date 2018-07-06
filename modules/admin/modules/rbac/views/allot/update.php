@@ -51,14 +51,14 @@ use yii\helpers\Url;
                     </div>
                     <div class="roles-container field">
                         <?= Html::label('可用角色')?>
-                        <?= Html::checkboxList('AuthAllot[child]',[],[],[
+                        <?= Html::checkboxList('AuthAllot[child]',$model->child['roles'],$roles,[
                                 'id' => 'roles'
                         ])?>
                         <p>选择需要分配的角色</p>
                     </div>
                     <div class="permissions-container field">
                         <?= Html::label('可用权限')?>
-                        <?= Html::checkboxList('AuthAllot[child]',[],[],[
+                        <?= Html::checkboxList('AuthAllot[child]',$model->child['permissions'],$permissions,[
                                 'id' => 'permissions'
                         ])?>
                         <p>选择需要分配的权限</p>
@@ -120,7 +120,7 @@ $jsStr = <<<JS
                     type : 'post',
                     data : {'name':value,'text':text},
                     success : function(d){
-                        console.log(d);
+                        
                         //渲染模板
                         var tplText = $('#items_tpl').html();
                         var compiled = new jSmart(tplText);

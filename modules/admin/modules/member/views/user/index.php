@@ -75,10 +75,13 @@ $action = $this->context->action->id;
                                 'created_at:date',
                                 [
                                     'class' => 'yii\grid\ActionColumn',
-                                    'options' => ['width'=>200],
+                                    'options' => ['width'=>260],
                                     'header' => '<a href="javascript:;">操作</a>',
-                                    'template' => '<div class="ui mini buttons">{view} {update} {delete}</div>',
+                                    'template' => '<div class="ui mini buttons">{assign}{view} {update} {delete}</div>',
                                     'buttons'=>[
+                                        'assign' => function ($url, $model, $key) {
+                                            return Html::a('指派', ['assign/assign','id'=>$model->id], ['class'=>'ui blue basic button']);
+                                        },
                                         'view' => function ($url, $model, $key) {
                                             return Html::a('查看', $url, ['class'=>'ui red basic button']);
                                         },

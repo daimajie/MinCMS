@@ -86,7 +86,7 @@ class AuthItem extends Model
     public function attributeLabels()
     {
         return [
-            'name' => '条目名称',
+            'name' => '权限名或路由ID',
             'type' => '条目类型',
             'description' => '条目描述',
             'ruleName' => '规则名',
@@ -253,7 +253,11 @@ class AuthItem extends Model
     public static function searchByKey($key){
 
         //获取所有条目
-        $query = (new Query())->from(self::TBL_NAME)->select(['name','value'=>'type','text'=>'type']);
+        $query = (new Query())->from(self::TBL_NAME)->select([
+            'name'=>'description',
+            'value'=>'name',
+            'text'=>'description'
+        ]);
 
         if (!empty($key)){
             $query->andWhere(['like', 'name', $key]);
