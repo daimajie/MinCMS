@@ -16,7 +16,7 @@ $action = $this->context->action->id;
                             <div class="ui compact menu">
                                 <a class="item" href="<?= Url::to(['create'])?>">
                                     <i class="plus icon"></i>
-                                    新建用户
+                                    新建条目
                                 </a>
                                 <a class="item" href="javascript:window.history.back();">
                                     <i class="reply icon"></i>
@@ -25,9 +25,9 @@ $action = $this->context->action->id;
                             </div>
 
                             <?php
-                                echo $this->render('_search', [
-                                'model' => $searchModel,
-                                'selectArr'=>$selectArr])
+                            echo $this->render('_search', [
+                                'model' => $searchModel
+                            ]);
                             ?>
                         </div>
                     </div>
@@ -49,30 +49,28 @@ $action = $this->context->action->id;
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
                             'columns' => [
-                                'id',
-                                'username',
-                                'email',
+                                ['class' => 'yii\grid\SerialColumn'],
                                 [
-                                    'attribute' => 'group',
+                                    'attribute' => 'name',
+                                    'label' => '条目名称',
+                                ],
+                                [
+                                    'attribute'=>'ruleName',
+                                    'label' => '规则名称',
+                                ],
+                                [
+                                    'attribute' => 'type',
+                                    'label' => '条目类型',
                                     'value' => function($model){
-                                        $arr = ['普通用户','社区作者','后台管理'];
-                                        return $arr[$model->group];
+                                        $arr = [1=>'角色',2=>'权限'];
+                                        return $arr[$model->type];
+
                                     }
                                 ],
                                 [
-                                    'attribute' => 'image',
-                                    'format' => 'raw',
-                                    'value' => function($model){
-                                        if($model->image){
-                                            //输出自定义头像
-                                            return Html::img(Yii::$app->params['imgPath']['imgUrl'] . '/' . $model->image,['class'=>'ui small image']);
-                                        }else{
-                                            //输出默认头像
-                                            return Html::img(Yii::$app->params['image'],['class'=>'ui tiny image']);
-                                        }
-                                    }
+                                    'attribute' => 'description',
+                                    'label'=>'条目描述'
                                 ],
-                                'created_at:date',
                                 [
                                     'class' => 'yii\grid\ActionColumn',
                                     'options' => ['width'=>200],
@@ -90,7 +88,6 @@ $action = $this->context->action->id;
                                         },
 
                                     ],
-
                                 ],
                             ],
                         ]); ?>
@@ -107,10 +104,10 @@ $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         tab.init('_tabs');
         progress.init('cls:_progress');
-
+        
         $('.quit-btn').click(function(){
             var that = $(this);
-            modal.confirm("确定要将此用户删除吗？",{
+            modal.confirm("确定要将此条目删除吗？",{
                 inPage:false
             },function(ele,obj){
                 window.location = that.attr('href');
@@ -118,9 +115,7 @@ require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
             });
             return false;
         });
-        
 });
 JS;
 $this->registerJs($jsStr);
-
 ?>

@@ -71,15 +71,49 @@ use yii\helpers\Url;
                                 <i class="user icon"></i>
                                 用户
                             </a>
-                            <a class="item" target="contentFrame" href="<?= Url::to(['member/rbac/index'])?>">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['member/assign/index'])?>">
                                 <i class="privacy icon"></i>
-                                权限
-                            </a>
-                            <a class="item" target="contentFrame" href="<?= Url::to(['member/author/index'])?>">
-                                <i class="paint brush icon"></i>
-                                作者
+                                指派
                             </a>
                         </div>
+                    </div>
+                    <!--/菜单-->
+                    <div class="item">
+                        <a class=" title"><i class="unlock alternate icon"></i><i class="dropdown icon"></i>权限管理</a>
+                        <div class=" content">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['rbac/rule/index'])?>">
+                                <i class="filter icon"></i>
+                                规则
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['rbac/item/index'])?>">
+                                <i class="compress icon"></i>
+                                条目
+                            </a>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['rbac/allot/index'])?>">
+                                <i class="wizard icon"></i>
+                                分配
+                            </a>
+                        </div>
+                    </div>
+                    <!--/菜单-->
+                    <div class="item">
+                        <a class=" title"><i class="settings icon"></i><i class="dropdown icon"></i>系统管理</a>
+                        <div class=" content">
+                            <a class="item" target="contentFrame" href="#">
+                                <i class="linkify icon"></i>
+                                友链
+                            </a>
+                            <a class="item" target="contentFrame" href="#">
+                                <i class="privacy icon"></i>
+                                元数据
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <!--/菜单-->
+                    <div class="item">
+                        <a class=" title">-----------------------------------------</a>
                     </div>
 
                     <div class="item">

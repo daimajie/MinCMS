@@ -82,7 +82,7 @@ class ArticleController extends BaseController
         if (Yii::$app->request->isPost){
             if($model->load(Yii::$app->request->post()) && $model->renew()){
                 //更新成功
-                Yii::$app->session->setFlash('success', '新建文章成功，等待审核中。');
+                Yii::$app->session->setFlash('success', '编辑文章成功，等待审核中。');
                 return $this->redirect(['index']);
             }
         }else{

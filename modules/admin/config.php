@@ -9,9 +9,12 @@ return [
         'member' => [
             'class' => 'app\modules\admin\modules\member\Module',
         ],
+        'rbac' => [
+            'class' => 'app\modules\admin\modules\rbac\Module',
+        ],
     ],
     'components' => [
-        // list of component configurations
+
     ],
     'params' => [
         // list of parameters

@@ -1,5 +1,4 @@
 <?php
-use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -39,47 +38,33 @@ use yii\widgets\ActiveForm;
                 <div class="panel-content">
                     <!--标题-->
                     <?php
-                    echo $form->field($model, 'username',['options'=>[
+                    echo $form->field($model, 'name',['options'=>[
                         'tag' => false
                     ]])->textInput([
-                        'placeholder' => '用户名'
+                        'placeholder' => '名称'
                     ]);
 
-                    echo $form->field($model, 'email',['options'=>[
+                    echo $form->field($model, 'type',['options'=>[
+                        'tag' => false
+                    ]])->dropDownList([
+                        ''=>'请选择权限类型',
+                        '1' => '角色',
+                        '2' => '权限'
+                    ],[
+                        'id'=>'select_type'
+                    ]);
+
+                    echo $form->field($model, 'ruleName',['options'=>[
                         'tag' => false
                     ]])->textInput([
-                        'placeholder' => '邮箱'
+                        'placeholder' => '规则名称'
                     ]);
 
-                    echo $form->field($model, 'password',['options'=>[
+                    echo $form->field($model, 'data',['options'=>[
                         'tag' => false
-                    ]])->passwordInput([
-                        'placeholder' => '密码'
-                    ]);
+                    ]])->textarea();
 
-                    echo $form->field($model, 're_password',['options'=>[
-                        'tag' => false
-                    ]])->passwordInput([
-                        'placeholder' => '重复密码'
-                    ]);
 
-                    echo $form->field($model, 'group',[
-                        'options' => ['tag'=>false]
-                    ])->radioList([
-                        '0' => '普通用户',
-                        '1' => '社区作者',
-                        '2' => '后台管理'
-                    ])->hint('请根据用户活动范围给予对应权限。',[
-                        'class'=>'help-block',
-                    ]);
-
-                    if(!$model->isNewRecord){
-                        echo $form->field($model, 'reset_image',['options'=>[
-                            'tag' => false
-                        ]])->checkbox()->label(false)->hint('选择后将重置用户头像。',[
-                            'class'=>'help-block'
-                        ]);
-                    }
                     ?>
 
 
@@ -89,20 +74,27 @@ use yii\widgets\ActiveForm;
         <div class="six wide column">
             <div class="panel" style="padding-top: 20px;">
                 <div class="panel-header">
-                    <h4>群组说明：</h4>
+                    <h4>权限创建说明：</h4>
                 </div>
                 <div class="panel-content">
                     <dl>
-                        <dt>后台管理：</dt>
-                        <dd>对网站有绝对管理权，应赋予网站运营者，维护人员。</dd>
+                        <dt>
+                            如果选择的权限类型是权限的话，那么名称应该写成绝对路由地址，
+                        </dt>
+                        <dd>
+                            如： /admin/content/article/delete
+                        </dd>
+                        <dd>
+                            代表：admin 模块 content 子模块 article 控制器 delete 方法
+                        </dd>
                     </dl>
                     <dl>
-                        <dt>社区作者：</dt>
-                        <dd>对于丰富网站内容，写作人员，应获取该权限。</dd>
-                    </dl>
-                    <dl>
-                        <dt>普通用户：</dt>
-                        <dd>指前台用户，可查阅，回复及评论文章。</dd>
+                        <dt>
+                            如果选择的权限类型是角色的话，那么名称应该写成通用名称，
+                        </dt>
+                        <dd>
+                            如： 管理，编辑，作者，用户...
+                        </dd>
                     </dl>
 
                 </div>
@@ -132,13 +124,13 @@ CSS;
 $this->registerCss($cssStr);
 
 /*js*/
-/*$jsStr = <<<JS
+$jsStr = <<<JS
     require(['mods/modal'],function(modal){
-        
+        $('#select_type').dropdown();
     });
 JS;
 $this->registerJs($jsStr);
-*/?>
+?>
 
 
 

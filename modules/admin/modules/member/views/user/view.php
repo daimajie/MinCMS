@@ -89,7 +89,7 @@ $strJs = <<<JS
 require(['mods/modal'],function(modal){
     $('#del_btn').click(function(){
         var that = $(this);
-        modal.confirm("您确定要删除该话题吗？",{
+        modal.confirm("您确定要删除该用户吗？",{
             inPage:false
         },function(ele,obj){
             window.location = that.attr('href');
