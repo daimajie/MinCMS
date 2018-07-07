@@ -55,6 +55,10 @@ $action = $this->context->action->id;
                                     'label' => '条目名称',
                                 ],
                                 [
+                                    'attribute' => 'description',
+                                    'label'=>'条目描述'
+                                ],
+                                [
                                     'attribute'=>'ruleName',
                                     'label' => '规则名称',
                                 ],
@@ -68,15 +72,15 @@ $action = $this->context->action->id;
                                     }
                                 ],
                                 [
-                                    'attribute' => 'description',
-                                    'label'=>'条目描述'
-                                ],
-                                [
                                     'class' => 'yii\grid\ActionColumn',
-                                    'options' => ['width'=>200],
+                                    'options' => ['width'=>260],
                                     'header' => '<a href="javascript:;">操作</a>',
-                                    'template' => '<div class="ui mini buttons">{view} {update} {delete}</div>',
+                                    'template' => '<div class="ui mini buttons">{allot}{view} {update} {delete}</div>',
                                     'buttons'=>[
+                                        'allot' => function ($url, $model, $key) {
+                                            Url::remember(['item/index'], 'item_index');
+                                            return Html::a('分配', ['allot/update', 'id'=>$model->name], ['class'=>'ui orange basic button']);
+                                        },
                                         'view' => function ($url, $model, $key) {
                                             return Html::a('查看', $url, ['class'=>'ui red basic button']);
                                         },

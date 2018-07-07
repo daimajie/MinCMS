@@ -89,6 +89,23 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
 
+    //搜索下拉框数据 话题搜索
+    public static function searchByKey($key){
+        $query = static::find()->select([
+            'name'=>'username',
+            'value'=>'id',
+            'text'=>'username'
+        ]);
+
+        //添加筛选条件
+        if (!empty($key)){
+            $query->andWhere(['like', 'username', $key]);
+        }
+
+        return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
+    }
+
+
 
 
     /**

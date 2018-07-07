@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Exception;
 use yii\data\ArrayDataProvider;
 use yii\db\Query;
+use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
@@ -32,7 +33,7 @@ class AllotController extends BaseController
     //添加**
     public function actionCreate(){
         $model = new AuthAllot();
-        $selectArr = [''=>'选择条目'];
+
 
         if(Yii::$app->request->isPost){
             if ($model->load(Yii::$app->request->post()) && $model->addChild()) {
@@ -42,10 +43,12 @@ class AllotController extends BaseController
 
         }
 
-
-        return $this->render('create',[
+        $selectArr = [''=>'选择条目'];
+        return $this->render('update',[
             'selectArr' => $selectArr,
             'model' => $model,
+            'roles' => [],
+            'permissions' => [],
         ]);
     }
 
@@ -56,6 +59,13 @@ class AllotController extends BaseController
         if(Yii::$app->request->isPost){
             if ($model->load(Yii::$app->request->post()) && $model->addChild()) {
                 Yii::$app->session->setFlash('success', '分配成功');
+
+                $prev = Url::previous('item_index');
+                if(!empty($prev)){
+                    Url::remember(null, 'item_index');
+                    return $this->redirect($prev);
+                }
+
                 return $this->redirect(['index']);
             }
         }

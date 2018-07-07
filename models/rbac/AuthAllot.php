@@ -17,6 +17,8 @@ class AuthAllot extends ActiveRecord
     public function __construct($item = null, array $config = [])
     {
         $this->_item = $item;
+        $this->child['roles'] = [];
+        $this->child['permissions'] = [];
 
         if(!is_null($item)){
             $this->parent = $item->name;
@@ -81,32 +83,37 @@ class AuthAllot extends ActiveRecord
         ];
     }
 
-    //获取可分配节点
-    /*public static function getOptions($data, $parent){
+
+    //根据用户id获取其已经得到的权限或角色
+    /*public static function getChildrenByUser($user_id){
         $return = [];
-        $auth = Yii::$app->authManager;
-        foreach ($data as $obj) {
-            if (is_null($parent)) {
-                $return[$obj->name] = $obj->description;
-                break;
-            }
-            if (!empty($parent) && $parent->name != $obj->name && $auth->canAddChild($parent, $obj)) {
-                $return[$obj->name] = $obj->description;
-            }
-        }
+        $return['roles'] = self::_getItemByUser($user_id, 1);
+        //$return['permissions'] = self::_getItemByUser($user_id, 2);
         return $return;
+    }
+    private static function _getItemByUser($user_id, $type)
+    {
+        $func = 'getPermissionsByUser';
+        if ($type == 1) {
+            $func = 'getRolesByUser';
+        }
+        $data = [];
+        $auth = Yii::$app->authManager;
+        $items = $auth->$func($user_id);
+        foreach ($items as $item) {
+            $data[] = $item->name;
+        }
+        return $data;
     }*/
+
+
     public static function getOptions($data, $parent,$flag=true){
         $return = [];
         $auth = Yii::$app->authManager;
         foreach ($data as $obj) {
             if (is_null($parent)) {
-                if($flag){
-                    $return[$obj->name][$obj->name] = $obj->description;
-                }else
-                    $return[$obj->name] = $obj->description;
-
-                break;
+                $return[$obj->name] = $obj->description;
+                continue;
             }
             if (!empty($parent) && $parent->name != $obj->name && $auth->canAddChild($parent, $obj)) {
                 if($flag){

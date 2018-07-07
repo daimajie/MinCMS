@@ -16,7 +16,7 @@ $action = $this->context->action->id;
                             <div class="ui compact menu">
                                 <a class="item" href="<?= Url::to(['create'])?>">
                                     <i class="plus icon"></i>
-                                    新建用户
+                                    指派角色
                                 </a>
                                 <a class="item" href="javascript:window.history.back();">
                                     <i class="reply icon"></i>
@@ -24,11 +24,6 @@ $action = $this->context->action->id;
                                 </a>
                             </div>
 
-                            <?php
-                                echo $this->render('_search', [
-                                'model' => $searchModel,
-                                'selectArr'=>$selectArr])
-                            ?>
                         </div>
                     </div>
                 </div>
@@ -49,53 +44,34 @@ $action = $this->context->action->id;
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
                             'columns' => [
-                                'id',
-                                'username',
-                                'email',
+                                ['class' => 'yii\grid\SerialColumn'],
                                 [
-                                    'attribute' => 'group',
-                                    'value' => function($model){
-                                        $arr = ['普通用户','社区作者','后台管理'];
-                                        return $arr[$model->group];
-                                    }
+                                    'attribute' => 'user_id',
+                                    'label' => '用户'
                                 ],
                                 [
-                                    'attribute' => 'image',
-                                    'format' => 'raw',
-                                    'value' => function($model){
-                                        if($model->image){
-                                            //输出自定义头像
-                                            return Html::img(Yii::$app->params['imgPath']['imgUrl'] . '/' . $model->image,['class'=>'ui small image']);
-                                        }else{
-                                            //输出默认头像
-                                            return Html::img(Yii::$app->params['image'],['class'=>'ui tiny image']);
-                                        }
-                                    }
+                                    'attribute' => 'roles',
+                                    'label' => '拥有的角色'
                                 ],
-                                'created_at:date',
                                 [
                                     'class' => 'yii\grid\ActionColumn',
-                                    'options' => ['width'=>260],
+                                    'options' => ['width'=>150],
                                     'header' => '<a href="javascript:;">操作</a>',
-                                    'template' => '<div class="ui mini buttons">{assign}{view} {update} {delete}</div>',
+                                    'template' => '<div class="ui mini buttons">{assign} {delete}</div>',
                                     'buttons'=>[
                                         'assign' => function ($url, $model, $key) {
-                                            Url::remember(['user/index'], 'user_index');
-                                            return Html::a('指派', ['assign/assign','id'=>$model->id], ['class'=>'ui blue basic button']);
-                                        },
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::a('查看', $url, ['class'=>'ui red basic button']);
-                                        },
-                                        'update' => function ($url, $model, $key) {
-                                            return Html::a('编辑', $url, ['class'=>'ui blue basic button']);
+                                            return Html::a('编辑', $url, ['class'=>'ui red basic button']);
                                         },
                                         'delete' => function ($url, $model, $key) {
-                                            return Html::a('删除', $url, ['class'=>'ui green basic button quit-btn']);
+                                            return Html::a('删除', $url, ['class'=>'ui green basic button del-btn']);
                                         },
 
                                     ],
-
+                                    'urlCreator' =>function($action, $model){
+                                        return Url::to([$action, 'id' => $model['user_id']]);
+                                    }
                                 ],
+
                             ],
                         ]); ?>
                     </div>
@@ -108,13 +84,11 @@ $action = $this->context->action->id;
 <?php
 $this->registerCss("body {padding:20px;}");
 $jsStr = <<<JS
-require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
-        tab.init('_tabs');
-        progress.init('cls:_progress');
-
-        $('.quit-btn').click(function(){
+    require(['mods/modal','jSmart'],function(modal){
+        //删除询问框
+        $('.del-btn').click(function(){
             var that = $(this);
-            modal.confirm("确定要将此用户删除吗？",{
+            modal.confirm("确定要删除此指派吗？",{
                 inPage:false
             },function(ele,obj){
                 window.location = that.attr('href');
@@ -123,8 +97,8 @@ require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
             return false;
         });
         
-});
+        
+    });
 JS;
 $this->registerJs($jsStr);
-
 ?>

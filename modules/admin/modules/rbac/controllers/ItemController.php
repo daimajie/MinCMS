@@ -3,6 +3,7 @@ namespace app\modules\admin\modules\rbac\controllers;
 use app\modules\admin\controllers\BaseController;
 use app\models\rbac\AuthItem;
 use Yii;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use app\models\rbac\SearchAuthItem;
 
@@ -21,6 +22,7 @@ class ItemController extends BaseController
     //列表页
     public function actionIndex()
     {
+
         $searchModel = new SearchAuthItem();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 

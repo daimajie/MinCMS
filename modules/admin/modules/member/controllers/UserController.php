@@ -9,6 +9,17 @@ use yii\web\NotFoundHttpException;
 
 class UserController extends BaseController
 {
+
+    public function actions()
+    {
+        return [
+            'search' => [
+                'class' => 'app\components\actions\SearchAction',
+                'model' => 'app\models\member\User'
+            ]
+        ];
+    }
+
     //用户列表
     public function actionIndex(){
         $searchModel = new SearchUser();
@@ -16,6 +27,7 @@ class UserController extends BaseController
 
         //下拉框初始数据
         $selectArr = ['' => '按话题搜索'];
+
 
         return $this->render('index',[
             'searchModel' => $searchModel,
