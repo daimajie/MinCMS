@@ -12,6 +12,9 @@ return [
         'rbac' => [
             'class' => 'app\modules\admin\modules\rbac\Module',
         ],
+        'setting' => [
+            'class' => 'app\modules\admin\modules\setting\Module',
+        ],
     ],
     'components' => [
 

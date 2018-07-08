@@ -99,12 +99,12 @@ use yii\helpers\Url;
                     <div class="item">
                         <a class=" title"><i class="settings icon"></i><i class="dropdown icon"></i>系统管理</a>
                         <div class=" content">
-                            <a class="item" target="contentFrame" href="#">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['setting/friend/index'])?>">
                                 <i class="linkify icon"></i>
                                 友链
                             </a>
-                            <a class="item" target="contentFrame" href="#">
-                                <i class="privacy icon"></i>
+                            <a class="item" target="contentFrame" href="<?= Url::to(['setting/metadata/index'])?>">
+                                <i class="puzzle icon"></i>
                                 元数据
                             </a>
                         </div>
