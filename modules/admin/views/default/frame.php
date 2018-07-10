@@ -87,7 +87,7 @@ use yii\helpers\Url;
                             </a>
                             <a class="item" target="contentFrame" href="<?= Url::to(['rbac/item/index'])?>">
                                 <i class="compress icon"></i>
-                                条目
+                                权限
                             </a>
                             <a class="item" target="contentFrame" href="<?= Url::to(['rbac/allot/index'])?>">
                                 <i class="wizard icon"></i>
@@ -103,111 +103,51 @@ use yii\helpers\Url;
                                 <i class="linkify icon"></i>
                                 友链
                             </a>
-                            <a class="item" target="contentFrame" href="<?= Url::to(['setting/metadata/index'])?>">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['setting/metadata/setup'])?>">
                                 <i class="puzzle icon"></i>
                                 元数据
                             </a>
                         </div>
                     </div>
-
-
                     <!--/菜单-->
                     <div class="item">
-                        <a class=" title">-----------------------------------------</a>
-                    </div>
-
-                    <div class="item">
-                        <a class="title">
-                            <i class="gift icon"></i><i class="dropdown icon"></i>功能组件
-
-                        </a>
+                        <a class=" title"><i class="comments icon"></i><i class="dropdown icon"></i>评论管理</a>
                         <div class=" content">
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/button.html">
-                                <i class="check icon"></i>
-                                按钮
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="linkify icon"></i>
+                                评论
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/menu.html">
-                                <i class="list alternate outline icon"></i>
-                                菜单
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="puzzle icon"></i>
+                                收藏
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/dropdown.html">
-                                <i class="tasks icon"></i>
-                                下拉框
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="options icon"></i>
+                                消息
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/icon.html">
-                                <i class="image outline icon"></i>
-                                图标
+                        </div>
+                    </div>
+                    <!--/菜单-->
+                    <div class="item">
+                        <a class=" title"><i class="database icon"></i><i class="dropdown icon"></i>数据管理</a>
+                        <div class=" content">
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="linkify icon"></i>
+                                备份
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/popup.html">
-                                <i class="envira icon"></i>
-                                气泡提示
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="puzzle icon"></i>
+                                日志
                             </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/modal.html">
-                                <i class="clone outline icon"></i>
-                                弹出框
-                            </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/upload.html">
-                                <i class="cloud upload icon"></i>
-                                上传文件
-                            </a>
-
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/jsmart.html">
-                                <i class="js square icon"></i>
-                                js模板引擎
-                            </a>
-
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/swiper.html">
-                                <i class="js book icon"></i>
-                                轮播图
-                            </a>
-
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/video.html">
-                                <i class="video icon"></i>
-                                视频播放器
-                            </a>
-
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/simplemde.html">
-                                <i class="edit outline icon"></i>
-                                MarkDown编辑器
+                            <a class="item" target="contentFrame" href="javascript:;">
+                                <i class="options icon"></i>
+                                缓存
                             </a>
                         </div>
                     </div>
 
-                    <div class="item">
-                        <a class=" title"><i class="wpforms icon"></i><i class="dropdown icon"></i>表单组件</a>
-                        <div class=" content">
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/form-simple.html">
-                                简单表单
-                            </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/form-layout.html">
-                                表单布局
-                            </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/form-state.html">
-                                表单状态
-                            </a>
-                        </div>
-                    </div>
 
-                    <div class="item">
-                        <a class=" title"><i class="table icon"></i><i class="dropdown icon"></i>表格组件</a>
-                        <div class=" content">
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/component/table.html">
-                                基本表格
-                            </a>
-                        </div>
-                    </div>
 
-                    <div class="item">
-                        <a class=" title"><i class="newspaper icon"></i><i class="dropdown icon"></i>页面模板</a>
-                        <div class=" content">
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/default/bootstrap.html">
-                                登录页面
-                            </a>
-                            <a class="item" target="contentFrame" href="https://nai8.me/hou/default/bootstrap.html">
-                                404
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

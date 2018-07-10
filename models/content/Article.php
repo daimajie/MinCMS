@@ -6,7 +6,9 @@ use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use Yii;
+use yii\data\Pagination;
 use yii\helpers\FileHelper;
+use yii\web\BadRequestHttpException;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -165,6 +167,76 @@ class Article extends \yii\db\ActiveRecord
 
     }
 
+    private static function getQuery(){
+        $query = self::find()
+            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+            ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
+            ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
+            ->orderBy(['created_at'=>SORT_DESC])
+            ->with([/*'user', */'topic']);
+        return $query;
+    }
+
+    /**
+     * 获取文章列表数据根据话题
+     * @param $topic_id int #话题id
+     * @throws BadRequestHttpException
+     * @return array #文章数据
+     */
+    public static function getArticlesByTopic($topic_id){
+        $topic_id = (int) $topic_id;
+        if($topic_id <= 0)
+            throw new BadRequestHttpException('请求参数错误。');
+
+        $query = self::getQuery()->andFilterWhere(['topic_id'=>$topic_id]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 15]);
+
+        $articles = $query
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->asArray()
+            ->all();
+        return [
+            'articles' => $articles,
+            'pagination' => $pagination
+        ];
+    }
+
+
+    /**
+     * 获取文章列表 首页列表数据
+     */
+    public static function getArticles(){
+        $query = static::getQuery();
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 15]);
+
+        $articles = $query->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
+
+        return [
+            'articles' => $articles,
+            'pagination' => $pagination
+        ];
+
+    }
+
+    /**
+     * 获取热门文章9条
+     */
+    public static function getHotArticles(){
+        $ret = self::find()
+            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+            ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
+            ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
+            ->orderBy(['comment'=>SORT_DESC, 'visited'=>SORT_DESC])
+            ->select(['id','title'])
+            ->asArray()
+            ->all();
+        return $ret;
+    }
 
 
 

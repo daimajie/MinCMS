@@ -72,6 +72,7 @@ $config = [
     'language' => 'zh-CN',
     'timeZone' => 'Asia/Shanghai',
     'charset'  => 'utf-8',
+    'layout' => 'layout',
 ];
 
 if (YII_ENV_DEV) {

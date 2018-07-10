@@ -5,6 +5,7 @@ namespace app\models\content;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
+use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 
@@ -115,7 +116,7 @@ class Topic extends \yii\db\ActiveRecord
     public function getTags()
     {
         return $this->hasMany(Tag::className(), ['topic_id' => 'id'])
-            ->select(['id','name']);
+            ->select(['id','name','topic_id']);
     }
 
 
@@ -228,5 +229,40 @@ class Topic extends \yii\db\ActiveRecord
         return false;
     }
 
+
+    /**
+     * 获取话题数据根据分类id
+     */
+    public static function getTopicsByCat($cat_id){
+        if(!is_numeric($cat_id) || $cat_id <= 1)
+            return [];
+        $query = self::find()->where(['category_id'=>$cat_id]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 20]);
+
+        $topics = $query->offset($pagination->offset)->limit($pagination->limit)->orderBy(['count'=>SORT_DESC])->asArray()->all();
+
+        return [
+            'topics' => $topics,
+            'pagination' => $pagination
+        ];
+
+
+    }
+
+    /**
+     * 获取热门话题9条
+     */
+    public static function getHotTopic(){
+        $ret = static::find()
+            ->select(['id','image','name'])
+            ->orderBy(['count'=>SORT_DESC, 'created_at'=>SORT_DESC])
+            ->limit(9)
+            ->asArray()
+            ->all();
+        return $ret;
+
+    }
 
 }

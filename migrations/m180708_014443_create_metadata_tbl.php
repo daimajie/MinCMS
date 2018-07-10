@@ -21,6 +21,12 @@ class m180708_014443_create_metadata_tbl extends Migration
             'updated_at' => $this->integer()->unsigned()->defaultValue(0)->comment('修改时间'),
         ], 'engine=innodb default charset=utf8');
 
+        $this->insert(self::TBL_NAME, [
+            'name' => 'mincms',
+            'keywords' => '',
+            'description' => '',
+        ]);
+
 
     }
 

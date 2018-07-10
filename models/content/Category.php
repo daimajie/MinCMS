@@ -4,6 +4,7 @@ namespace app\models\content;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 
@@ -163,4 +164,38 @@ class Category extends \yii\db\ActiveRecord
 
          return false;
      }
+
+
+     /**
+      * 分类列表
+      */
+     public static function getCategorys(){
+            $query = self::find();
+            $count = $query->count();
+
+            $pagination = new Pagination(['totalCount' => $count,'pageSize' => 10]);
+
+            $categorys = $query->offset($pagination->offset)->limit($pagination->limit)->orderBy(['count'=>SORT_DESC])->all();
+
+            return [
+                'categorys' => $categorys,
+                'pagination' => $pagination
+            ];
+
+     }
+
+     /**
+      * 关联数据
+      */
+     public function getTopics(){
+         return $this->hasMany(Topic::class, ['category_id'=>'id'])
+             ->select(['id','category_id','name','image','count','finished','desc']);
+     }
+
+
+
+
+
+
+
 }
