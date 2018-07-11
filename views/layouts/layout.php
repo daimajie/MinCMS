@@ -4,12 +4,15 @@ use app\assets\SemanticUIAsset;
 use app\assets\RequireJsAsset;
 use app\assets\HomeAsset;
 use app\assets\Html5Asset;
-use yii\widgets\Menu;
+use yii\helpers\Url;
+
 
 SemanticUIAsset::register($this);
-//RequireJsAsset::register($this);
+RequireJsAsset::register($this);
 HomeAsset::register($this);
 Html5Asset::register($this);
+
+$user = Yii::$app->user->identity;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -42,31 +45,40 @@ Html5Asset::register($this);
                 <a class="teal item">关于我</a>
 
                 <div class="right menu">
+                    <?php
+                    if(!Yii::$app->user->isGuest):
+                    ?>
                     <!--登录状态-->
                     <div class="ui dropdown item top right pointing">
                         <div class="text">
-                            <img class="ui avatar image" src="static/home/img/avatar.jpg">
-                            珍妮赫斯
+                            <img class="ui avatar image" src="<?= !empty($user['image']) ? IMG_ROOT . $user['image'] : Yii::$app->params['image']?>">
+                            <?= $user['username']?>
                             <i class="dropdown icon"></i>
                         </div>
                         <div class="menu">
-                            <a class="item">个人中心</a>
-                            <a class="item">写作</a>
-                            <a class="item">退出<i class="sign out icon"></i></a>
+                            <a href="javascript:;" class="item">个人中心</a>
+                            <a href="javascript:;" class="item">写作</a>
+                            <a href="<?= Url::to(['index/logout'])?>" class="item">退出<i class="sign out icon"></i></a>
                         </div>
                     </div>
+                    <?php
+                    else:
+                    ?>
                     <!--游客状态-->
-                    <!--<div class="item">
+                    <div class="item">
                         <div class="ui mini icon buttons">
-                            <button class="ui teal button">
+                            <a href="<?= Url::to(['index/login'])?>" class="ui teal button">
                                 <i class="sign in icon"></i>
                                 登录
-                            </button>
-                            <button class="ui brown button">
+                            </a>
+                            <a href="<?= Url::to(['index/register'])?>" class="ui brown button">
                                 注册
-                            </button>
+                            </a>
                         </div>
-                    </div>-->
+                    </div>
+                    <?php
+                    endif;
+                    ?>
                 </div>
             </div>
         </div>

@@ -48,16 +48,6 @@ class m180703_094604_create_user_tbl extends Migration
             'auth_key'
         );
 
-        $this->createIndex(
-            'idx-user-email-password',
-            self::TBL_NAME,
-            ['email', 'password_hash']
-        );
-        $this->createIndex(
-            'idx-user-user-password',
-            self::TBL_NAME,
-            ['username', 'password_hash']
-        );
 
         /*
         $this->addForeignKey(

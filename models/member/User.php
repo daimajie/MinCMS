@@ -72,23 +72,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
 
-    //设置密码
-    public function generatePasswordHash($password){
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
-    }
-
-    //设置auth_key
-    public function generateAuthKey(){
-        $this->auth_key = Yii::$app->security->generateRandomString();
-    }
-
-    //检测密码
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
-    }
-
-
     //搜索下拉框数据 话题搜索
     public static function searchByKey($key){
         $query = static::find()->select([
@@ -106,32 +89,111 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
 
+    //设置密码
+    public function generatePasswordHash($password){
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
 
+
+    //检测密码
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+
+    //根据用户名邮箱找到用户实例(找回密码)
+    public static function findByUsernameAndEmail($username, $email)
+    {
+        $model = self::find()->where(['and', 'username=:user', 'email=:email'], [':user' => $username, ':email' => $email])->one();
+        if (!$model)
+            return null;
+        return $model;
+    }
+
+    //验证reset token是否可用
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    //生成reset token
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    //根据reset token获取实例
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+        return static::findOne([
+            'password_reset_token' => $token,
+            //'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    //清空reset token
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
+
+    //根据用户名或邮箱获取（登录）
+    public static function findByUsernameOrEmail($username)
+    {
+        $model = self::find()->where(['or', 'username=:user', 'email=:user'], [':user' => $username])->one();
+        if (!$model)
+            return null;
+        return $model;
+    }
 
     /**
      * 根据用户ID获取用户实例
      */
-    public static function findIdentity($id){}
+    public static function findIdentity($id){
+        return static::findOne($id);
+    }
 
     /**
      * 根据accsstoken获取用户实例（用户app应用）
      */
-    public static function findIdentityByAccessToken($token, $type = null){}
+    public static function findIdentityByAccessToken($token, $type = null){
+        return static::findOne(['access_token' => $token]);
+    }
 
     /**
      * 获取当前用户ID
      */
-    public function getId(){}
+    public function getId(){
+        return $this->id;
+    }
+
+
+    //设置auth_key
+    public function generateAuthKey(){
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
 
     /**
      * 获取当前用户auth_key (用户面登录场景)
      */
-    public function getAuthKey(){}
+    public function getAuthKey(){
+        return $this->auth_key;
+    }
 
     /**
      * 验证auth_key（通过给予登录）
      */
-    public function validateAuthKey($authKey){}
+    public function validateAuthKey($authKey){
+        return $this->getAuthKey() === $authKey;
+    }
 
 
 

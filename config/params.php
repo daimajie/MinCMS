@@ -1,7 +1,11 @@
 <?php
 
 return [
-    'adminEmail' => 'daimajie@qq.com',
+    //重置密码token过期时间
+    'user.passwordResetTokenExpire' => 1800,
+
+    //管理员邮箱
+    'adminEmail' => 'git1314@163.com',
 
     //图片上传配置
     'imgPath' => [

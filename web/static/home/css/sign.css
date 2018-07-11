@@ -1,5 +1,5 @@
 body{
-    min-width: 640px;
+    min-width: 720px;
     background-color:#efefef;
     height:100%;
 }
@@ -10,12 +10,12 @@ body{
     float: right;
 }
 .login{
-    width: 610px;
+    width: 720px;
     /*height: 450px;*/
-    margin:8% auto;
+    margin:150px auto;
     background-color: white;
     border-radius: 5px;
-    padding: 25px;
+    padding: 35px 55px;
 
 }
 .line{
