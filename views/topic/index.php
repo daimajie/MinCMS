@@ -2,7 +2,10 @@
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
+use app\components\helper\Helper;
 
+
+$defaultImage = Yii::$app->params['image']; //默认头像
 ?>
 <!--content-->
 <section id="content">
@@ -32,13 +35,13 @@ use yii\helpers\Url;
                                     <?= Html::encode($article['title'])?>
                                 </a>
                                 <p class="abstract">
-                                    <?= Html::encode($article['brief'])?>
+                                    <?= Helper::truncate_utf8_string(Html::encode($article['brief']), 77)?>
                                 </p>
                                 <div class="meta">
-                                    <img class="source-profile ui avatar image" src="static/home/img/photo.jpeg">
-                                    <a class="nickname" target="_blank" href="javascript:;">萌神木木</a>
+                                    <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['image'] : $defaultImage ;?>">
+                                    <a class="nickname" target="_blank" href="javascript:;"><?= $article['user']['username'] ?></a>
                                     <span><?= $article['comment']?>评</span>
-                                    <span><?= Yii::$app->formatter->asRelativeTime($article['created_at'])?></span>
+                                    <span><?= date('Y-m-d H:i:s', $article['created_at'])?></span>
                                     <a href="<?= Url::to(['topic/index', 'id'=>$article['topic']['id']])?>" class="wemedia-icon"><?= $article['topic']['name']?></a>
                                 </div>
                             </div>
@@ -86,6 +89,7 @@ use yii\helpers\Url;
                         <h4 class="ui dividing header">
                             话题标签
                         </h4>
+                        <a href="<?= Url::current(['tag' => null])?>" class="ui tag label">全部文章</a>
                         <?php
                         foreach ($topic['tags'] as $tag):
                         ?>
@@ -93,6 +97,7 @@ use yii\helpers\Url;
                         <?php
                         endforeach;
                         ?>
+                        <a href="<?= Url::current(['tag' => 'unset'])?>" class="ui tag label">未设标签</a>
                     </div>
 
                 </div>

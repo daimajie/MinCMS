@@ -1,9 +1,11 @@
 /**
  * 配置requireJs
  */
+/*
 define('jquery',function(){
     return jQuery;
 });
+*/
 
 requirejs.config({
     //urlArgs: "r=" + (new Date()).getTime(),

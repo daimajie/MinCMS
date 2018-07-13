@@ -72,6 +72,9 @@ class ArticleForm extends Article
             //写入文章标签关联数据
             $this->writeArtTagRelate($tagsArr);
 
+            //话题文章数目累加
+            Topic::updateAllCounters(['count'=>1], ['id'=>$this->topic_id]);
+
             $transaction->commit();
             return true;
         } catch(\Exception $e) {

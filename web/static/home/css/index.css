@@ -152,7 +152,7 @@ div.ui.container{
 
 
 #content .articles .article .title {
-    margin: -7px 0 4px;
+    margin: -7px 0 20px;
     display: inline-block;
     font-size: 18px;
     font-weight: 700;
@@ -160,7 +160,7 @@ div.ui.container{
     /*color: #666;*/
 }
 #content .articles .article .abstract {
-    margin: 0 15px 8px 0;
+    margin: 0 35px 8px 0;
     font-size: 14px;
     line-height: 24px;
     color: #999;
@@ -225,7 +225,7 @@ div.ui.container{
 
 /*topics*/
 #content .topics a{
-    margin:0 15px 25px 0;
+    margin:0 15px 15px 0;
 }
 
 .art-action{
@@ -254,8 +254,7 @@ div.ui.container{
 #content .ui.cards.topic_cards>.card{
     width: 206px !important;
 }
-.ui.card.topic_card .header,
-.ui.card.topic_card .description{
+.ui.card.topic_card .header{
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

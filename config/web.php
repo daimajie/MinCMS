@@ -4,7 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'name' => 'Yiicms',
+    'name' => 'DAIMAJIE.COM',
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -82,6 +82,7 @@ $config = [
     'timeZone' => 'Asia/Shanghai',
     'charset'  => 'utf-8',
     'layout' => 'layout',
+    'defaultRoute' => 'index'
 ];
 
 if (YII_ENV_DEV) {

@@ -7,62 +7,115 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+use yii\helpers\Url;
 
-$this->title = 'Contact';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
+<section id="content">
+    <div class="ui container">
+        <div class="conts">
+            <div class="ui stackable four column grid">
+                <div class="eleven wide column">
+                    <!--表单-->
+                    <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
 
-    <?php if (Yii::$app->session->hasFlash('contactFormSubmitted')): ?>
+                        <div class="alert alert-success">
+                            谢谢您的宝贵建议，我们会尽快给予您回复。
+                        </div>
 
-        <div class="alert alert-success">
-            Thank you for contacting us. We will respond to you as soon as possible.
-        </div>
+                    <?php else: ?>
+                        <h4 class="ui dividing header">
+                            联系我
+                        </h4>
+                        <div class="ui hidden divider"></div>
+                        <h4 class="ui header">填写您的联系方式和建议，然后提交。</h4>
 
-        <p>
-            Note that if you turn on the Yii debugger, you should be able
-            to view the mail message on the mail panel of the debugger.
-            <?php if (Yii::$app->mailer->useFileTransport): ?>
-                Because the application is in development mode, the email is not sent but saved as
-                a file under <code><?= Yii::getAlias(Yii::$app->mailer->fileTransportPath) ?></code>.
-                Please configure the <code>useFileTransport</code> property of the <code>mail</code>
-                application component to be false to enable email sending.
-            <?php endif; ?>
-        </p>
+                        <p>
+                            如果您有业务咨询或其他问题，请填写以下表格与我们联系。 谢谢您。
+                        </p>
+                        <?php
+                        $form = ActiveForm::begin([
+                            'id' => 'category',
+                            'enableClientScript' => false,
+                            'options' => [
+                                'class'=>'ui form'
+                            ],
+                            'fieldConfig' => [
+                                'template' => '<div class="field">{label}{input}{error}</div>'
+                            ]
 
-    <?php else: ?>
+                        ]);
+                        ?>
+                        <?=
+                        $form->field($model, 'name',['options'=>[
+                            'tag' => false
+                        ]])->textInput([
+                            'placeholder' => '姓名'
+                        ]);
+                        ?>
+                        <?=
+                        $form->field($model, 'email',['options'=>[
+                            'tag' => false
+                        ]])->textInput([
+                            'placeholder' => '邮箱'
+                        ]);
+                        ?>
+                        <?=
+                        $form->field($model, 'subject',['options'=>[
+                            'tag' => false
+                        ]])->textInput([
+                            'placeholder' => '主题'
+                        ]);
+                        ?>
+                        <?=
+                        $form->field($model, 'body',['options'=>[
+                            'tag' => false
+                        ]])->textarea([
+                            'placeholder' => '内容'
+                        ]);
+                        ?>
+                        <?= $form->field($model,'captcha',[
+                            'options' => [
+                                'tag'=>false,
+                                'class' =>'inline field'
+                            ],
+                            'template' => '<div class="field">{label}<div class="inline field" style="margin-bottom: 0;">{input}</div>{error}</div>'
+                        ])->widget(yii\captcha\Captcha::className(),[
+                            'captchaAction'=>'index/captcha',
 
-        <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
-        </p>
+                            'imageOptions'=>[
+                                'alt'=>'点击换图',
+                                'title'=>'点击换图',
+                                'style'=>'cursor:pointer',
+                            ],
+                            'options' => [
+                                'class'=>"inline field",
+                                'style' => 'vertical-align: top;',
+                                'placeholder' => '验证码'
+                            ],
+                            'template' => '{input}{image}',
+                        ]);?>
 
-        <div class="row">
-            <div class="col-lg-5">
+                        <div>
+                            <?= Html::submitButton('提交',['class'=>'ui blue submit button float-l tiny'])?>
+                        </div>
+                        <?php
+                        ActiveForm::end();
+                        ?>
 
-                <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-                    <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+                    <?php endif; ?>
 
-                    <?= $form->field($model, 'email') ?>
+                    <!--/表单-->
 
-                    <?= $form->field($model, 'subject') ?>
+                    <div class="ui hidden divider"></div>
 
-                    <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                    ]) ?>
-
-                    <div class="form-group">
-                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                    </div>
-
-                <?php ActiveForm::end(); ?>
-
+                </div>
+                <div class="five wide column">
+                    <!--右边栏-->
+                </div>
             </div>
         </div>
+    </div>
+</section>
 
-    <?php endif; ?>
-</div>
+

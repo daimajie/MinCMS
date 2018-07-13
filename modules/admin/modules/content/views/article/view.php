@@ -29,7 +29,7 @@ use yii\widgets\DetailView;
                             'options' => [
                                 'class' => 'ui very basic collapsing celled table',
                             ],
-
+                            'template' => '<tr><th width="120">{label}</th><td{contentOptions}>{value}</td></tr>',
                             'model' => $model,
                             'attributes' => [
                                 'id',
@@ -47,7 +47,8 @@ use yii\widgets\DetailView;
                                     'value' => function($model){
                                         //return Yii::$app->params['imgPath']['imgUrl'] . '/' . $model->image;
                                         return Html::img(Yii::$app->params['imgPath']['imgUrl'] . '/' . $model->image,['class'=>'ui small image']);
-                                    }
+                                    },
+
                                 ],
                                 [
                                     'attribute'=>'type',

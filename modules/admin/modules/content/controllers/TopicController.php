@@ -32,6 +32,7 @@ class TopicController extends BaseController{
 
     //列表
     public function actionIndex(){
+
         $searchModel = new SearchTopic();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

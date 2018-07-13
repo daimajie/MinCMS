@@ -2,12 +2,14 @@
 
 namespace app\models\content;
 
+use app\models\member\User;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\FileHelper;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 
 /**
@@ -76,14 +78,9 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 
+
+
     //钩子函数
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        //分类count累加
-        if($this->isNewRecord)
-            Topic::updateAllCounters(['count'=>1], ['id'=>$this->topic_id]);
-    }
     public function afterDelete()
     {
         parent::afterDelete();
@@ -128,6 +125,13 @@ class Article extends \yii\db\ActiveRecord
     }
 
     /**
+     * 关联作者
+     */
+    public function getUser(){
+        return $this->hasOne(User::class, ['id'=>'user_id'])->select(['id','username','image']);
+    }
+
+    /**
      * 删除文章
      */
     public function delteArticle(){
@@ -168,12 +172,12 @@ class Article extends \yii\db\ActiveRecord
     }
 
     private static function getQuery(){
-        $query = self::find()
+        $query = static::find()
             ->andFilterWhere(['!=','checked', 1]) //通过审核的
             ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
             ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
             ->orderBy(['created_at'=>SORT_DESC])
-            ->with([/*'user', */'topic']);
+            ->with(['user', 'topic']);
         return $query;
     }
 
@@ -188,7 +192,25 @@ class Article extends \yii\db\ActiveRecord
         if($topic_id <= 0)
             throw new BadRequestHttpException('请求参数错误。');
 
-        $query = self::getQuery()->andFilterWhere(['topic_id'=>$topic_id]);
+        //检测是否筛选标签
+        $where = [];
+        $tag_id = Yii::$app->request->get('tag', '');
+
+        if(is_numeric($tag_id) && $tag_id>0){
+            $where = ['at.tag_id'=>$tag_id];
+        }elseif($tag_id === 'unset'){
+            $where = "isnull(at.tag_id)";
+        }
+
+        $query = self::getQuery()
+            ->alias('a')
+            ->leftJoin(['at'=>"{{%article_tag}}"],'at.article_id = a.id')
+            ->select(['a.*','at.*'])
+            ->andWhere($where)
+            ->andFilterWhere(['a.topic_id'=>$topic_id]);
+            //->createCommand()->getSql();
+            //->asArray()->all();
+        //VarDumper::dump($query, 10, 1);die;
         $count = $query->count();
 
         $pagination = new Pagination(['totalCount' => $count,'pageSize' => 15]);

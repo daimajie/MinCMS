@@ -34,6 +34,7 @@ class IndexController extends BaseController
 
     //首页**
     public function actionIndex(){
+
         //获取文章列表
         $data = Article::getArticles();
 

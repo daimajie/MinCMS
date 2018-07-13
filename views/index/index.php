@@ -2,6 +2,9 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
+use app\components\helper\Helper;
+
+$defaultImage = Yii::$app->params['image'];
 ?>
 
 <!--content-->
@@ -28,13 +31,13 @@ use yii\widgets\LinkPager;
                                     <?= Html::encode($article['title']);?>
                                 </a>
                                 <p class="abstract">
-                                    <?= Html::encode($article['brief']);?>
+                                    <?= Helper::truncate_utf8_string(Html::encode($article['brief']),77);?>
                                 </p>
                                 <div class="meta">
-                                    <img class="source-profile ui avatar image" src="static/home/img/photo.jpeg">
-                                    <a class="nickname linked" target="_blank" href="#">萌神木木</a>
+                                    <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['user'] : $defaultImage;?>">
+                                    <a class="nickname linked" target="_blank" href="javascript:;"><?= $article['user']['username']?></a>
                                     <span><?= $article['comment']?>评</span>
-                                    <span><?= Yii::$app->formatter->asRelativeTime($article['created_at'])?></span>
+                                    <span><?= date('Y-m-d H:i:s', $article['created_at'])?></span>
                                     <a target="_blank" href="<?= Url::to(['topic/index', 'id'=>$article['topic_id']])?>" class="wemedia-icon topic"><?= $article['topic']['name']?></a>
                                 </div>
                             </div>
@@ -170,7 +173,7 @@ use yii\widgets\LinkPager;
                             热门话题
                         </h4>
                         <?php foreach ($hotTopic as $topic):?>
-                        <a class="ui image label" href="<?= Url::to(['topic/index', 'id'=>$topic['id']])?>">
+                        <a style="border:1px solid #ddd;" class="ui image label" href="<?= Url::to(['topic/index', 'id'=>$topic['id']])?>">
                             <img src="<?= IMG_ROOT . $topic['image']?>">
                             <?= $topic['name']?>
                         </a>

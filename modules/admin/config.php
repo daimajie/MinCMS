@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'layout' => 'main',
+    'layout' => 'frame',
     'modules' => [
         'content' => [
             'class' => 'app\modules\admin\modules\content\Module',
@@ -16,10 +16,5 @@ return [
             'class' => 'app\modules\admin\modules\setting\Module',
         ],
     ],
-    'components' => [
 
-    ],
-    'params' => [
-        // list of parameters
-    ],
 ];

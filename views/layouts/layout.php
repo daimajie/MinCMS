@@ -5,6 +5,7 @@ use app\assets\RequireJsAsset;
 use app\assets\HomeAsset;
 use app\assets\Html5Asset;
 use yii\helpers\Url;
+use yii\widgets\Menu;
 
 
 SemanticUIAsset::register($this);
@@ -39,10 +40,19 @@ $user = Yii::$app->user->identity;
                 <div class="item">
                     <a href="/">DAIMAJIE.COM</a>
                 </div>
-                <a class="yellow item active">首页</a>
-                <a class="olive item">话题</a>
-                <a class="green item">随笔</a>
-                <a class="teal item">关于我</a>
+                <?=Menu::widget([
+                    'options' => ['tag'=>false],
+                    'itemOptions' => ['tag'=>'a','class'=>'item teal menu-btn'],
+                    'linkTemplate' => '<b data-url="{url}">{label}</b>',
+                    'items' => [
+                        ['label' => '首页', 'url' => ['index/index']],
+                        ['label' => '分类', 'url' => ['category/index']],
+                        ['label' => '话题', 'url' => ['topic/topics']],
+                        ['label' => '随笔', 'url' => ['notes/index']],
+                        ['label' => '关于我', 'url' => ['site/about']],
+                    ],
+                ]);
+                ?>
 
                 <div class="right menu">
                     <?php
@@ -145,7 +155,10 @@ $user = Yii::$app->user->identity;
 <?php $this->endBody() ?>
 <script>
      $('.ui.dropdown').dropdown({action: 'combo'});
-   // $('.ui.dropdown').dropdown({action: 'hide'});
+     $('.menu-btn').on('click',function(){
+         var url = $(this).find('b').data('url');
+         window.location.href= url;
+     });
 </script>
 </body>
 </html>

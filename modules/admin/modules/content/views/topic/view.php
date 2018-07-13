@@ -63,9 +63,14 @@ use yii\helpers\Url;
                                     'format'=>'raw',
                                     'value' => function($model){
                                         $str = '';
-                                        foreach($model->tags as $tag){
-                                            $str .= "<div data-id='{$tag->id}' class='ui label tag-edit'>{$tag->name}&nbsp;<i class='icon edit'></i></div>";
+                                        if($model->tags){
+                                            foreach($model->tags as $tag){
+                                                $str .= "<div data-id='{$tag->id}' class='ui label tag-edit'>{$tag->name}&nbsp;<i class='icon edit'></i></div>";
+                                            }
+                                        }else{
+                                            $str = '暂无标签';
                                         }
+
                                         return $str;
                                     },
 

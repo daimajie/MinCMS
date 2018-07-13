@@ -34,7 +34,7 @@ class Topic extends \yii\db\ActiveRecord
             [['category_id'], 'exist', 'targetClass'=>'app\models\content\Category', 'targetAttribute' => 'id'],
 
             [['name'], 'string', 'max' => 18, 'min'=>3],
-            [['desc'], 'string', 'max' => 255],
+            [['desc'], 'string', 'max' => 35],
             [['image'], 'string', 'max' => 125],
 
             [['name'], 'checkUnique',],
@@ -63,9 +63,9 @@ class Topic extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
             [
-                'class' => BlameableBehavior::className(),
+                'class' => BlameableBehavior::class,
                 'createdByAttribute' => 'user_id',
                 'updatedByAttribute' => false
             ],
@@ -249,6 +249,24 @@ class Topic extends \yii\db\ActiveRecord
         ];
 
 
+    }
+
+    /**
+     * #话题列表
+     * @return array
+     */
+    public static function getTopics(){
+        $query = self::find();
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 18]);
+
+        $topics = $query->offset($pagination->offset)->limit($pagination->limit)->orderBy(['count'=>SORT_DESC])->asArray()->all();
+
+        return [
+            'topics' => $topics,
+            'pagination' => $pagination
+        ];
     }
 
     /**
