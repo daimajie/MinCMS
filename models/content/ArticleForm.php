@@ -1,5 +1,6 @@
 <?php
 namespace app\models\content;
+use app\models\member\User;
 use Yii;
 use yii\base\Exception;
 
@@ -74,6 +75,7 @@ class ArticleForm extends Article
 
             //话题文章数目累加
             Topic::updateAllCounters(['count'=>1], ['id'=>$this->topic_id]);
+            User::updateAllCounters(['count'=>1], ['id'=>$this->user_id]);
 
             $transaction->commit();
             return true;
@@ -133,7 +135,7 @@ class ArticleForm extends Article
 
     //赋值数据
     public function setValue(){
-        $this->words = mb_strlen($this->content);
+        $this->words = mb_strlen($this->content,'UTF-8');
     }
 
     //写入标签

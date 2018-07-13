@@ -11,6 +11,7 @@ use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -86,6 +87,7 @@ class Article extends \yii\db\ActiveRecord
         parent::afterDelete();
         //分类count累减
         Topic::updateAllCounters(['count'=>-1], ['id'=>$this->topic_id]);
+        User::updateAllCounters(['count'=>-1], ['id'=>$this->user_id]);
     }
 
     /**
@@ -128,7 +130,7 @@ class Article extends \yii\db\ActiveRecord
      * 关联作者
      */
     public function getUser(){
-        return $this->hasOne(User::class, ['id'=>'user_id'])->select(['id','username','image']);
+        return $this->hasOne(User::class, ['id'=>'user_id'])->select(['id','username','image','lasttime','count']);
     }
 
     /**
@@ -259,6 +261,63 @@ class Article extends \yii\db\ActiveRecord
             ->all();
         return $ret;
     }
+
+    /**
+     * 获取文章详情
+     */
+    public static function getDetail($id){
+        $ret = self::find()
+            ->with(['user','topic','tags','content'])
+            ->where(['id' => $id])
+            ->asArray()
+            ->one();
+        //VarDumper::dump($ret, 10, 1);die;
+
+        return $ret;
+
+    }
+
+    /**
+     * 获取上一篇和下一篇
+     * @param int $article_id #当前文章id
+     * @param int $subject_id #当前专题
+     * @return array
+     */
+    public static function prevAndNext($article_id, $topic_id){
+        $query = static::find()
+            ->select(['id','title'])
+            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+            ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
+            ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
+            ->andFilterWhere(['topic_id'=>$topic_id]);//指定话题
+
+
+        $previous = $query
+            ->andFilterWhere(['<', 'id', $article_id])
+            ->orderBy(['id'=>SORT_DESC])
+            ->limit(1)
+            ->one();
+
+        $next = self::find()
+            ->andFilterWhere(['>', 'id', $article_id])
+            ->orderBy(['id'=>SORT_ASC])
+            ->limit(1)
+            ->one();
+        //拼接url
+        $prev_article = [
+            'url' => !is_null($previous) ? Url::current(['id'=>$previous->id]):'javascript:void(0);',
+            'title' => !is_null($previous)?$previous->title:'已经是第一篇了',
+        ];
+        $next_article = [
+            'url' => !is_null($next)?Url::current(['id'=>$next->id]):'javascript:void(0);',
+            'title' => !is_null($next)?$next->title:'已经是最后一篇了',
+        ];
+        return [
+            'prev' => $prev_article,
+            'next' => $next_article
+        ];
+    }
+
 
 
 

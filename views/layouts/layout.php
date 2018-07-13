@@ -40,7 +40,7 @@ $user = Yii::$app->user->identity;
                 <div class="item">
                     <a href="/">DAIMAJIE.COM</a>
                 </div>
-                <?=Menu::widget([
+                <?= Menu::widget([
                     'options' => ['tag'=>false],
                     'itemOptions' => ['tag'=>'a','class'=>'item teal menu-btn'],
                     'linkTemplate' => '<b data-url="{url}">{label}</b>',

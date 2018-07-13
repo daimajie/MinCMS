@@ -7,6 +7,7 @@ use app\models\content\Tag;
 use app\models\content\Topic;
 use app\modules\admin\controllers\BaseController;
 use Yii;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -61,6 +62,7 @@ class TopicController extends BaseController{
 
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 //创建话题成功
+                Category::updateAllCounters(['count'=>1], ['id'=>$model->category_id]);
                 Yii::$app->session->setFlash('success', '创建话题成功。');
                 return $this->redirect(['index']);
             }
@@ -148,6 +150,14 @@ class TopicController extends BaseController{
             return $this->redirect(['index']);
         }
 
+        //获取递减数目
+        $decrArr = Topic::find()
+            ->where(['in', 'id', $topics_id])
+            ->select(['category_id', 'count'=>'count(id)'])
+            ->groupBy(['category_id'])
+            ->asArray()
+            ->all();
+
         //获取所有图片信息
         $images = Topic::getImgByIds($topics_id);
 
@@ -155,7 +165,12 @@ class TopicController extends BaseController{
         Topic::batchDeleteImg($images);
 
         //删除记录
-        if(Topic::deleteAll(['in', 'id', $topics_id]) !== false){
+        if($count = Topic::deleteAll(['in', 'id', $topics_id]) !== false){
+
+            //减去话题计数
+            foreach ($decrArr as $item){
+                Category::updateAllCounters(['count'=>(-$item['count'])],['id'=>$item['category_id']]);
+            }
 
             Yii::$app->session->setFlash('success', '批量删除话题成功。');
         }else{

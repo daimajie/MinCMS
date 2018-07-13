@@ -92,13 +92,6 @@ class Topic extends \yii\db\ActiveRecord
     }
 
     //钩子函数
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        //分类count累加
-        if($this->isNewRecord)
-            Category::updateAllCounters(['count'=>1], ['id'=>$this->category_id]);
-    }
     public function afterDelete()
     {
         parent::afterDelete();
