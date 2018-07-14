@@ -67,21 +67,45 @@ $defaultImage = Yii::$app->params['image'];
                                 endforeach;
                                 ?>
                             </div>
-                            <!--分享-->
-                            <div class="action float-l">
-                                <button class="ui circular facebook icon button">
-                                    <i class="facebook icon"></i>
-                                </button>
-                                <button class="ui circular twitter icon button">
-                                    <i class="twitter icon"></i>
-                                </button>
-                                <button class="ui circular linkedin icon button">
-                                    <i class="linkedin icon"></i>
-                                </button>
-                                <button class="ui circular google plus icon button">
-                                    <i class="google plus icon"></i>
-                                </button>
+                            <!--share-->
+                            <div class="F_share R">
+                                <div class="bdsharebuttonbox">
+                                    <a class="bds_qzone" data-cmd="qzone" href="#"></a>
+                                    <a class="bds_tsina" data-cmd="tsina"></a>
+                                    <a class="bds_weixin" data-cmd="weixin"></a>
+                                    <a class="bds_tqq" data-cmd="tqq"></a>
+                                </div>
                             </div>
+                            <script>
+                                window._bd_share_config = {
+                                    common: {
+                                        bdText: "<?= $article['title']?>",
+                                        bdDesc: "<?= $article['brief']?>",
+                                        bdUrl: "<?= Yii::$app->urlManager->createAbsoluteUrl(['article/index','id'=>$article['id']]);?>",
+                                        bdPic: "<?= $article['image']? Yii::$app->params['domain'] . IMG_ROOT . $article['image'] : '' ;?>"
+                                    },
+                                    share: [{
+                                        "bdSize": 32
+                                    }],
+                                    slide: [{
+                                        bdImg: 0,
+                                        bdPos: "right",
+                                        bdTop: 100
+                                    }],
+                                    image: [{
+                                        viewType: 'list',
+                                        viewPos: 'top',
+                                        viewColor: 'black',
+                                        viewSize: '32',
+                                        viewList: ['qzone', 'tsina', 'weixin', 'tqq']
+                                    }],
+                                    /*selectShare: [{
+                                        "bdselectMiniList": ['qzone', 'tsina', 'weixin', 'tqq']
+                                    }]*/
+                                }
+                                with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion=' + ~(-new Date() / 36e5)];
+                            </script>
+                            <!--/share-->
                         </div>
                         <div class="ui hidden divider"></div>
 

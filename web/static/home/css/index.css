@@ -259,3 +259,27 @@ div.ui.container{
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+/*share*/
+.F_share .bdsharebuttonbox a {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin: 0px 5px;
+    background-image: url("../img/share.png");
+    background-repeat: no-repeat;
+    background-size:200px 170px;
+}
+.F_share .bdsharebuttonbox .bds_qzone {
+    background-position: -53px 0px;
+}
+.F_share .bdsharebuttonbox .bds_tsina {
+    background-position: -110px -63px;
+}
+.F_share .bdsharebuttonbox .bds_weixin {
+    background-position: 0px -63px;
+}
+.F_share .bdsharebuttonbox .bds_tqq {
+    background-position: -165px 2px;
+    /*background-position: 0px 0px;*/
+}

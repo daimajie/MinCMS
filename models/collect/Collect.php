@@ -79,14 +79,13 @@ class Collect extends \yii\db\ActiveRecord
 
         $user_id = Yii::$app->user->id;
         $collect = static::find()
-            ->where(['and', 'user_id'=>$user_id, 'article_id'=>$article_id])
+            ->where(['and', ['user_id'=>$user_id], ['article_id'=>$article_id]])
             ->andWhere(['type'=>1])
             ->count();
         $likes = static::find()
-            ->where(['and', 'user_id'=>$user_id, 'article_id'=>$article_id])
+            ->where(['and', ['user_id'=>$user_id], ['article_id'=>$article_id]])
             ->andWhere(['type'=>0])
             ->count();
-
         return [
             'collect' => $collect,
             'likes' => $likes

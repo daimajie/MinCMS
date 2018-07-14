@@ -30,7 +30,7 @@ class ArticleController extends BaseController
         $isCollect = Collect::isCollect($article['id']);
 
 
-//        VarDumper::dump($isCollect,10,1);die;
+
 
         return $this->render('index',[
             'article' => $article,
@@ -57,7 +57,7 @@ class ArticleController extends BaseController
 
             //判断是否已经收藏
             $exist = Collect::find()
-                ->where(['and', 'user_id'=>Yii::$app->user->id, 'article_id'=>$article_id])
+                ->where(['and', ['user_id'=>Yii::$app->user->id], ['article_id'=>$article_id]])
                 ->andWhere(['type'=>1])
                 ->count();
             if($exist >= 1)
@@ -108,7 +108,7 @@ class ArticleController extends BaseController
 
             //判断是否已经收藏
             $exist = Collect::find()
-                ->where(['and', 'user_id'=>Yii::$app->user->id, 'article_id'=>$article_id])
+                ->where(['and', ['user_id'=>Yii::$app->user->id], ['article_id'=>$article_id]])
                 ->andWhere(['type'=>0])
                 ->count();
             if($exist >= 1)

@@ -14,6 +14,9 @@ return [
         'allowPath'  => ['tempPath','category', 'topic', 'article'],   //允许创建的图片分类目录
     ],
 
+    //域名
+    'domain' => 'http://www.dev.com/',
+
     //一个话题下允许有多少个标签
     'tagUpperLimit' => 35,
 
