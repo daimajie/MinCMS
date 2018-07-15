@@ -32,7 +32,7 @@ use yii\helpers\Html;
                                 <div class="description">
                                     <p><?= Html::encode($item['desc'])?></p>
                                     <div class="extra">
-                                        <a href="<?= Url::to(['category/view', 'id'=>$item['id']]);?>" class="ui teal label"><i class="file outline icon"></i> 收录<?= $item['count']?>篇</a>
+                                        <a href="<?= Url::to(['category/view', 'id'=>$item['id']]);?>" class="ui teal label"><i class="file outline icon"></i> 话题 ~ <?= $item['count']?></a>
                                     </div>
                                 </div>
                             </div>

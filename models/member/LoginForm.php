@@ -15,6 +15,17 @@ class LoginForm extends Model
 
     private $_user = false;
 
+    public function init()
+    {
+        parent::init();
+        Yii::$app->user->on(yii\web\User::EVENT_AFTER_LOGIN, [$this, 'onAfterLogin']);
+    }
+    public function onAfterLogin($event){
+        $identity = $event->identity;
+
+        User::updateAll(['lasttime'=>time()], ['id'=>$identity->id]);
+    }
+
 
     /**
      * @return array the validation rules.

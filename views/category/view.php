@@ -24,7 +24,7 @@ use yii\widgets\LinkPager;
                                     <?= Html::encode($category['desc'])?>
                                 </div>
                                 <div class="extra">
-                                    <a href="javascript:;" class="ui teal label"><i class="file outline icon"></i> 收录<?= $category['count']?>篇</a>
+                                    <a href="javascript:;" class="ui teal label"><i class="file outline icon"></i> 话题 ～ <?= $category['count']?></a>
                                 </div>
                             </div>
                         </div>

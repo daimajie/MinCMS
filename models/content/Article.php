@@ -267,11 +267,10 @@ class Article extends \yii\db\ActiveRecord
      */
     public static function getDetail($id){
         $ret = self::find()
-            ->with(['user','topic','tags','content'])
+            ->with(['user','topic','tags'/*,'content'*/])
             ->where(['id' => $id])
             ->asArray()
             ->one();
-        //VarDumper::dump($ret, 10, 1);die;
 
         return $ret;
 

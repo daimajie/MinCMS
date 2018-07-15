@@ -2,6 +2,7 @@
 use app\components\helper\Helper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 $this->params['hideSearch'] = true;
 $defaultImage = Yii::$app->params['image'];
@@ -87,11 +88,11 @@ $defaultImage = Yii::$app->params['image'];
                                     share: [{
                                         "bdSize": 32
                                     }],
-                                    slide: [{
+                                    /*slide: [{
                                         bdImg: 0,
                                         bdPos: "right",
                                         bdTop: 100
-                                    }],
+                                    }],*/
                                     image: [{
                                         viewType: 'list',
                                         viewPos: 'top',
@@ -135,7 +136,7 @@ $defaultImage = Yii::$app->params['image'];
                         <h3 class="ui dividing header">评论 <?= $article['comment']?></h3>
                         <form class="ui reply form">
                             <div class="field pane-wrap">
-                                <textarea <?= Yii::$app->user->isGuest ? 'disabled="disabled"' : ''; ?> placeholder="说点什么呢？"></textarea>
+                                <textarea id="comment_val" <?= Yii::$app->user->isGuest ? 'disabled="disabled"' : ''; ?> placeholder="说点什么呢？"></textarea>
                                 <?php if(Yii::$app->user->isGuest):?>
                                 <div class="pane">
                                     <div class="pane-btn">
@@ -144,170 +145,86 @@ $defaultImage = Yii::$app->params['image'];
                                 </div>
                                 <?php endif;?>
                             </div>
-                            <div class="ui blue labeled submit icon button <?= Yii::$app->user->isGuest ? 'disabled' : ''; ?>">
+                            <div id="comment_btn" class="ui blue labeled submit icon button <?= Yii::$app->user->isGuest ? 'disabled' : ''; ?>">
                                 <i class="icon edit"></i> 提交评论
                             </div>
                         </form>
                         <div class="ui hidden divider"></div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Matt</a>
-                                <div class="metadata">
-                                    <span class="date">Today at 5:42PM</span>
-                                </div>
-                                <div class="text">
-                                    How artistic!
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Elliot Fu</a>
-                                <div class="metadata">
-                                    <span class="date">Yesterday at 12:30AM</span>
-                                </div>
-                                <div class="text">
-                                    <p>This has been very useful for my research. Thanks as well!</p>
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                            <div class="comments">
+                        <div id="comment_container">
+                            <?php
+                            foreach($comments as $comment):
+                                ?>
                                 <div class="comment">
-                                    <a class="avatar">
-                                        <img src="static/home/img/avatar.jpg">
+                                    <a class="avatar ui medium circular image">
+                                        <img src="<?= $comment['user']['image'] ? IMG_ROOT.$comment['user']['image']:$defaultImage?>">
                                     </a>
                                     <div class="content">
-                                        <a class="author">Jenny Hess</a>
+                                        <a class="author"><?= $comment['user']['username']?></a>
                                         <div class="metadata">
-                                            <span class="date">Just now</span>
+                                            <span class="date"><?= Yii::$app->formatter->asRelativeTime($comment['created_at'])?></span>
                                         </div>
                                         <div class="text">
-                                            Elliot you are always so right :)
+                                            <?= $comment['content']?>
                                         </div>
                                         <div class="actions">
                                             <a class="reply">回复</a>
+                                            <?php if(!Yii::$app->user->isGuest && $comment['user_id'] == Yii::$app->user->id):?>
+                                                <a data-id="<?= $comment['id']?>" class="delete">删除</a>
+                                            <?php endif;?>
                                         </div>
+                                        <?php
+                                        if(!empty($comment['replys'])):
+                                            foreach ($comment['replys'] as $reply):
+                                                ?>
+                                                <div class="comments">
+                                                    <div class="comment">
+                                                        <a class="avatar ui medium circular image">
+                                                            <img src="<?= $reply['user']['image'] ? IMG_ROOT.$reply['user']['image']:$defaultImage;?>">
+                                                        </a>
+                                                        <div class="content">
+                                                            <a class="author"><?= $reply['user']['username']?></a>
+                                                            <div class="metadata">
+                                                                <span class="date"><?= Yii::$app->formatter->asRelativeTime($reply['created_at'])?></span>
+                                                            </div>
+                                                            <div class="text">
+                                                                <?= $reply['content']?>
+                                                            </div>
+                                                            <div class="actions">
+                                                                <a class="reply">回复</a>
+                                                                <?php if(!Yii::$app->user->isGuest && $reply['user_id'] == Yii::$app->user->id):?>
+                                                                    <a data-id="<?= $reply['id']?>" class="delete">删除</a>
+                                                                <?php endif;?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            endforeach;
+                                        endif;
+                                        ?>
                                     </div>
                                 </div>
-                            </div>
+                            <?php
+                            endforeach;
+                            ?>
                         </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Joe Henderson</a>
-                                <div class="metadata">
-                                    <span class="date">5 days ago</span>
-                                </div>
-                                <div class="text">
-                                    Dude, this is awesome. Thanks so much
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Elliot Fu</a>
-                                <div class="metadata">
-                                    <span class="date">Yesterday at 12:30AM</span>
-                                </div>
-                                <div class="text">
-                                    <p>This has been very useful for my research. Thanks as well!</p>
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                            <div class="comments">
-                                <div class="comment">
-                                    <a class="avatar">
-                                        <img src="static/home/img/avatar.jpg">
-                                    </a>
-                                    <div class="content">
-                                        <a class="author">Jenny Hess</a>
-                                        <div class="metadata">
-                                            <span class="date">Just now</span>
-                                        </div>
-                                        <div class="text">
-                                            Elliot you are always so right :)
-                                        </div>
-                                        <div class="actions">
-                                            <a class="reply">回复</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Joe Henderson</a>
-                                <div class="metadata">
-                                    <span class="date">5 days ago</span>
-                                </div>
-                                <div class="text">
-                                    Dude, this is awesome. Thanks so much
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="static/home/img/avatar.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Joe Henderson</a>
-                                <div class="metadata">
-                                    <span class="date">5 days ago</span>
-                                </div>
-                                <div class="text">
-                                    Dude, this is awesome. Thanks so much
-                                </div>
-                                <div class="actions">
-                                    <a class="reply">回复</a>
-                                </div>
-                            </div>
-                        </div>
+
+
                         <div class="ui hidden divider"></div>
                         <!--pager-->
-                        <div class="ui pagination menu tiny">
-                            <a class="item active">
-                                1
-                            </a>
-                            <div class="disabled item">
-                                ...
-                            </div>
-                            <a class="item">
-                                10
-                            </a>
-                            <a class="item">
-                                11
-                            </a>
-                            <a class="item">
-                                12
-                            </a>
+                        <div id="pager">
+                            <?= LinkPager::widget([
+                                'pagination' => $pagination,
+                                'options' => ['tag'=>'div','class'=>'ui pagination menu tiny'],
+                                'linkContainerOptions' => ['tag'=>'dev'],
+                                'linkOptions' => ['class' => 'item'],
+                                'nextPageLabel' => '下一页',
+                                'prevPageLabel' => '上一页',
+                                'disabledPageCssClass' => 'item',
+                                'disableCurrentPageButton' => true
+                            ])?>
                         </div>
+
 
                     </div>
 
@@ -336,7 +253,7 @@ $defaultImage = Yii::$app->params['image'];
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="event">
+                            <div class="event">
                                 <div class="label">
                                     <i class="pencil icon "></i>
                                 </div>
@@ -348,7 +265,7 @@ $defaultImage = Yii::$app->params['image'];
                                         </div>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
 
@@ -362,8 +279,11 @@ $defaultImage = Yii::$app->params['image'];
 <?php
 $collectUrl = Url::to(['article/collect']);
 $likesUrl = Url::to(['article/likes']);
+$commentUrl = Url::to(['comment/comment']);
+$getComments = Url::to(['comment/comments','id'=>$article['id']]);
+$deleteComment = Url::to(['comment/delete','id'=>$article['id']]);
 $jsStr = <<<JS
-    require(['mods/modal'],function(modal){
+    require(['mods/modal','jSmart'],function(modal){
         //添加喜欢
         $('#collect_btn').on('click',function(){
             var that = $(this);
@@ -396,7 +316,186 @@ $jsStr = <<<JS
                 }
             });
         });
+        
+        //ajax分页
+        $('#pager').on('click', 'a', function(){
+            var that = $(this);
+            var url = that.attr('href');
+            
+            
+            
+            //刷新评论区
+            refreshComment(url);
+            //阻止跳转
+            return false;
+        });
+        
+        //提交评论
+        $('#comment_btn').on('click', function(){
+            var that = $(this)
+                ,input = $('#comment_val');
+            var val = input.val();
+            
+            if(val.length <= 0)
+                return;
+            
+            //发送请求
+            $.ajax({
+                url : "{$commentUrl}",
+                type : 'post',
+                data : {id : "{$article['id']}", content : val},
+                success : function(d){
+                    //console.log(d);
+                    if(d.errno === 0){
+                        //评论成功
+                        //清空输入框
+                        input.val('');
+                        //刷新评论列表
+                        refreshComment("$getComments");
+                    }
+                    modal.msg(d.message);
+                    
+                }
+            });
+        });
+        
+        //评论删除
+        $('#comment_container').on('click', 'a.delete', function(){
+            var that = $(this);
+            var id = that.data('id');
+            
+            if(id <= 0)return;
+            
+            modal.confirm("确定要删除该评论吗？",{
+                inPage:false
+            },function(ele,obj){
+                $.ajax({
+                    url : "{$deleteComment}",
+                    type : 'post',
+                    data : {id:id},
+                    success : function(d){
+                        if(d.errno === 0){
+                            //删除成功
+                            //刷新评论列表
+                            refreshComment("$getComments");
+                        }
+                        modal.msg(d.message);
+                    }
+                });
+                return true;
+            });
+            return false;
+            
+        });
+        
+        
     });
+
+    //刷新评论列表
+    function refreshComment(url){
+        $.ajax({
+            url:url,
+            type : 'get',
+            success : function(d){
+                if(d.errno === 0){
+                    //渲染评论列表
+                    var tplText = $('#comments_tpl').html();
+                    var compiled = new jSmart(tplText);
+                    var output = compiled.fetch({'data':d.data.comments});
+                    
+                    //填充数据
+                    $('#comment_container').html(output);
+                    
+                    //渲染分页
+                    $('#pager').html(d.data.pagination);
+                }
+                // modal.msg(d.message);
+                //console.log(d);
+            }
+        });
+    }
 JS;
 $this->registerJs($jsStr);
 ?>
+<script id="comments_tpl" type="text/x-jsmart-tmpl">
+{foreach $data as $key => $comment}
+<div class="comment">
+    <a class="avatar ui medium circular image">
+        <img src="{$comment.user.image}">
+    </a>
+    <div class="content">
+        <a class="author">{$comment.user.username}</a>
+        <div class="metadata">
+            <span class="date">{$comment.created_at}</span>
+        </div>
+        <div class="text">
+            <p>{$comment.content}</p>
+        </div>
+        <div class="actions">
+            <a class="reply">回复</a>
+            {if $comment.isself}<a data-id="{$comment.id}" class="delete">删除</a>{/if}
+        </div>
+    </div>
+    {foreach $comment.replys as $k => $reply}
+    <div class="comments">
+        <div class="comment">
+            <a class="avatar ui medium circular image">
+                <img src="{$reply.user.image}">
+            </a>
+            <div class="content">
+                <a class="author">{$reply.user.username}</a>
+                <div class="metadata">
+                    <span class="date">{$reply.created_at}</span>
+                </div>
+                <div class="text">
+                    {$reply.content}
+                </div>
+                <div class="actions">
+                    <a class="reply">回复</a>
+                    {if $comment.isself}<a data-id="{$reply.id}" class="delete">删除</a>{/if}
+                </div>
+            </div>
+        </div>
+    </div>
+    {/foreach}
+</div>
+{/foreach}
+</script>
+<!--<script>
+<div class="comment">
+    <a class="avatar">
+        <img src="static/home/img/avatar.jpg">
+    </a>
+    <div class="content">
+        <a class="author">Elliot Fu</a>
+        <div class="metadata">
+            <span class="date">Yesterday at 12:30AM</span>
+        </div>
+        <div class="text">
+            <p>This has been very useful for my research. Thanks as well!</p>
+        </div>
+        <div class="actions">
+            <a class="reply">回复</a>
+        </div>
+    </div>
+    <div class="comments">
+        <div class="comment">
+            <a class="avatar">
+                <img src="static/home/img/avatar.jpg">
+            </a>
+            <div class="content">
+                <a class="author">Jenny Hess</a>
+                <div class="metadata">
+                    <span class="date">Just now</span>
+                </div>
+                <div class="text">
+                    Elliot you are always so right :)
+                </div>
+                <div class="actions">
+                    <a class="reply">回复</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>-->

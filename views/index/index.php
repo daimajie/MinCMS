@@ -173,7 +173,7 @@ $defaultImage = Yii::$app->params['image'];
                             热门话题
                         </h4>
                         <?php foreach ($hotTopic as $topic):?>
-                        <a style="border:1px solid #ddd;" class="ui image label" href="<?= Url::to(['topic/index', 'id'=>$topic['id']])?>">
+                        <a style="border:1px solid #ddd;" class="ui teal image label" href="<?= Url::to(['topic/index', 'id'=>$topic['id']])?>">
                             <img src="<?= IMG_ROOT . $topic['image']?>">
                             <?= $topic['name']?>
                         </a>
