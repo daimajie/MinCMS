@@ -77,15 +77,12 @@ class CommentController extends BaseController
             }
 
             //判断是否密集提交
-            $interval = Comment::find()
-                ->where(['and', ['article_id'=>$article_id], ['user_id'=>Yii::$app->user->id]])
-                ->andWhere(['>=','created_at', time()-120])
-                ->one();
-            if ($interval)
+            if (static::interval($article_id, Yii::$app->user->id))
                 throw new Exception('请间隔两分钟，再提交评论。');
 
             //写入数据
             $comment = new Comment();
+            $comment->scenario = Comment::COMMENT;
             //$comment->user_id = Yii::$app->user->id;
             $comment->article_id = $article_id;
             $comment->type = 0; //0是评论 1是回复
@@ -156,6 +153,66 @@ class CommentController extends BaseController
 
             return ['errno'=>1, 'message'=>$e->getMessage()];
         }
+    }
+
+
+    //提交回复
+    public function actionReply($id){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        try{
+            if(!Yii::$app->request->isAjax)
+                throw new MethodNotAllowedHttpException('请求方式不被允许。');
+
+            //判断是否登录
+            if(Yii::$app->user->isGuest)
+                throw new ForbiddenHttpException('请登录后再进行回复。');
+
+            //检测参数
+            $article_id = (int) $id;
+            if($article_id <= 0) throw new BadRequestHttpException('请求参数错误。');
+            $comment_id = (int) Yii::$app->request->post('comment_id');
+            $comment_user = htmlspecialchars(Yii::$app->request->post('comment_user'));
+            $content = htmlspecialchars(Yii::$app->request->post('content'));
+            if($comment_id <= 0 || empty($comment_user) || empty($content))
+                throw new BadRequestHttpException('请求参数错误。');
+
+            //判断是否频繁提交回复
+            if(static::interval($article_id, Yii::$app->user->id)){
+                throw new Exception('请间隔两分钟在进行回复操作。');
+            }
+
+            //写入数据
+            $model = new Comment();
+            $model->scenario = Comment::REPLY;
+            $model->article_id = $article_id;
+            $model->comment_id = $comment_id;
+            $model->type = 1; //0是评论 1是回复
+            $model->content = '@' . $comment_user. '  ' .$content;
+
+            if($model->save() === false)
+                throw new Exception('提交回复失败，请重试。');
+
+            return [
+                'errno' => 0,
+                'message' => '提交回复成功。'
+            ];
+
+        }/*catch (MethodNotAllowedHttpException $e){
+
+            return $this->redirect(['index/index']);
+        }*/catch (Exception $e){
+
+            return ['errno'=>1, 'message'=>$e->getMessage()];
+        }
+
+
+    }
+
+    private static function interval($article_id, $user_id){
+        return Comment::find()
+            ->where(['and', ['article_id'=>$article_id], ['user_id'=>$user_id]])
+            ->andWhere(['>=','created_at', time()-120])
+            ->count();
     }
 
 

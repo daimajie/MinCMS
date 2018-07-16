@@ -167,42 +167,46 @@ $defaultImage = Yii::$app->params['image'];
                                             <?= $comment['content']?>
                                         </div>
                                         <div class="actions">
+                                            <?php if($comment['user_id'] != Yii::$app->user->id):?>
                                             <a class="reply">回复</a>
+                                            <?php endif;?>
                                             <?php if(!Yii::$app->user->isGuest && $comment['user_id'] == Yii::$app->user->id):?>
                                                 <a data-id="<?= $comment['id']?>" class="delete">删除</a>
                                             <?php endif;?>
                                         </div>
-                                        <?php
-                                        if(!empty($comment['replys'])):
-                                            foreach ($comment['replys'] as $reply):
-                                                ?>
-                                                <div class="comments">
-                                                    <div class="comment">
-                                                        <a class="avatar ui medium circular image">
-                                                            <img src="<?= $reply['user']['image'] ? IMG_ROOT.$reply['user']['image']:$defaultImage;?>">
-                                                        </a>
-                                                        <div class="content">
-                                                            <a class="author"><?= $reply['user']['username']?></a>
-                                                            <div class="metadata">
-                                                                <span class="date"><?= Yii::$app->formatter->asRelativeTime($reply['created_at'])?></span>
-                                                            </div>
-                                                            <div class="text">
-                                                                <?= $reply['content']?>
-                                                            </div>
-                                                            <div class="actions">
-                                                                <a class="reply">回复</a>
-                                                                <?php if(!Yii::$app->user->isGuest && $reply['user_id'] == Yii::$app->user->id):?>
-                                                                    <a data-id="<?= $reply['id']?>" class="delete">删除</a>
-                                                                <?php endif;?>
-                                                            </div>
+                                    </div>
+                                    <?php
+                                    if(!empty($comment['replys'])):
+                                        foreach ($comment['replys'] as $reply):
+                                            ?>
+                                            <div class="comments">
+                                                <div class="comment">
+                                                    <a class="avatar ui medium circular image">
+                                                        <img src="<?= $reply['user']['image'] ? IMG_ROOT.$reply['user']['image']:$defaultImage;?>">
+                                                    </a>
+                                                    <div class="content">
+                                                        <a class="author"><?= $reply['user']['username']?></a>
+                                                        <div class="metadata">
+                                                            <span class="date"><?= Yii::$app->formatter->asRelativeTime($reply['created_at'])?></span>
+                                                        </div>
+                                                        <div class="text">
+                                                            <?= $reply['content']?>
+                                                        </div>
+                                                        <div class="actions">
+                                                            <?php if($reply['user_id'] != Yii::$app->user->id):?><a class="reply">回复</a><?php endif;?>
+                                                            <?php if(!Yii::$app->user->isGuest && $reply['user_id'] == Yii::$app->user->id):?>
+                                                                <a data-id="<?= $reply['id']?>" class="delete">删除</a>
+                                                            <?php endif;?>
                                                         </div>
                                                     </div>
+                                                    <div data-id="<?= $comment['id']?>" data-user="<?= $reply['user']['username']?>" class="reply_input"></div>
                                                 </div>
-                                            <?php
-                                            endforeach;
-                                        endif;
-                                        ?>
-                                    </div>
+                                            </div>
+                                        <?php
+                                        endforeach;
+                                    endif;
+                                    ?>
+                                    <div data-id="<?= $comment['id']?>" data-user="<?= $comment['user']['username']?>" class="reply_input"></div>
                                 </div>
                             <?php
                             endforeach;
@@ -282,6 +286,7 @@ $likesUrl = Url::to(['article/likes']);
 $commentUrl = Url::to(['comment/comment']);
 $getComments = Url::to(['comment/comments','id'=>$article['id']]);
 $deleteComment = Url::to(['comment/delete','id'=>$article['id']]);
+$replyUrl = Url::to(['comment/reply', 'id' => $article['id']]);
 $jsStr = <<<JS
     require(['mods/modal','jSmart'],function(modal){
         //添加喜欢
@@ -388,6 +393,30 @@ $jsStr = <<<JS
             
         });
         
+        //提交回复
+        $('#comment_container').on('click', 'div.reply-btn', function(){
+            var closest = $(this).closest('.reply_input');
+            var comment_id = closest.data('id');
+            var comment_user = closest.data('user');
+            
+            var content = $(this).prev("input").val();
+            if(content.length <= 0)return;
+            
+            //ajax提交回复数据
+            $.ajax({
+                url : "{$replyUrl}",
+                type : 'post',
+                data : {comment_id:comment_id, comment_user:comment_user, content:content},
+                success : function(d){
+                    if(d.errno === 0){
+                        //回复成功
+                        refreshComment("$getComments")
+                    }
+                    modal.msg(d.message);
+                }
+            });
+        });
+        
         
     });
 
@@ -414,6 +443,23 @@ $jsStr = <<<JS
             }
         });
     }
+    
+    
+    //显示回复框
+    $('#comment_container').on('click', 'a.reply', function(){
+        var that = $(this);
+        var comment = that.closest('.comment');
+        
+        var tplText = $('#reply_tpl').html();
+        
+        $('div.reply_input').empty();//清空输入框
+        
+        //填充数据
+        comment.find('div.reply_input').last().html(tplText);
+        
+    });
+    
+    
 JS;
 $this->registerJs($jsStr);
 ?>
@@ -432,7 +478,7 @@ $this->registerJs($jsStr);
             <p>{$comment.content}</p>
         </div>
         <div class="actions">
-            <a class="reply">回复</a>
+            {if !$comment.isself}<a class="reply">回复</a>{/if}
             {if $comment.isself}<a data-id="{$comment.id}" class="delete">删除</a>{/if}
         </div>
     </div>
@@ -451,51 +497,23 @@ $this->registerJs($jsStr);
                     {$reply.content}
                 </div>
                 <div class="actions">
-                    <a class="reply">回复</a>
-                    {if $comment.isself}<a data-id="{$reply.id}" class="delete">删除</a>{/if}
+                    {if !$reply.isself}<a class="reply">回复</a>{/if}
+                    {if $reply.isself}<a data-id="{$reply.id}" class="delete">删除</a>{/if}
                 </div>
             </div>
+            <div data-id="{$comment.id}"  data-user="{$reply.user.username}" class="reply_input"></div>
         </div>
     </div>
     {/foreach}
+    <div data-id="{$comment.id}" data-user="{$comment.user.username}" class="reply_input"></div>
 </div>
 {/foreach}
 </script>
-<!--<script>
-<div class="comment">
-    <a class="avatar">
-        <img src="static/home/img/avatar.jpg">
-    </a>
-    <div class="content">
-        <a class="author">Elliot Fu</a>
-        <div class="metadata">
-            <span class="date">Yesterday at 12:30AM</span>
-        </div>
-        <div class="text">
-            <p>This has been very useful for my research. Thanks as well!</p>
-        </div>
-        <div class="actions">
-            <a class="reply">回复</a>
-        </div>
-    </div>
-    <div class="comments">
-        <div class="comment">
-            <a class="avatar">
-                <img src="static/home/img/avatar.jpg">
-            </a>
-            <div class="content">
-                <a class="author">Jenny Hess</a>
-                <div class="metadata">
-                    <span class="date">Just now</span>
-                </div>
-                <div class="text">
-                    Elliot you are always so right :)
-                </div>
-                <div class="actions">
-                    <a class="reply">回复</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<script id="reply_tpl" type="text/x-jsmart-tmpl">
+<br>
+<div class="ui tiny fluid action input">
+    <input type="text" placeholder="回复评论">
+    <div class="ui button reply-btn">提交</div>
 </div>
-</script>-->
+</script>

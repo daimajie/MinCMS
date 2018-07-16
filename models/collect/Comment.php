@@ -24,6 +24,9 @@ use yii\widgets\LinkPager;
  */
 class Comment extends \yii\db\ActiveRecord
 {
+    const REPLY = 'reply';
+    const COMMENT = 'comment';
+
     /**
      * {@inheritdoc}
      */
@@ -54,12 +57,13 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content','article_id','type','comment_id'], 'required'],
-            [['content'], 'trim'],
-            [['content'], 'string'],
-            [['type'], 'in', 'range' => [0,1]],
-            [['article_id', 'comment_id'], 'integer'],
-            [['article_id'], 'exist', 'targetClass' => Article::class, 'targetAttribute' => 'id'],
+            [['content','article_id','type','comment_id'], 'required','on'=>[self::REPLY,self::COMMENT]],
+            [['content'], 'trim','on'=>[self::REPLY,self::COMMENT]],
+            [['content'], 'string','on'=>[self::REPLY,self::COMMENT]],
+            [['type'], 'in', 'range' => [0,1],'on'=>[self::REPLY,self::COMMENT]],
+            [['article_id', 'comment_id'], 'integer','on'=>[self::REPLY,self::COMMENT]],
+            [['article_id'], 'exist', 'targetClass' => Article::class, 'targetAttribute' => 'id','on'=>[self::REPLY,self::COMMENT]],
+            [['comment_id'], 'exist', 'targetClass' => self::class, 'targetAttribute' => 'id','on'=>[self::REPLY]],
         ];
     }
 
