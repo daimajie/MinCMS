@@ -8,6 +8,7 @@ use app\models\member\ForgetForm;
 use app\models\member\LoginForm;
 use app\models\member\RegisterForm;
 use app\models\member\ResetPasswordForm;
+use app\models\member\User;
 use app\models\setting\Friend;
 use Yii;
 use yii\base\Exception;
@@ -164,6 +165,10 @@ class IndexController extends BaseController
             $email = Yii::$app->request->post('email');
             if(empty($email) || !filter_var($email,FILTER_VALIDATE_EMAIL)){
                 throw new BadRequestHttpException('请指定正确邮箱地址。');
+            }
+
+            if(User::find()->where(['email'=>$email])->count()){
+                throw new Exception('邮箱已被占用，请更换邮箱地址。');
             }
 
             //生成验证码

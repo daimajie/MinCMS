@@ -94,7 +94,7 @@ class Comment extends \yii\db\ActiveRecord
     public function getReplys()
     {
         return $this->hasMany(self::class, ['comment_id' => 'id'])
-            ->orderBy(['created_at'=>SORT_DESC,'id'=>SORT_DESC]);
+            ->orderBy(['created_at'=>SORT_ASC,'id'=>SORT_DESC]);
     }
 
     /**
@@ -170,6 +170,21 @@ class Comment extends \yii\db\ActiveRecord
         }
 
         return $data;
+    }
+
+
+
+    /**
+     * #判断是否是频繁提交评论或回复(间隔时间2分钟)
+     * @param $article_id int 文章id
+     * @param $user_id int 用户id
+     * @return bool 是否是频繁提交 是返回true 不是返回false
+     */
+    public static function interval($article_id, $user_id){
+        return (bool) static::find()
+            ->where(['and', ['article_id'=>$article_id], ['user_id'=>$user_id]])
+            ->andWhere(['>=','created_at', time()-120])
+            ->count();
     }
 
 

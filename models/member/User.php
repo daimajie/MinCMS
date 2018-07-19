@@ -90,6 +90,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
     }
 
+    public function getProfile(){
+        return $this->hasOne(Profile::class, ['user_id'=>'id']);
+    }
+
 
     //设置密码
     public function generatePasswordHash($password){

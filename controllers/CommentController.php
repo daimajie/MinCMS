@@ -77,7 +77,7 @@ class CommentController extends BaseController
             }
 
             //判断是否密集提交
-            if (static::interval($article_id, Yii::$app->user->id))
+            if (Comment::interval($article_id, Yii::$app->user->id))
                 throw new Exception('请间隔两分钟，再提交评论。');
 
             //写入数据
@@ -122,6 +122,10 @@ class CommentController extends BaseController
             //请求方式
             if(!Yii::$app->request->isAjax)
                 throw new MethodNotAllowedHttpException('请求方式不被允许。');
+
+            //判断是否登录
+            if(Yii::$app->user->isGuest)
+                throw new ForbiddenHttpException('请登录后再进行删除。');
 
             //接受参数
             $aid = (int) Yii::$app->request->get('id');
@@ -177,9 +181,10 @@ class CommentController extends BaseController
                 throw new BadRequestHttpException('请求参数错误。');
 
             //判断是否频繁提交回复
-            if(static::interval($article_id, Yii::$app->user->id)){
+            if(Comment::interval($article_id, Yii::$app->user->id)){
                 throw new Exception('请间隔两分钟在进行回复操作。');
             }
+
 
             //写入数据
             $model = new Comment();
@@ -192,15 +197,16 @@ class CommentController extends BaseController
             if($model->save() === false)
                 throw new Exception('提交回复失败，请重试。');
 
+
             return [
                 'errno' => 0,
                 'message' => '提交回复成功。'
             ];
 
-        }/*catch (MethodNotAllowedHttpException $e){
+        }catch (MethodNotAllowedHttpException $e){
 
             return $this->redirect(['index/index']);
-        }*/catch (Exception $e){
+        }catch (Exception $e){
 
             return ['errno'=>1, 'message'=>$e->getMessage()];
         }
@@ -208,12 +214,7 @@ class CommentController extends BaseController
 
     }
 
-    private static function interval($article_id, $user_id){
-        return Comment::find()
-            ->where(['and', ['article_id'=>$article_id], ['user_id'=>$user_id]])
-            ->andWhere(['>=','created_at', time()-120])
-            ->count();
-    }
+
 
 
 }

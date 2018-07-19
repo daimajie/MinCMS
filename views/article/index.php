@@ -288,6 +288,7 @@ $getComments = Url::to(['comment/comments','id'=>$article['id']]);
 $deleteComment = Url::to(['comment/delete','id'=>$article['id']]);
 $replyUrl = Url::to(['comment/reply', 'id' => $article['id']]);
 $jsStr = <<<JS
+    var currentPager = "{$getComments}";
     require(['mods/modal','jSmart'],function(modal){
         //添加喜欢
         $('#collect_btn').on('click',function(){
@@ -380,9 +381,9 @@ $jsStr = <<<JS
                     data : {id:id},
                     success : function(d){
                         if(d.errno === 0){
-                            //删除成功
                             //刷新评论列表
-                            refreshComment("$getComments");
+                            //refreshComment("$getComments");
+                            refreshComment(currentPager);
                         }
                         modal.msg(d.message);
                     }
@@ -398,6 +399,7 @@ $jsStr = <<<JS
             var closest = $(this).closest('.reply_input');
             var comment_id = closest.data('id');
             var comment_user = closest.data('user');
+            var rc_id = $(this).data('id'); //要回复的这个评论或回复
             
             var content = $(this).prev("input").val();
             if(content.length <= 0)return;
@@ -410,7 +412,8 @@ $jsStr = <<<JS
                 success : function(d){
                     if(d.errno === 0){
                         //回复成功
-                        refreshComment("$getComments")
+                        // refreshComment("$getComments")
+                        refreshComment(currentPager)
                     }
                     modal.msg(d.message);
                 }
@@ -437,9 +440,11 @@ $jsStr = <<<JS
                     
                     //渲染分页
                     $('#pager').html(d.data.pagination);
+                    
+                    //记录当前页码
+                    currentPager = url;
                 }
                 // modal.msg(d.message);
-                //console.log(d);
             }
         });
     }

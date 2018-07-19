@@ -66,7 +66,7 @@ $user = Yii::$app->user->identity;
                             <i class="dropdown icon"></i>
                         </div>
                         <div class="menu">
-                            <a href="javascript:;" class="item">个人中心</a>
+                            <a href="<?= Url::to(['member/index'])?>" class="item">个人中心</a>
                             <a href="javascript:;" class="item">写作</a>
                             <a href="<?= Url::to(['index/logout'])?>" class="item">退出<i class="sign out icon"></i></a>
                         </div>

@@ -6,6 +6,7 @@ use app\models\content\Article;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\data\Pagination;
 
 /**
  * This is the model class for table "{{%collect}}".
@@ -68,6 +69,13 @@ class Collect extends \yii\db\ActiveRecord
         ];
     }
 
+    //关联文章
+    public function getArticle(){
+        return $this->hasOne(Article::class, ['id'=>'article_id'])
+            ->select(['id', 'title', 'brief']);
+    }
+
+
     /**
      * 获取当前用户是否已经喜欢或收藏过该文章
      * @param $article_id int #文章id
@@ -89,6 +97,47 @@ class Collect extends \yii\db\ActiveRecord
         return [
             'collect' => $collect,
             'likes' => $likes
+        ];
+    }
+
+    /**
+     * 获取指定用户所有的喜欢文章列表
+     */
+    public static function getLikes($id){
+        $query = static::find()->where(['and', ['type'=>0], ['user_id'=>$id]]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count]);
+
+        $articles = $query->with(['article'])
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->orderBy(['created_at'=>SORT_DESC])
+            ->asArray()
+            ->all();
+
+        return [
+            'articles' => $articles,
+            'pagination' => $pagination
+        ];
+    }
+
+    public static function getCollects($id){
+        $query = static::find()->where(['and', ['type'=>1], ['user_id'=>$id]]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 15]);
+
+        $articles = $query->with(['article'])
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->orderBy(['created_at'=>SORT_DESC])
+            ->asArray()
+            ->all();
+
+        return [
+            'articles' => $articles,
+            'pagination' => $pagination
         ];
     }
 }

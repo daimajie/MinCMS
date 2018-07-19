@@ -283,3 +283,10 @@ div.ui.container{
     background-position: -165px 2px;
     /*background-position: 0px 0px;*/
 }
+
+/*user center*/
+.bg{
+    width: 100%;
+    height: 208px;
+    background: url("/static/home/img/center.png") no-repeat center;
+}

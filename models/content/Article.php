@@ -182,6 +182,15 @@ class Article extends \yii\db\ActiveRecord
             ->with(['user', 'topic']);
         return $query;
     }
+    private static function getSingleQuery(){
+        $query = static::find()
+            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+            ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
+            ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
+            ->orderBy(['created_at'=>SORT_DESC]);
+            //->with(['user', 'topic']);
+        return $query;
+    }
 
     /**
      * 获取文章列表数据根据话题
