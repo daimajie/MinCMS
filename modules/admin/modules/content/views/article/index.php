@@ -80,8 +80,10 @@ $action = $this->context->action->id;
                                 'user_id',
                                 [
                                     'attribute'=>'checked',
+                                    'format' => 'raw',
                                     'value' => function($model){
-                                        return $model->checked ? '审核通过，已发布。' : '等待审核';
+                                        $checkBtn = Html::a('点击通过',null,['data-id'=>$model->id,'href'=>'javascript:;','class'=>'check-btn']);
+                                        return $model->checked ? '审查通过' : $checkBtn;
                                     }
                                 ],
                                 [
@@ -137,6 +139,7 @@ $action = $this->context->action->id;
     </div>
 
 <?php
+$checkUrl = Url::to(['article/check']);
 $this->registerCss("body {padding:20px;}");
 $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
@@ -166,27 +169,22 @@ require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         });
         
         
-        //选择所有
-        $('#select-all').find('input').on('click', function(){
-            $(':checkbox').prop('checked',$(this).prop('checked'));
+        $('.check-btn').on('click', function(){
+            var id = $(this).data('id');
+            var container = $(this).closest('td');
+            
+            $.post("$checkUrl", {id, id}, function(d){
+                if(d.errno === 0){
+                    //审核通过
+                    container.text('审查通过');
+                }
+                modal.msg(d.message);
+            });
+            
         });
         
 });
 JS;
 $this->registerJs($jsStr);
-$recycleJs = <<<JS
-        //批量删除
-        $('#batch-del').on('click',function(){
-            $('button.close').click();
-            
-            modal.confirm("您确定要删除这些分类吗？",{
-                inPage:false
-            },function(ele,obj){
-                $('#batch-form').submit();
-                return true;
-            });
-            return false;
-        });
-JS;
 
 ?>

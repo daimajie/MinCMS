@@ -15,6 +15,9 @@ return [
         'setting' => [
             'class' => 'app\modules\admin\modules\setting\Module',
         ],
+        'comment' => [
+            'class' => 'app\modules\admin\modules\comment\Module',
+        ],
     ],
 
 ];

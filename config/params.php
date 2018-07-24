@@ -23,5 +23,8 @@ return [
     //默认头像
     'image' => '/static/home/img/avatar.jpg',
 
+    //关于我
+    'about' => include 'about.php',
+
 
 ];

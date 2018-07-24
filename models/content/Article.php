@@ -64,7 +64,7 @@ class Article extends \yii\db\ActiveRecord
             'type' => '文章类型',
             'words' => '字数',
             'recommend' => '推荐阅读',
-            'checked' => '设查',
+            'checked' => '审查',
             'draft' => '草稿箱',
             'recycle' => '回收站',
             'visited' => '浏览次数',
@@ -173,23 +173,34 @@ class Article extends \yii\db\ActiveRecord
 
     }
 
-    private static function getQuery(){
-        $query = static::find()
-            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+    public static function getQuery(){
+        $query = self::find()
+            ->andFilterWhere(['checked'=>1]) //通过审核的
             ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
             ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
             ->orderBy(['created_at'=>SORT_DESC])
             ->with(['user', 'topic']);
         return $query;
     }
-    private static function getSingleQuery(){
-        $query = static::find()
-            ->andFilterWhere(['!=','checked', 1]) //通过审核的
-            ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
-            ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
-            ->orderBy(['created_at'=>SORT_DESC]);
-            //->with(['user', 'topic']);
-        return $query;
+
+    /**
+     * 获取文章列表根据作者
+     * @param $id int #作者id
+     */
+    public static function getArticlesByAuthor($id){
+        if($id <= 0)return [];
+
+        $query = static::getQuery()->andWhere(['user_id'=>$id]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 15]);
+
+        $articles = $query->offset($pagination->offset)->limit($pagination->limit)->orderBy(['created_at'=>SORT_DESC,'id'=>SORT_DESC])->asArray()->all();
+
+        return [
+            'articles' => $articles,
+            'pagination' => $pagination
+        ];
     }
 
     /**
@@ -276,7 +287,7 @@ class Article extends \yii\db\ActiveRecord
      */
     public static function getDetail($id){
         $ret = self::find()
-            ->with(['user','topic','tags'/*,'content'*/])
+            ->with(['user','topic','tags','user.profile'/*,'content'*/])
             ->where(['id' => $id])
             ->asArray()
             ->one();
@@ -323,6 +334,25 @@ class Article extends \yii\db\ActiveRecord
         return [
             'prev' => $prev_article,
             'next' => $next_article
+        ];
+    }
+
+    /**
+     * 按照关键字搜索相似文章
+     * @param $key string #关键字
+     * @return array #文章列表
+     */
+    public static function searchArticles($key){
+        $query = self::getQuery()->andWhere(['like', 'title', $key]);
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 15]);
+
+        $articles = $query->offset($pagination->offset)->limit($pagination->limit)->asArray()->all();
+
+        return [
+            'articles'  => $articles,
+            'pagination'=> $pagination
         ];
     }
 

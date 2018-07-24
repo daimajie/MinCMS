@@ -26,6 +26,7 @@ class Comment extends \yii\db\ActiveRecord
 {
     const REPLY = 'reply';
     const COMMENT = 'comment';
+    const UPDATE = 'update';
 
     /**
      * {@inheritdoc}
@@ -57,6 +58,7 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['content'], 'required', 'on' => self::UPDATE],
             [['content','article_id','type','comment_id'], 'required','on'=>[self::REPLY,self::COMMENT]],
             [['content'], 'trim','on'=>[self::REPLY,self::COMMENT]],
             [['content'], 'string','on'=>[self::REPLY,self::COMMENT]],
@@ -96,6 +98,15 @@ class Comment extends \yii\db\ActiveRecord
         return $this->hasMany(self::class, ['comment_id' => 'id'])
             ->orderBy(['created_at'=>SORT_ASC,'id'=>SORT_DESC]);
     }
+    public function getArticle()
+    {
+        return $this->hasOne(Article::class, ['id' => 'article_id'])
+            ->select(['title']);
+    }
+    public function getComment()
+    {
+        return $this->hasOne(self::class, ['id' => 'comment_id']);
+    }
 
     /**
      * 获取指定文章的所有评论及回复
@@ -111,7 +122,7 @@ class Comment extends \yii\db\ActiveRecord
             ]);
         $count = $query->count();
 
-        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 5]);
+        $pagination = new Pagination(['totalCount' => $count,'pageSize' => 15]);
         $pagination->route = 'comment/comments';
 
         $comments = $query->with(['user','replys','replys.user'])

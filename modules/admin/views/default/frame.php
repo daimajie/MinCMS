@@ -113,17 +113,9 @@ use yii\helpers\Url;
                     <div class="item">
                         <a class=" title"><i class="comments icon"></i><i class="dropdown icon"></i>评论管理</a>
                         <div class=" content">
-                            <a class="item" target="contentFrame" href="javascript:;">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['comment/comment/index']);?>">
                                 <i class="linkify icon"></i>
                                 评论
-                            </a>
-                            <a class="item" target="contentFrame" href="javascript:;">
-                                <i class="puzzle icon"></i>
-                                收藏
-                            </a>
-                            <a class="item" target="contentFrame" href="javascript:;">
-                                <i class="options icon"></i>
-                                消息
                             </a>
                         </div>
                     </div>

@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\collect\Comment;
+use app\models\content\Article;
 use yii\base\Exception;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -76,7 +77,7 @@ class CommentController extends BaseController
                 throw new BadRequestHttpException('请求参数错误，请重试。');
             }
 
-            //判断是否密集提交
+            //判断是否频繁提交
             if (Comment::interval($article_id, Yii::$app->user->id))
                 throw new Exception('请间隔两分钟，再提交评论。');
 
@@ -91,6 +92,8 @@ class CommentController extends BaseController
             $comment->content = $content;
 
             $ret = $comment->save();
+
+            Article::updateAllCounters(['comment'=>1],['id'=>$article_id]);
 
             //返回数据
             if($ret === false){
@@ -138,12 +141,15 @@ class CommentController extends BaseController
                 throw new NotFoundHttpException('没有相关数据。');
 
             //删除该评论下的所有回复
+            $decr = 1;
             if($model->type == 0){
-                Comment::deleteAll(['and', ['comment_id'=>$cid], ['type'=>1]]);
+                $decr += Comment::deleteAll(['and', ['comment_id'=>$cid], ['type'=>1]]);
             }
 
             if($model->delete() === false)
                 throw new Exception('删除错误，请重试。');
+
+            Article::updateAllCounters(['comment'=>-$decr],['id'=>$aid]);
 
 
             return ['errno'=>0, 'message'=>'删除评论成功。'];
@@ -197,7 +203,7 @@ class CommentController extends BaseController
             if($model->save() === false)
                 throw new Exception('提交回复失败，请重试。');
 
-
+            Article::updateAllCounters(['comment'=>1],['id'=>$article_id]);
             return [
                 'errno' => 0,
                 'message' => '提交回复成功。'

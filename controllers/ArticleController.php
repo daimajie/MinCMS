@@ -47,9 +47,8 @@ class ArticleController extends BaseController
         //获取评论信息
         $comment = Comment::getComments($article['id']);
 
-//        VarDumper::dump($comment,10,1);die;
-
-
+        //添加阅读数
+        Article::updateAllCounters(['visited'=>1],['id'=>$article['id']]);
 
 
         return $this->render('index',[
@@ -61,7 +60,7 @@ class ArticleController extends BaseController
         ]);
     }
 
-    //添加喜欢
+    //添加收藏
     public function actionCollect(){
         Yii::$app->response->format = Response::FORMAT_JSON;
         try{
@@ -93,7 +92,8 @@ class ArticleController extends BaseController
                 throw new Exception('添加收藏失败，请重试。');
             }
 
-
+            //收藏累加
+            Article::updateAllCounters(['collect'=>1],['id'=>$article_id]);
             return [
                 'errno' => 0,
                 'message' => '添加收藏成功。'
@@ -110,7 +110,7 @@ class ArticleController extends BaseController
 
     }
 
-    //添加收藏
+    //添加喜欢
     public function actionLikes(){
         Yii::$app->response->format = Response::FORMAT_JSON;
         try{
@@ -142,7 +142,8 @@ class ArticleController extends BaseController
                 throw new Exception('添加喜欢失败，请重试。');
             }
 
-
+            //喜欢累加
+            Article::updateAllCounters(['likes'=>1],['id'=>$article_id]);
             return [
                 'errno' => 0,
                 'message' => '添加喜欢成功。'

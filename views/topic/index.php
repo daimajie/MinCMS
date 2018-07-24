@@ -39,9 +39,9 @@ $defaultImage = Yii::$app->params['image']; //默认头像
                                 </p>
                                 <div class="meta">
                                     <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['image'] : $defaultImage ;?>">
-                                    <a class="nickname" target="_blank" href="javascript:;"><?= $article['user']['username'] ?></a>
+                                    <a class="nickname" href="<?= Url::to(['author/view','id'=>$article['user_id']])?>"><?= $article['user']['username'] ?></a>
                                     <span><?= $article['comment']?>评</span>
-                                    <span><?= date('Y-m-d H:i:s', $article['created_at'])?></span>
+                                    <span><?= date('Y-m-d', $article['created_at'])?></span>
                                     <a href="<?= Url::to(['topic/index', 'id'=>$article['topic']['id']])?>" class="wemedia-icon"><?= $article['topic']['name']?></a>
                                 </div>
                             </div>

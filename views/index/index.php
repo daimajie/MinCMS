@@ -35,10 +35,10 @@ $defaultImage = Yii::$app->params['image'];
                                 </p>
                                 <div class="meta">
                                     <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['user'] : $defaultImage;?>">
-                                    <a class="nickname linked" target="_blank" href="javascript:;"><?= $article['user']['username']?></a>
+                                    <a class="nickname linked" href="<?= Url::to(['author/view','id'=>$article['user_id']])?>"><?= $article['user']['username']?></a>
                                     <span><?= $article['comment']?>评</span>
-                                    <span><?= date('Y-m-d H:i:s', $article['created_at'])?></span>
-                                    <a target="_blank" href="<?= Url::to(['topic/index', 'id'=>$article['topic_id']])?>" class="wemedia-icon topic"><?= $article['topic']['name']?></a>
+                                    <span><?= date('Y-m-d', $article['created_at'])?></span>
+                                    <a href="<?= Url::to(['topic/index', 'id'=>$article['topic_id']])?>" class="wemedia-icon topic"><?= $article['topic']['name']?></a>
                                 </div>
                             </div>
                         </li>

@@ -1,5 +1,7 @@
 <?php
 namespace app\modules\admin\modules\content\controllers;
+use app\models\collect\Collect;
+use app\models\collect\Comment;
 use app\models\content\Article;
 use app\models\content\ArticleForm;
 use app\models\content\ArticleTag;
@@ -9,8 +11,11 @@ use app\models\content\Tag;
 use app\models\content\Topic;
 use app\modules\admin\controllers\BaseController;
 use Yii;
+use yii\base\Exception;
 use yii\web\BadRequestHttpException;
+use yii\web\MethodNotAllowedHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class ArticleController extends BaseController
 {
@@ -123,8 +128,16 @@ class ArticleController extends BaseController
         $model = static::getModel($id);
 
         try{
-            if($model->delteArticle())
+            if($model->delteArticle()){
+
+                //删除评论
+                Comment::deleteAll(['article_id'=>$id]);
+
+                //删除喜欢和收藏
+                Collect::deleteAll(['article_id'=>$id]);
+
                 Yii::$app->session->setFlash('success', '删除文章成功。');
+            }
 
         }catch (\Exception $e){
             Yii::$app->session->setFlash('error', $e->getMessage());
@@ -209,6 +222,42 @@ class ArticleController extends BaseController
         return $model;
     }
 
+    //审核文章
+    public function actionCheck(){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        try{
+            //检测请求方式
+            if(!Yii::$app->request->isAjax)throw new MethodNotAllowedHttpException('请求方式不被允许。');
+
+            //检测参数
+            $id = (int) Yii::$app->request->post('id');
+            if($id <= 0) throw new Exception('请求参数错误。');
+
+            //获取模型
+            $model = Article::findOne($id);
+            if(!$model) throw new NotFoundHttpException('没有相关参数。');
+
+            //设置属性
+            $model->checked = 1;
+            if(!$model->save(false)){
+                throw new Exception('审查失败，请重试。');
+            }
+            return [
+                'errno' => 0,
+                'message' => '审查通过'
+            ];
+
+
+
+
+        }catch (MethodNotAllowedHttpException $e){
+            return $this->redirect(['/']);
+        }catch (Exception $e){
+            return ['errno'=>1, 'message'=>$e->getMessage()];
+        }
+    }
+
     //获取模型
     private static function getModel($id){
         $id = (int)$id;
@@ -222,6 +271,8 @@ class ArticleController extends BaseController
 
         return $model;
     }
+
+
 
 
 }

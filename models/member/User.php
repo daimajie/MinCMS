@@ -90,9 +90,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $query->orderBy(['id'=>SORT_DESC])->limit(10)->asArray()->all();
     }
 
-    public function getProfile(){
-        return $this->hasOne(Profile::class, ['user_id'=>'id']);
-    }
 
 
     //设置密码
@@ -160,6 +157,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $model;
     }
 
+    public function getProfile(){
+        return $this->hasOne(Profile::class, ['user_id'=>'id'])->select(['user_id','sign','id','created_at']);
+    }
+
     /**
      * 根据用户ID获取用户实例
      */
@@ -188,7 +189,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * 获取当前用户auth_key (用户面登录场景)
+     * 获取当前用户auth_key (用户免登录场景)
      */
     public function getAuthKey(){
         return $this->auth_key;
@@ -198,8 +199,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * 验证auth_key（通过给予登录）
      */
     public function validateAuthKey($authKey){
-        return $this->getAuthKey() === $authKey;
+        $ret = $this->getAuthKey() === $authKey;
+        if($ret){
+            //更新最后登录时间
+            $this->lasttime = time();
+            return $this->save(false);
+        }
+        return false;
     }
+
+
 
 
 

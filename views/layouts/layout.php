@@ -6,7 +6,8 @@ use app\assets\HomeAsset;
 use app\assets\Html5Asset;
 use yii\helpers\Url;
 use yii\widgets\Menu;
-
+use yii\widgets\ActiveForm;
+use app\components\helper\Helper;
 
 SemanticUIAsset::register($this);
 RequireJsAsset::register($this);
@@ -14,6 +15,8 @@ HomeAsset::register($this);
 Html5Asset::register($this);
 
 $user = Yii::$app->user->identity;
+$keyword = isset($this->params['keyword']) ? $this->params['keyword'] : null;
+$about = Yii::$app->params['about'];
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,7 +30,6 @@ $user = Yii::$app->user->identity;
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 
-
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -35,7 +37,7 @@ $user = Yii::$app->user->identity;
 <section id="top">
     <!--导航-->
     <div class="main-nav">
-        <div class="ui container">
+        <div class="ui container" >
             <div class="ui inverted menu navs">
                 <div class="item">
                     <a href="/">DAIMAJIE.COM</a>
@@ -48,7 +50,6 @@ $user = Yii::$app->user->identity;
                         ['label' => '首页', 'url' => ['index/index']],
                         ['label' => '分类', 'url' => ['category/index']],
                         ['label' => '话题', 'url' => ['topic/topics']],
-                        ['label' => '随笔', 'url' => ['notes/index']],
                         ['label' => '关于我', 'url' => ['site/about']],
                     ],
                 ]);
@@ -67,7 +68,12 @@ $user = Yii::$app->user->identity;
                         </div>
                         <div class="menu">
                             <a href="<?= Url::to(['member/index'])?>" class="item">个人中心</a>
-                            <a href="javascript:;" class="item">写作</a>
+                            <?php if(Yii::$app->user->identity->group):?>
+                            <a target="_blank" href="javascript:;" class="item">写作</a>
+                            <?php endif;?>
+                            <?php if(Yii::$app->user->identity->group === 2):?>
+                            <a target="_blank" href="<?= Url::to(['admin/default/frame'])?>" class="item">管理</a>
+                            <?php endif;?>
                             <a href="<?= Url::to(['index/logout'])?>" class="item">退出<i class="sign out icon"></i></a>
                         </div>
                     </div>
@@ -99,14 +105,22 @@ $user = Yii::$app->user->identity;
     ?>
     <div class="search ui container">
         <div class="search-wrap">
-            <form name="formSearch" action="/" method="post">
+            <?php
+            $form = ActiveForm::begin([
+                    'action' => ['search/index'],
+            ]);
+            ?>
                 <div class="input-search">
                     <div class="icon-search"><img src="https://static3w.kuaikanmanhua.com/static/img/search_5e7251b.png"></div>
-
-                    <input type="text" id="txtKey" name="keyword" class="txt" placeholder="搜索文章标题" autocomplete="off" value="">
-                    <input type="submit" name="button" id="btnSearch" value="搜索" class="btn">
+                    <?= Html::textInput('keyword',$keyword,[
+                        'id' => 'txtKey',
+                        'class' => 'txt',
+                        'placeholder' => '搜索文章标题',
+                        'autocomplete' => 'off',
+                    ]);?>
+                    <?= Html::submitButton('搜索',['class'=>'btn','id'=>'btnSearch']);?>
                 </div>
-            </form>
+            <?php ActiveForm::end();?>
         </div>
         <div class="search-cover"></div>
     </div>
@@ -115,6 +129,7 @@ $user = Yii::$app->user->identity;
     ?>
 </section>
 <!--/top-nav-->
+
 
 <!--content-->
 <?= $content?>
@@ -128,24 +143,22 @@ $user = Yii::$app->user->identity;
                 <div class="three wide column">
                     <h4 class="ui inverted header">关于</h4>
                     <div class="ui inverted link list">
-                        <a href="homepage.php#" class="item">Sitemap</a>
-                        <a href="homepage.php#" class="item">Contact Us</a>
-                        <a href="homepage.php#" class="item">Religious Ceremonies</a>
-                        <a href="homepage.php#" class="item">Gazebo Plans</a>
+                        <?php foreach($about['about'] as$key => $item):?>
+                            <a href="<?= $item?>" class="item"><?= $key?></a>
+                        <?php endforeach;?>
                     </div>
                 </div>
                 <div class="three wide column">
                     <h4 class="ui inverted header">服务</h4>
                     <div class="ui inverted link list">
-                        <a href="homepage.php#" class="item">Banana Pre-Order</a>
-                        <a href="homepage.php#" class="item">DNA FAQ</a>
-                        <a href="homepage.php#" class="item">How To Access</a>
-                        <a href="homepage.php#" class="item">Favorite X-Men</a>
+                        <?php foreach($about['follow'] as$key => $item):?>
+                            <a href="<?= $item?>" class="item"><?= $key?></a>
+                        <?php endforeach;?>
                     </div>
                 </div>
                 <div class="seven wide column">
-                    <h4 class="ui inverted header">页脚</h4>
-                    <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                    <h4 class="ui inverted header">关于</h4>
+                    <p><?= Helper::truncate_utf8_string($about['info'],120)?></p>
                 </div>
             </div>
         </div>

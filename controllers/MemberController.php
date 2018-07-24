@@ -9,9 +9,9 @@ use yii\base\Exception;
 use yii\filters\AccessControl;
 use Yii;
 use yii\helpers\Url;
-use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class MemberController extends BaseController
@@ -41,7 +41,7 @@ class MemberController extends BaseController
         ]);
     }
 
-    //用户中心
+    //用户信息设置
     public function actionSet(){
         $user_id = Yii::$app->user->id;
 
@@ -125,7 +125,7 @@ class MemberController extends BaseController
             'articles'=>$articles['articles'],
             'pagination' => $articles['pagination'],
             'info' => ['text'=>'取消喜欢','info'=>'喜欢时间'],
-            'cancelUrl' => Url::to(['member/cancel-collects'])
+            'cancelUrl' => Url::to(['member/cancel-likes'])
         ]);
     }
 
@@ -156,9 +156,17 @@ class MemberController extends BaseController
                 throw new BadRequestHttpException('请求参数错误。');
             }
 
-            if(Collect::deleteAll(['id'=>$id]) === false){
+            $collect = Collect::findOne($id);
+            if(!$collect)
+                throw new NotFoundHttpException('没有相关数据。');
+
+            Article::updateAllCounters(['likes'=>-1], ['id'=>$collect->article_id]);
+
+            if($collect->delete() === false){
                 throw new Exception('取消喜欢失败，请重试。');
             }
+
+
 
             return ['errno'=>0, 'message' => '取消喜欢成功。'];
 
@@ -168,7 +176,8 @@ class MemberController extends BaseController
             return ['errno'=>1, 'message' => $e->getMessage()];
         }
     }
-    //cancel likes
+
+    //cancel collect
     public function actionCancelCollects(){
         Yii::$app->response->format = Response::FORMAT_JSON;
         try{
@@ -182,7 +191,12 @@ class MemberController extends BaseController
                 throw new BadRequestHttpException('请求参数错误。');
             }
 
-            if(Collect::deleteAll(['id'=>$id]) === false){
+            $likes = Collect::findOne($id);
+            if(!$likes) throw new NotFoundHttpException('没有相关数据。');
+
+            Article::updateAllCounters(['collect'=>-1], ['id'=>$likes->article_id]);
+
+            if($likes->delete() === false){
                 throw new Exception('取消收藏失败，请重试。');
             }
 

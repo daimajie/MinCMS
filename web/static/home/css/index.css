@@ -21,10 +21,10 @@ div.ui.container{
     float: right;
 }
 #content a.titled{
-    color:#666!important;
+    color:#444!important;
 }
 #content a.titled:hover{
-    color:#444!important;
+    color:#333!important;
 }
 #content a.linked{
     color:#777 !important;
@@ -163,7 +163,7 @@ div.ui.container{
     margin: 0 35px 8px 0;
     font-size: 14px;
     line-height: 24px;
-    color: #999;
+    color: #777;
     text-indent: 2em;
 }
 #content .meta{

@@ -263,9 +263,9 @@ $defaultImage = Yii::$app->params['image'];
                                 </div>
                                 <div class="content">
                                     <div class="summary">
-                                        签名 ： 时间是一切财富中最宝贵的财富。
+                                        签名 ： <?= $article['user']['profile']['sign']?>
                                         <div class="date">
-                                            —— 2018-12-12
+                                            -- <?= date('Y-m-d H:i:s', $article['user']['profile']['created_at'])?>
                                         </div>
                                     </div>
                                 </div>
@@ -382,7 +382,7 @@ $jsStr = <<<JS
                     success : function(d){
                         if(d.errno === 0){
                             //刷新评论列表
-                            //refreshComment("$getComments");
+                            that.closest('div.comment').remove();
                             refreshComment(currentPager);
                         }
                         modal.msg(d.message);
