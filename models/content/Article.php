@@ -272,7 +272,7 @@ class Article extends \yii\db\ActiveRecord
      */
     public static function getHotArticles(){
         $ret = self::find()
-            ->andFilterWhere(['!=','checked', 1]) //通过审核的
+            ->andFilterWhere(['checked'=> 1]) //通过审核的
             ->andFilterWhere(['!=','draft', 1]) //不再草稿箱（发布的文章）
             ->andFilterWhere(['!=','recycle', 1]) //不再回收站的文章
             ->orderBy(['comment'=>SORT_DESC, 'visited'=>SORT_DESC])

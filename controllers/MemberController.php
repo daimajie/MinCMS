@@ -5,6 +5,7 @@ use app\models\collect\Collect;
 use app\models\content\Article;
 use app\models\member\Profile;
 use app\models\member\ResetForm;
+use app\models\member\User;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 use Yii;
@@ -16,6 +17,8 @@ use yii\web\Response;
 
 class MemberController extends BaseController
 {
+
+
     public function behaviors()
     {
         return [
@@ -29,6 +32,21 @@ class MemberController extends BaseController
                     ],
                 ],
             ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'app\components\actions\UploadAction',
+                //剪切尺寸
+                'shearSize' => [200, 200],
+                //保存子目录
+                'subDir' => 'avatar',
+                //是否划分日期目录(默认true)
+                //'randDir' => true,
+            ]
         ];
     }
 
@@ -208,5 +226,34 @@ class MemberController extends BaseController
             return ['errno'=>1, 'message' => $e->getMessage()];
         }
     }
+
+    public function actionSetAvatar(){
+        if(Yii::$app->request->isPost){
+
+            //获取头像信息
+            $avatar = trim(Yii::$app->request->post('avatar'));
+            if(!empty($avatar)){
+                $model = User::findOne(Yii::$app->user->id);
+                $model->image = $avatar;
+
+                //删除原有头像
+                if($model->image !== $model->getOldAttribute('image')){
+                    User::deleteImg($model->getOldAttribute('image'));
+                }
+
+                if($model->save(false)){
+                    //设置成功
+                    Yii::$app->session->setFlash('info','设置头像成功。');
+
+                }
+            }
+        }
+        return $this->redirect(['member/image']);
+
+    }
+
+
+
+
 
 }

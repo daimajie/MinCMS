@@ -11,7 +11,7 @@ return [
     'imgPath' => [
         'imgUrl' => '/uploaded',       //图片显示url
         'imgUp'  => realpath(getcwd() . '/uploaded'),   //图片上传路径
-        'allowPath'  => ['tempPath','category', 'topic', 'article'],   //允许创建的图片分类目录
+        'allowPath'  => ['tempPath','category', 'topic', 'article','avatar'],   //允许创建的图片分类目录
     ],
 
     //域名
@@ -21,7 +21,7 @@ return [
     'tagUpperLimit' => 35,
 
     //默认头像
-    'image' => '/static/home/img/avatar.jpg',
+    'image' => '/static/home/img/image.jpg',
 
     //关于我
     'about' => include 'about.php',

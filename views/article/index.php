@@ -30,7 +30,7 @@ $defaultImage = Yii::$app->params['image'];
 
                         <!--信息-->
                         <div class="meta margin-b-10">
-                            <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['image']: $defaultImage;?>">
+                            <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? IMG_ROOT . $article['user']['image']: $defaultImage;?>">
                             <a class="nickname" href="javascript:;"><?= $article['user']['username']?></a>
                             <span><?= $article['comment']?>评</span>
                             <span><?= date('Y-m-d H:i:s',$article['created_at'])?></span>
@@ -182,7 +182,7 @@ $defaultImage = Yii::$app->params['image'];
                                             <div class="comments">
                                                 <div class="comment">
                                                     <a class="avatar ui medium circular image">
-                                                        <img src="<?= $reply['user']['image'] ? IMG_ROOT.$reply['user']['image']:$defaultImage;?>">
+                                                        <img src="<?= $reply['user']['image'] ? IMG_ROOT . $reply['user']['image']:$defaultImage;?>">
                                                     </a>
                                                     <div class="content">
                                                         <a class="author"><?= $reply['user']['username']?></a>
@@ -243,7 +243,7 @@ $defaultImage = Yii::$app->params['image'];
                         <div class="ui feed">
                             <div class="event">
                                 <div class="label">
-                                    <img src="<?= $article['user']['image']?$article['user']['image']:$defaultImage;?>">
+                                    <img src="<?= $article['user']['image']?IMG_ROOT . $article['user']['image']:$defaultImage;?>">
                                 </div>
                                 <div class="content">
                                     <div class="summary">

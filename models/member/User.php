@@ -4,6 +4,7 @@ namespace app\models\member;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "{{%user}}".
@@ -71,6 +72,22 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'lasttime' => '最后登录时间',
             'signip' => '登录ip'
         ];
+    }
+
+    /**
+     * 删除旧头像
+     * @param $image
+     * @return bool
+     */
+    public static function deleteImg($image){
+        //获取图片上传路径
+        $upPath = Yii::$app->params['imgPath']['imgUp'] . '/';
+
+        //直接删除
+        @FileHelper::unlink($upPath . $image);
+
+        //返回
+        return true;
     }
 
 

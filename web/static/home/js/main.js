@@ -20,7 +20,10 @@ requirejs.config({
         'jSmart': '/static/libs/jSmart/jSmart',
         'simplemde': '/static/libs/simplemde/simplemde',
         'simplemdeCss': '/static/libs/simplemde/simplemde.min',
-        'css': '/static/admin/js/mods/css'
+        'css': '/static/admin/js/mods/css',
+
+        'cropper' : '/static/libs/cropper/cropper',
+        'cropperCss' : '/static/libs/cropper/cropper',
     },
     map: {
         '*': {
@@ -34,6 +37,9 @@ requirejs.config({
         },*/
         'simplemde':{
             deps:['css!simplemdeCss']
+        },
+        'cropper':{
+            deps:['css!cropperCss']
         }
     }
 });

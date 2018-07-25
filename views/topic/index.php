@@ -38,7 +38,7 @@ $defaultImage = Yii::$app->params['image']; //默认头像
                                     <?= Helper::truncate_utf8_string(Html::encode($article['brief']), 77)?>
                                 </p>
                                 <div class="meta">
-                                    <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? $article['user']['image'] : $defaultImage ;?>">
+                                    <img class="source-profile ui avatar image" src="<?= $article['user']['image'] ? IMG_ROOT . $article['user']['image'] : $defaultImage ;?>">
                                     <a class="nickname" href="<?= Url::to(['author/view','id'=>$article['user_id']])?>"><?= $article['user']['username'] ?></a>
                                     <span><?= $article['comment']?>评</span>
                                     <span><?= date('Y-m-d', $article['created_at'])?></span>
