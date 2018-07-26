@@ -46,7 +46,7 @@ $action = $this->context->action->id;
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                 'parent',
-                                'child',
+                                
                                 [
                                     'class' => 'yii\grid\ActionColumn',
                                     'options' => ['width'=>150],

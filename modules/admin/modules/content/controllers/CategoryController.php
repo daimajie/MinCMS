@@ -152,24 +152,6 @@ class CategoryController extends BaseController
 
     }
 
-    //搜索分类
-    /*public function actionSearchCats(){
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        try{
-            if(!Yii::$app->request->isAjax)
-                throw new MethodNotAllowedHttpException('请求方式不被允许。');
-            $key  = Yii::$app->request->get('key','');
-            $datas = Category::searchCatsByKey($key);
-            return [
-                'success' => true,
-                'results' => $datas
-            ];
-        }catch (Exception $e){
-            //调至首页
-            return $this->redirect(['/']);
-        }
-
-    }*/
 
 
 

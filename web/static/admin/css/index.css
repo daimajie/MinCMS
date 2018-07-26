@@ -12,3 +12,13 @@
 .icon-box .name a {color:#000;border-bottom:#000 solid 1px;display:inline-block}
 
 .grid-cnt-box {background:#F9F9F9;display:block;padding:10px 0;text-align:center;}
+
+#permissions{
+    overflow: hidden;
+}
+#permissions label{
+    border:1px solid grey;
+    padding: 5px 5px;
+    margin: 5px 8px;
+    float: left;
+}

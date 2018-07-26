@@ -49,6 +49,7 @@ use yii\helpers\Url;
                     <div class="ui olive visible message">
                         <p>请先搜索要分配权限或角色的父节点。</p>
                     </div>
+                    <?php if(!empty($model->child['roles'])):?>
                     <div class="roles-container field">
                         <?= Html::label('可用角色')?>
                         <?= Html::checkboxList('AuthAllot[child]',$model->child['roles'],$roles,[
@@ -56,6 +57,10 @@ use yii\helpers\Url;
                         ])?>
                         <p>选择需要分配的角色</p>
                     </div>
+                    <?php else:?>
+                    <p>暂无可用角色</p>
+                    <?php endif;?>
+                    <?php if(!empty($model->child['permissions'])):?>
                     <div class="permissions-container field">
                         <?= Html::label('可用权限')?>
                         <?= Html::checkboxList('AuthAllot[child]',$model->child['permissions'],$permissions,[
@@ -63,6 +68,9 @@ use yii\helpers\Url;
                         ])?>
                         <p>选择需要分配的权限</p>
                     </div>
+                    <?php else:?>
+                        <p>暂无可用权限</p>
+                    <?php endif;?>
 
 
                 </div>
