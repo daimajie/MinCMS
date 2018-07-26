@@ -175,7 +175,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     public function getProfile(){
-        return $this->hasOne(Profile::class, ['user_id'=>'id'])->select(['user_id','sign','id','created_at']);
+        return $this->hasOne(Profile::class, ['user_id'=>'id'])->select(['user_id','sign','id','created_at','realname','blog','address']);
     }
 
     /**

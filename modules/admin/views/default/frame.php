@@ -123,13 +123,13 @@ use yii\helpers\Url;
                     <div class="item">
                         <a class=" title"><i class="database icon"></i><i class="dropdown icon"></i>数据管理</a>
                         <div class=" content">
+                            <a class="item" target="contentFrame" href="<?= Url::to(['data/log/index'])?>">
+                                <i class="puzzle icon"></i>
+                                日志
+                            </a>
                             <a class="item" target="contentFrame" href="javascript:;">
                                 <i class="linkify icon"></i>
                                 备份
-                            </a>
-                            <a class="item" target="contentFrame" href="javascript:;">
-                                <i class="puzzle icon"></i>
-                                日志
                             </a>
                             <a class="item" target="contentFrame" href="javascript:;">
                                 <i class="options icon"></i>

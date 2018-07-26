@@ -18,6 +18,9 @@ return [
         'comment' => [
             'class' => 'app\modules\admin\modules\comment\Module',
         ],
+        'data' => [
+            'class' => 'app\modules\admin\modules\data\Module',
+        ],
     ],
 
 ];

@@ -58,7 +58,7 @@ $this->params['hideSearch'] = true;
 
 
                     <div id="drop-area" class="ui icon buttons">
-                        <button class="ui button">
+                        <button class="ui button" id="up-btn">
                             上传<input type="file">
                         </button>
                         <button class="ui button" id="avatar-btn">
@@ -86,7 +86,7 @@ $cssStr = <<<CSS
     input[type=file] {
         position: absolute;
         left: -10px;
-        top:0;
+        top:4px;
         margin: 0;
         border: solid transparent;
         width: 3px;
@@ -113,6 +113,7 @@ $jsStr = <<<JS
                         //上传成功
                         $('#image').prop('src', "{$imgRoot}" + data.url);
                         $('#avatar-input').val(data.url);
+                        $('#up-btn').addClass('disabled');
                         
                     }
                     //modal.alert(data.message,{inPage:false});

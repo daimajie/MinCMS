@@ -45,12 +45,11 @@ $this->params['hideSearch'] = true;
                         [
                             'attribute' => 'image',
                             'format' => 'raw',
-                            'class' => 'ui small image',
                             'value' => function($model){
                                 if(!empty($model->image)){
-                                    return Yii::$app->params['imgPath']['imgUrl']. '/' . $model->image;
+                                    return Html::img(Yii::$app->params['imgPath']['imgUrl']. '/' . $model->image,['class' => 'ui tiny image']);
                                 }else
-                                    return Html::img(Yii::$app->params['image'],['class' => 'ui tiny image circular']);
+                                    return Html::img(Yii::$app->params['image'],['class' => 'ui tiny image']);
                             }
                         ],
                         [

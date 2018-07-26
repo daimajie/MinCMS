@@ -32,6 +32,7 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -52,7 +53,7 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
                 ],
             ],
