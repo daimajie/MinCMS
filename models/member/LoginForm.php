@@ -46,7 +46,7 @@ class LoginForm extends Model
             'username' => '用户名',
             'password' => '密码',
             'captcha' =>'验证码',
-            'rememberMe' => '记住我(一周面登录)'
+            'rememberMe' => '记住我(一周免登录)'
         ];
     }
 

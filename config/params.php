@@ -26,5 +26,8 @@ return [
     //关于我
     'about' => include 'about.php',
 
+    //后台菜单
+    'menu' => include 'menu.php',
+
 
 ];

@@ -14,6 +14,9 @@ class BaseController extends Controller
             if(Yii::$app->user->isGuest){
                 Yii::$app->user->loginRequired();
             }
+
+
+
             return true;
         }
     }

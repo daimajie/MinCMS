@@ -257,6 +257,7 @@ $defaultImage = Yii::$app->params['image'];
                                     </div>
                                 </div>
                             </div>
+                            <?php if(!empty($article['user']['profile']['sign'])):?>
                             <div class="event">
                                 <div class="label">
                                     <i class="pencil icon "></i>
@@ -265,11 +266,12 @@ $defaultImage = Yii::$app->params['image'];
                                     <div class="summary">
                                         签名 ： <?= $article['user']['profile']['sign']?>
                                         <div class="date">
-                                            -- <?= date('Y-m-d H:i:s', $article['user']['profile']['created_at'])?>
+                                            -- <?= date('Y-m-d', $article['user']['profile']['created_at'])?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <?php endif;?>
                         </div>
                     </div>
 

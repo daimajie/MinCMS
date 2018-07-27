@@ -19,7 +19,11 @@ class DefaultController extends BaseController
     //框架
     public function actionFrame(){
         $this->layout = 'layout';
-        return $this->render('frame');
+        return $this->render('frame',[
+            'user' => Yii::$app->user->identity,
+            'name' => Yii::$app->name,
+            'defaultImage' => Yii::$app->params['image'],
+        ]);
     }
 
     //首页

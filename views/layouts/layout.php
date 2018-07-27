@@ -69,10 +69,7 @@ $about = Yii::$app->params['about'];
                         <div class="menu">
                             <a href="<?= Url::to(['member/index'])?>" class="item">个人中心</a>
                             <?php if(Yii::$app->user->identity->group):?>
-                            <a target="_blank" href="javascript:;" class="item">写作</a>
-                            <?php endif;?>
-                            <?php if(Yii::$app->user->identity->group === 2):?>
-                            <a target="_blank" href="<?= Url::to(['admin/default/frame'])?>" class="item">管理</a>
+                            <a  href="<?= Url::to(['admin/default/frame'])?>" class="item">管理</a>
                             <?php endif;?>
                             <a href="<?= Url::to(['index/logout'])?>" class="item">退出<i class="sign out icon"></i></a>
                         </div>

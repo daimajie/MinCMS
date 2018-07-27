@@ -16,10 +16,12 @@ use yii\widgets\ActiveForm;
                                     <i class="plus icon"></i>
                                     新建话题
                                 </a>
+                                <?php if($user->group == 2):?>
                                 <a class="item" id="batch-del">
                                     <i class="trash icon"></i>
                                     批量删除
                                 </a>
+                                <?php endif;?>
                                 <a class="item" href="javascript:window.history.back();">
                                     <i class="reply icon"></i>
                                     返回
@@ -58,7 +60,8 @@ use yii\widgets\ActiveForm;
                                 [
                                     'class' => 'yii\grid\CheckboxColumn',
                                     'headerOptions' => ['id'=>'select-all'],
-                                    'name' => 'topics_id[]'
+                                    'name' => 'topics_id[]',
+                                    'visible' => $user->group == 2,
                                 ],
                                 'id',
                                 'name',

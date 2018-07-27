@@ -82,8 +82,12 @@ $action = $this->context->action->id;
                                     'attribute'=>'checked',
                                     'format' => 'raw',
                                     'value' => function($model){
+                                        global $user;
                                         $checkBtn = Html::a('点击通过',null,['data-id'=>$model->id,'href'=>'javascript:;','class'=>'check-btn']);
-                                        return $model->checked ? '审查通过' : $checkBtn;
+                                        $text = '待审核';
+                                        $text = Yii::$app->user->identity->group == 2 ? $checkBtn : $text;
+
+                                        return $model->checked ? '审查通过' : $text;
                                     }
                                 ],
                                 [

@@ -25,7 +25,7 @@ class ArticleController extends BaseController
         //文章详情
         $article = Article::getDetail($id);
         if(!$article) throw new NotFoundHttpException('没有相关数据。');
-
+        //VarDumper::dump($article,10,1);die;
         //缓存文章内容
         $cache = Yii::$app->cache;
         $dependency = new \yii\caching\DbDependency([

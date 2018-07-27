@@ -25,8 +25,10 @@ class AccessControl extends \yii\base\ActionFilter
         // 当前登录用户的id
         $user = Yii::$app->getUser();
 
-
-
+        //如果没有后台权限 调至网站首页
+        if(!$user->identity->group){
+            return Yii::$app->controller->redirect(['/']);
+        }
         if ($user->can($controllerRoute . '/*')) {
             return true;
         }

@@ -17,7 +17,13 @@ class SearchTopic extends Topic
 
     public function search($params)
     {
-        $query = Topic::find()->with('category')->where(['user_id'=>Yii::$app->user->id]);
+        $query = Topic::find()->with('category');
+
+        if(Yii::$app->user->identity->group < 2){
+            //如果不是管理员的就显示自己的文章
+            $query->where(['user_id'=>Yii::$app->user->id]);
+        }
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

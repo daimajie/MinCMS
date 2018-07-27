@@ -47,7 +47,7 @@ class ArticleController extends BaseController
         return $this->render('index',[
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'selectArr' => $selectArr
+            'selectArr' => $selectArr,
         ]);
     }
 
