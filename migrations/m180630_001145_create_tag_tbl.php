@@ -20,6 +20,17 @@ class m180630_001145_create_tag_tbl extends Migration
             'user_id' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('创建者'),
         ], 'engine=innodb default charset=utf8');
 
+        $this->createIndex(
+            'idx-tag-topic_id',
+            self::TBL_NAME,
+            'topic_id'
+        );
+        $this->createIndex(
+            'idx-tag-user_id',
+            self::TBL_NAME,
+            'user_id'
+        );
+
         //外键
         /*$this->addForeignKey(
             'fk-tag-topic_id',

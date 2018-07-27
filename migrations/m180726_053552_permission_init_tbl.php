@@ -25,6 +25,7 @@ class m180726_053552_permission_init_tbl extends Migration
     public function safeDown()
     {
         $this->delete(self::TBL_NAME);
+        $this->delete(self::TBL_CHILD);
     }
 
     /**
@@ -32,8 +33,9 @@ class m180726_053552_permission_init_tbl extends Migration
      */
     private function addPermissions(){
         $permission = [
-            ['default/frame', '后台框架', 2],
-            ['default/index', '后台首页', 2],
+            ['admin/default/frame', '后台框架', 2],
+            ['admin/default/index', '后台首页', 2],
+            ['admin/default/error', '后台错误页', 2],
 
             ['comment/comment/*', '评论所有权限', 2],
             ['comment/comment/index', '评论列表', 2],
@@ -70,6 +72,7 @@ class m180726_053552_permission_init_tbl extends Migration
             ['content/tag/update', '标签更新', 2],
             ['content/tag/delete', '标签删除', 2],
             ['content/tag/ajax-delete', '在话题页删除标签', 2],
+            ['content/tag/ajax-update', '在话题页编辑标签', 2],
             ['content/tag/batch-del', '标签批量删除', 2],
             ['content/tag/get-tags', '获取话题下所有标签', 2],
 
@@ -161,11 +164,14 @@ class m180726_053552_permission_init_tbl extends Migration
      */
     private function allotPermission(){
         $adminChild = [
-            ['管理员','default/frame'],
-            ['管理员','default/index'],
+            ['管理员','admin/default/frame'],
+            ['管理员','admin/default/index'],
+            ['管理员','admin/default/error'],
+
             ['管理员','comment/comment/*'],
             ['管理员','content/article/*'],
             ['管理员','content/category/*'],
+            ['管理员','content/topic/*'],
             ['管理员','content/tag/*'],
             ['管理员','member/assign/*'],
             ['管理员','member/user/*'],
@@ -174,17 +180,24 @@ class m180726_053552_permission_init_tbl extends Migration
             ['管理员','rbac/allot/*'],
             ['管理员','setting/friend/*'],
             ['管理员','setting/metadata/*'],
+            ['管理员','data/log/*'],
         ];
 
         $authorChild = [
-            ['作者','default/frame'],
-            ['作者','default/index'],
+            ['作者','admin/default/frame'],
+            ['作者','admin/default/index'],
+            ['作者','admin/default/error'],
+
+            //标签所有权限
+            ['作者','content/tag/ajax-delete'],
+            ['作者','content/tag/ajax-update'],
+            ['作者','content/tag/get-tags'],
 
             //文章创建  查看（修改 删除）
             ['作者','content/article/upload'],
             ['作者','content/article/index'],
             ['作者','content/article/create'],
-            ['作者','content/article/view'],
+            //['作者','content/article/view'],
             ['作者','content/article/draft'],
             ['作者','content/article/recycle'],
 
@@ -194,7 +207,7 @@ class m180726_053552_permission_init_tbl extends Migration
             ['作者','content/topic/upload'],
             ['作者','content/topic/index'],
             ['作者','content/topic/create'],
-            ['作者','content/topic/view'],
+            //['作者','content/topic/view'],
 
         ];
         $this->batchInsert(self::TBL_CHILD,['parent','child'], $adminChild);

@@ -7,6 +7,15 @@ use Yii;
  */
 class DefaultController extends BaseController
 {
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+
     //框架
     public function actionFrame(){
         $this->layout = 'layout';
@@ -17,4 +26,5 @@ class DefaultController extends BaseController
     public function actionIndex(){
         return $this->render('index');
     }
+
 }

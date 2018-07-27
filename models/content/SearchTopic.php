@@ -2,6 +2,7 @@
 namespace app\models\content;
 use yii\data\ActiveDataProvider;
 use yii\helpers\VarDumper;
+use Yii;
 
 class SearchTopic extends Topic
 {
@@ -16,7 +17,7 @@ class SearchTopic extends Topic
 
     public function search($params)
     {
-        $query = Topic::find()->with('category');
+        $query = Topic::find()->with('category')->where(['user_id'=>Yii::$app->user->id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

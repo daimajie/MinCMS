@@ -22,7 +22,7 @@ class m180630_002348_create_article_tbl extends Migration
             'words' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('字数'),
 
             'recommend' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('推荐'),
-            'check' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('审查'),
+            'checked' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('审查'),
             'draft' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('草稿箱'),
             'recycle' => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('回收站'),
 
@@ -45,6 +45,22 @@ class m180630_002348_create_article_tbl extends Migration
             'idx-article-created_at',
             self::TBL_NAME,
             'created_at'
+        );
+
+        $this->createIndex(//+
+            'idx-article-topic_id',
+            self::TBL_NAME,
+            'topic_id'
+        );
+        $this->createIndex(//+
+            'idx-article-content_id',
+            self::TBL_NAME,
+            'content_id'
+        );
+        $this->createIndex(//+
+            'idx-article-user_id',
+            self::TBL_NAME,
+            'user_id'
         );
 
 

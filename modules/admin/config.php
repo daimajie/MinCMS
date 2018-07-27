@@ -22,5 +22,11 @@ return [
             'class' => 'app\modules\admin\modules\data\Module',
         ],
     ],
+    'components' => [
+
+    ],
+    'as access' => [
+        'class' => 'app\modules\admin\components\AccessControl',
+    ],
 
 ];

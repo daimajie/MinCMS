@@ -33,6 +33,17 @@ class m180629_055738_create_topic_tbl extends Migration
             'name'
         );
 
+        $this->createIndex(//+
+            'idx-topic-category_id',
+            self::TBL_NAME,
+            'category_id'
+        );
+        $this->createIndex(//+
+            'idx-topic-user_id',
+            self::TBL_NAME,
+            'user_id'
+        );
+
         /*$this->addForeignKey(
             'fk-topic-category_id',
             self::TBL_NAME,

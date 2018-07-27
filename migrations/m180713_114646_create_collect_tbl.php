@@ -32,6 +32,11 @@ class m180713_114646_create_collect_tbl extends Migration
             static::TBL_NAME,
             'article_id'
         );
+        $this->createIndex(
+            'idx-collect-created_at',
+            static::TBL_NAME,
+            'created_at'
+        );
 
     }
 

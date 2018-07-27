@@ -99,17 +99,10 @@ class TagController extends BaseController
                 ->select('name')->scalar();
         }
 
-        if(Yii::$app->request->isAjax){
-            return $this->render('create',[
-                'model' => $model,
-                'selectArr' => $selectArr
-            ]);
-        }else{
-            return $this->renderAjax('create',[
-                'model' => $model,
-                'selectArr' => $selectArr
-            ]);
-        }
+        return $this->render('create',[
+            'model' => $model,
+            'selectArr' => $selectArr
+        ]);
 
     }
 
@@ -132,33 +125,7 @@ class TagController extends BaseController
         return $this->redirect(['index']);
     }
 
-    //ajax 编辑标签
-    /*public function actionAjaxEdit($id){
-        //请求表单
-        $model = static::getModel($id);
 
-        if(Yii::$app->request->isPost){
-            //保存数据请求
-            if($model->load(Yii::$app->request->post()) && $model->save()){
-                //修改完成
-                Yii::$app->session->setFlash('success', '修改标签成功。');
-                return $this->redirect(['index']);
-            }
-            //修改失败 显示表单
-        }
-
-
-        //获取所属分类信息
-        if($model->topic_id){
-            $selectArr[$model->topic_id] = Topic::find()
-                ->where(['id'=>$model->topic_id])
-                ->select('name')->scalar();
-        }
-        return $this->renderAjax('create',[
-            'model' => $model,
-            'selectArr' => $selectArr
-        ]);
-    }*/
 
     //ajax 删除标签
     public function actionAjaxDelete(){
@@ -187,6 +154,37 @@ class TagController extends BaseController
             return ['errno'=>1,'message'=>$e->getMessage()];
 
         }
+    }
+    //修改
+    public function actionAjaxUpdate($id){
+        $model = static::getModel($id);
+
+        if(Yii::$app->request->isPost){
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                //修改完成
+                Yii::$app->session->setFlash('success', '修改标签成功。');
+                //跳转
+                if(Yii::$app->request->get('action') === 'ajax')
+                    return $this->redirect(['topic/index','id'=>$model->topic_id]);
+                else
+                    return $this->redirect(['index']);
+            }
+            //修改失败 显示表单
+        }
+
+
+        //获取所属分类信息
+        if($model->topic_id){
+            $selectArr[$model->topic_id] = Topic::find()
+                ->where(['id'=>$model->topic_id])
+                ->select('name')->scalar();
+        }
+
+        return $this->renderAjax('create',[
+            'model' => $model,
+            'selectArr' => $selectArr
+        ]);
+
     }
 
     //批量删除

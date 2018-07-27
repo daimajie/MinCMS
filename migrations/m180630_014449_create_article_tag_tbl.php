@@ -18,6 +18,17 @@ class m180630_014449_create_article_tag_tbl extends Migration
             'tag_id' => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('标签ID')
         ],'engine=innodb default charset=utf8');
 
+        $this->createIndex(
+            'idx-article-tag-article_id',
+            self::TBL_NAME,
+            'article_id'
+        );
+        $this->createIndex(
+            'idx-article-tag-tag_id',
+            self::TBL_NAME,
+            'tag_id'
+        );
+
 
         /*$this->addForeignKey(
             'fk-article_tag-article_id',

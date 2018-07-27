@@ -89,7 +89,7 @@ use yii\helpers\Url;
     </div>
 <?php
 $delTagUrl = Url::to(['tag/ajax-delete']);
-$editTagUrl = Url::to(['tag/update']);
+$editTagUrl = Url::to(['tag/ajax-update']);
 $this->registerCss("body {padding:20px;} .help-block{color:#DB2828!important}");
 $strJs = <<<JS
 require(['mods/modal'],function(modal){

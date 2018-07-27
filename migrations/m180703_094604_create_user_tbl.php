@@ -47,6 +47,28 @@ class m180703_094604_create_user_tbl extends Migration
             self::TBL_NAME,
             'auth_key'
         );
+        $this->createIndex(
+            'idx-user-password_hash',
+            self::TBL_NAME,
+            'password_hash'
+        );
+        $this->createIndex(
+            'idx-user-password_reset_token',
+            self::TBL_NAME,
+            'password_reset_token'
+        );
+
+
+        $this->createIndex(//+
+            'idx-user-lasttime',
+            self::TBL_NAME,
+            'lasttime'
+        );
+        $this->createIndex(//+
+            'idx-user-created_at',
+            self::TBL_NAME,
+            'created_at'
+        );
 
 
         /*

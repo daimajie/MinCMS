@@ -5,6 +5,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
+use Yii;
 
 class SearchArticle extends Article
 {
@@ -18,7 +19,7 @@ class SearchArticle extends Article
 
     public function search($params, $type='index')
     {
-        $query = Article::find();
+        $query = Article::find()->where(['user_id'=>Yii::$app->user->id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]]
