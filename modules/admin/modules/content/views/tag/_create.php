@@ -5,19 +5,17 @@ use yii\widgets\ActiveForm;
 
 ?>
 
-    <div class="ui fluid container">
+    <div class="ui fluid container" id="wrap">
         <div class="ui grid">
             <div class="sixteen wide column">
                 <div class="panel" style="padding-top: 20px;">
                     <div class="panel-content">
 
                         <?php
-                            $action = Yii::$app->request->get('action','get');
                             $form = ActiveForm::begin([
-                            'action' => Url::current(['id'=>$model->id, 'action'=>$action]),
-                            'id' => 'category',
+                            //'action' => Url::to(['tag/ajax-update','id'=>$model->id]),
+                            'id' => 'update',
                             'enableAjaxValidation' => true,
-                            'enableClientScript' => false,
                             'options' => [
                                 'class'=>'ui form'
                             ],
@@ -41,14 +39,12 @@ use yii\widgets\ActiveForm;
                             'class'=>'ui search selection dropdown fluid',
                             'id'=>'search-select'
                         ]);
-
                         ?>
-
-
-                        <?= Html::submitButton('点击提交',['class'=>'ui green button'])?>
                         <?php
                         ActiveForm::end();
                         ?>
+                        <?= Html::submitButton('点击提交',['class'=>'ui green button','id'=>'sub-btn'])?>
+
                     </div>
                 </div>
             </div>
@@ -56,9 +52,20 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php
+$updateUrl = Url::to(['tag/ajax-update', 'id'=>$model->id]);
 $searchCats = Yii::$app->urlManager->createAbsoluteUrl(['/admin/content/topic/search','action'=>'search']);
 $this->registerCss("body {padding:20px;} .help-block{color:#DB2828!important}");
 $jsStr = <<<JS
+    $('#sub-btn').on('click', function(){
+        $.ajax({
+            url : "{$updateUrl}",
+            type : 'post',
+            data : $('#update').serializeArray(),
+            success : function(d){
+                $('#wrap').parent().html(d);
+            }
+        })
+    });
     require(['mods/modal'],function(modal){
         //搜索下拉框
         $('#search-select').dropdown({
@@ -69,7 +76,7 @@ $jsStr = <<<JS
             },
             
         });
-    })
+    });
 JS;
 $this->registerJs($jsStr);
 ?>

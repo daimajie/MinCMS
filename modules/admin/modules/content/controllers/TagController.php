@@ -84,10 +84,7 @@ class TagController extends BaseController
                 //修改完成
                 Yii::$app->session->setFlash('success', '修改标签成功。');
                 //跳转
-                if(Yii::$app->request->get('action') === 'ajax')
-                    return $this->redirect(['topic/index','id'=>$model->topic_id]);
-                else
-                    return $this->redirect(['index']);
+                return $this->redirect(['index']);
             }
             //修改失败 显示表单
         }
@@ -158,17 +155,21 @@ class TagController extends BaseController
     }
     //修改
     public function actionAjaxUpdate($id){
+        if(!Yii::$app->request->isAjax)
+            throw new MethodNotAllowedHttpException('请求方式不被允许');
+
         $model = static::getModel($id);
+
+        if(!$model){
+            throw new Exception('没有相关数据。');
+        }
 
         if(Yii::$app->request->isPost){
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 //修改完成
                 Yii::$app->session->setFlash('success', '修改标签成功。');
                 //跳转
-                if(Yii::$app->request->get('action') === 'ajax')
-                    return $this->redirect(['topic/index','id'=>$model->topic_id]);
-                else
-                    return $this->redirect(['index']);
+                return $this->redirect(['topic/view','id'=>$model->topic_id]);
             }
             //修改失败 显示表单
         }

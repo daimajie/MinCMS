@@ -123,7 +123,7 @@ require(['mods/modal'],function(modal){
                 $.ajax({
                     url : "{$editTagUrl}",
                     type : 'get',
-                    data : {'id':id,'action':'ajax'},
+                    data : {'id':id},
                     success : function(d){
                         oEdit.find('.header').html('标签编辑');
                         oContent = oEdit.find('.content');
@@ -133,12 +133,13 @@ require(['mods/modal'],function(modal){
                         }else{
                             oContent.html('请求数据失败，请重试。');
                         }
-                        return true;
+                        //return true;
                     }
                 });
                 oEdit.modal('show');
-                return true;
+                //return true;
             },
+            
             onApprove : function() {
                 //ajax删除标签
                 modal.confirm("您确定要删除该标签吗？",{
@@ -157,9 +158,9 @@ require(['mods/modal'],function(modal){
                             modal.msg(d.message);
                         }
                     });
-                    return true;
+                    //return true;
                 });
-                return false;
+                //return false;
                 
                 
             },
@@ -170,6 +171,11 @@ require(['mods/modal'],function(modal){
           }).modal('show')
         
     });
+    
+    
+    
+    
+    
 });
 
 JS;
