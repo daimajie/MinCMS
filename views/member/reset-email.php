@@ -19,8 +19,11 @@ $this->params['hideSearch'] = true;
                             <?= $user->username?>
                             <small>
                                 <?php
-                                $tem = ['『普通用户』','『社区作者』','『后台管理』'];
-                                echo $tem[$user->group];
+                                if(Yii::$app->authManager->checkAccess($user->id, 'admin')){
+                                    echo '『后台管理』';
+                                }else{
+                                    echo '『社区作者』';
+                                }
                                 ?>
                             </small>
                             <br>

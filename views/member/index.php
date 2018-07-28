@@ -19,8 +19,11 @@ $this->params['hideSearch'] = true;
                             <?= $user->username?>
                             <small>
                                 <?php
-                                    $tem = ['『普通用户』','『社区作者』','『后台管理』'];
-                                    echo $tem[$user->group];
+                                if(Yii::$app->authManager->checkAccess($user->id, 'admin')){
+                                    echo '『后台管理』';
+                                }else{
+                                    echo '『社区作者』';
+                                }
                                 ?>
                             </small>
                             <br>
@@ -71,10 +74,13 @@ $this->params['hideSearch'] = true;
                             }
                         ],
                         [
-                            'attribute'=>'group',
+                            'label'=>'权限',
                             'value' => function($model){
-                                $arr = ['普通用户','社区作者','后台管理'];
-                                return $arr[$model->group];
+                                if(Yii::$app->authManager->checkAccess($model->id, 'admin')){
+                                    return '『管理』';
+                                }else{
+                                    return '『作者』';
+                                }
                             }
                         ],
                         [
