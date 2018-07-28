@@ -143,7 +143,7 @@ $about = Yii::$app->params['about'];
                     <h4 class="ui inverted header">关于</h4>
                     <div class="ui inverted link list">
                         <?php foreach($about['about'] as$key => $item):?>
-                            <a href="<?= $item?>" class="item"><?= $key?></a>
+                            <a target="_blank" href="//<?= $item?>" class="item"><?= $key?></a>
                         <?php endforeach;?>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ $about = Yii::$app->params['about'];
                     <h4 class="ui inverted header">服务</h4>
                     <div class="ui inverted link list">
                         <?php foreach($about['follow'] as$key => $item):?>
-                            <a href="<?= $item?>" class="item"><?= $key?></a>
+                            <a target="_blank" href="//<?= $item?>" class="item"><?= $key?></a>
                         <?php endforeach;?>
                     </div>
                 </div>

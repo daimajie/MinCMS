@@ -3,10 +3,9 @@
 namespace app\controllers;
 
 use Yii;
-use yii\web\Controller;
 use app\models\setting\ContactForm;
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     public function actions()
     {

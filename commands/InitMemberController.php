@@ -15,7 +15,7 @@ class InitMemberController extends Controller
     //添加管理员
     public function actionAddAdmin(){
         try{
-            if(!$user = $this->addMember(2))
+            if(!$user = $this->addMember())
                 throw new \Exception('create manger fail.');
 
             // 要添加以下三行代码：
@@ -34,7 +34,7 @@ class InitMemberController extends Controller
     //添加作者
     public function actionAddAuthor(){
         try{
-            if(!$user = $this->addMember(1))
+            if(!$user = $this->addMember())
                 throw new \Exception('create author fail。');
             // 要添加以下三行代码：
             $auth = Yii::$app->authManager;
@@ -51,7 +51,7 @@ class InitMemberController extends Controller
     /**
      * 获取输入信息
      */
-    private function addMember($gourp){
+    private function addMember(){
         $username = $this->prompt('username: ', ['require' => true, 'validator' => function($input, &$error) {
             if (strlen($input) < 5) {
                 $error = 'The Pin must be Greater than or equal to 5 chars!';
@@ -77,7 +77,6 @@ class InitMemberController extends Controller
         $user = new User();
         $user->username = $username;
         $user->email = $email;
-        $user->group = $gourp;
         $user->generatePasswordHash($password);
         $user->generateAuthKey();
 
