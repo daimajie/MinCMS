@@ -28,6 +28,8 @@ $about = Yii::$app->params['about'];
     <link rel="shortcut icon" href="favicon.ico">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <meta name="keywords" content="<?= Html::encode($this->params['keywords'])?>">
+    <meta name="description" content="<?= Html::encode($this->params['description'])?>" />
     <?php $this->head() ?>
 
 </head>
@@ -68,8 +70,8 @@ $about = Yii::$app->params['about'];
                         </div>
                         <div class="menu">
                             <a href="<?= Url::to(['member/index'])?>" class="item">个人中心</a>
-                            <?php if(Yii::$app->user->identity->group):?>
-                            <a  href="<?= Url::to(['admin/default/frame'])?>" class="item">管理</a>
+                            <?php if(Yii::$app->user->can('admin') || Yii::$app->user->can('author')):?>
+                            <a href="<?= Url::to(['admin/default/frame'])?>" class="item">管理</a>
                             <?php endif;?>
                             <a href="<?= Url::to(['index/logout'])?>" class="item">退出<i class="sign out icon"></i></a>
                         </div>

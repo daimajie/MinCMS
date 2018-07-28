@@ -2,6 +2,8 @@
 use yii\helpers\Url;
 use yii\widgets\Menu;
 
+
+$this->title = '个人中心 - ' . $this->params['name'];
 ?>
 
 <div class="left-area four wide column" >

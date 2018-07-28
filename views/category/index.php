@@ -4,6 +4,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 
+$this->title = '分类 - ' . $this->params['name'];
 ?>
 <!--content-->
 <section id="content">

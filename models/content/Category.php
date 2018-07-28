@@ -38,7 +38,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             [['name','desc','image'], 'required'],
             //[['count', 'created_at', 'updated_at'], 'integer'],
-            [['name'], 'string', 'max' => 18, 'min'=>3],
+            [['name'], 'string', 'max' => 18, 'min'=>2],
             [['name'], 'unique', 'message' => '该分类已经存在。'],//唯一性
             [['desc'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 125],

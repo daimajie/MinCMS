@@ -2,6 +2,7 @@
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
+$this->title = '话题列表 - ' . $this->params['name'];
 ?>
     <!--content-->
     <section id="content">

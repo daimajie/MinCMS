@@ -33,6 +33,8 @@ class m180726_053552_permission_init_tbl extends Migration
      */
     private function addPermissions(){
         $permission = [
+            ['admin', '管理', 2],
+            ['author', '作者', 2],
             ['admin/default/frame', '后台框架', 2],
             ['admin/default/index', '后台首页', 2],
             ['admin/default/error', '后台错误页', 2],
@@ -164,6 +166,7 @@ class m180726_053552_permission_init_tbl extends Migration
      */
     private function allotPermission(){
         $adminChild = [
+            ['管理员','admin'],
             ['管理员','admin/default/frame'],
             ['管理员','admin/default/index'],
             ['管理员','admin/default/error'],
@@ -184,6 +187,7 @@ class m180726_053552_permission_init_tbl extends Migration
         ];
 
         $authorChild = [
+            ['作者','author'],
             ['作者','admin/default/frame'],
             ['作者','admin/default/index'],
             ['作者','admin/default/error'],

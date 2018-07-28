@@ -2,6 +2,7 @@
 
 namespace app\models\content;
 
+use app\models\member\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\ArrayHelper;
@@ -107,6 +108,11 @@ class Tag extends \yii\db\ActiveRecord
     public function getTopic(){
         return $this->hasOne(Topic::className(), ['id' => 'topic_id'])
             ->select(['id', 'name']);
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::class, ['id'=>'user_id'])
+            ->select(['id','username']);
     }
 
     /**

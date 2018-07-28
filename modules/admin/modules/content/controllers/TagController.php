@@ -43,6 +43,7 @@ class TagController extends BaseController
         $selectArr = ['' => '选择所属话题'];
 
         if(Yii::$app->request->isPost){
+
             if($model->load(Yii::$app->request->post()) && $model->save()){
                 //新建成功
                 Yii::$app->session->setFlash('success', '新建标签成功。');
@@ -180,7 +181,7 @@ class TagController extends BaseController
                 ->select('name')->scalar();
         }
 
-        return $this->renderAjax('create',[
+        return $this->renderAjax('_create',[
             'model' => $model,
             'selectArr' => $selectArr
         ]);

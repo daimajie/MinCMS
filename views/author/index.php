@@ -4,6 +4,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 
 $defaultImage = Yii::$app->params['image'];
+
+$this->title = '作者中心 - ' . $this->params['name'];
 ?>
     <!--content-->
     <section id="content">

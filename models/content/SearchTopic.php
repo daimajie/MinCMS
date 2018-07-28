@@ -17,9 +17,9 @@ class SearchTopic extends Topic
 
     public function search($params)
     {
-        $query = Topic::find()->with('category');
+        $query = Topic::find()->with(['category','user']);
 
-        if(Yii::$app->user->identity->group < 2){
+        if(!Yii::$app->user->can('admin')){
             //如果不是管理员的就显示自己的文章
             $query->where(['user_id'=>Yii::$app->user->id]);
         }

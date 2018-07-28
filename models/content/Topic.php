@@ -7,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\data\Pagination;
 use yii\helpers\FileHelper;
-use yii\helpers\VarDumper;
+use app\models\member\User;
 
 /**
  * This is the model class for table "{{%topic}}".
@@ -102,14 +102,19 @@ class Topic extends \yii\db\ActiveRecord
     //关联分类
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id'])
+        return $this->hasOne(Category::class, ['id' => 'category_id'])
             ->select(['id','name']);
     }
     //关联标签
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['topic_id' => 'id'])
+        return $this->hasMany(Tag::class, ['topic_id' => 'id'])
             ->select(['id','name','topic_id']);
+    }
+    //关联用户
+    public function getUser(){
+        return $this->hasOne(User::class,['id'=>'user_id'])
+            ->select(['id','username']);
     }
 
 
@@ -227,7 +232,7 @@ class Topic extends \yii\db\ActiveRecord
      * 获取话题数据根据分类id
      */
     public static function getTopicsByCat($cat_id){
-        if(!is_numeric($cat_id) || $cat_id <= 1)
+        if(!is_numeric($cat_id) || $cat_id <= 0)
             return [];
         $query = self::find()->where(['category_id'=>$cat_id]);
         $count = $query->count();

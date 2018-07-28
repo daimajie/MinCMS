@@ -7,6 +7,7 @@ use yii\data\Pagination;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use Yii;
 
 class AuthorController extends BaseController
 {
@@ -34,8 +35,14 @@ class AuthorController extends BaseController
         $id = (int) $id;
         if($id <= 0) throw new BadRequestHttpException('请求参数错误。');
 
-        $user = User::findOne(['and', ['!=','group',0], ['id'=>$id]]);
+        $user = User::findOne($id);
         if(!$user) throw new NotFoundHttpException('没有相关数据。');
+
+        //是否是后台用户
+        if(
+            !Yii::$app->authManager->checkAccess($id,'admin') &&
+            !Yii::$app->authManager->checkAccess($id,'author')
+        ) throw new BadRequestHttpException('请求错误。');
 
         //获取指定作者的所有文章
         $data = Article::getArticlesByAuthor($id);

@@ -63,7 +63,7 @@ use yii\widgets\ActiveForm;
                         'placeholder' => '重复密码'
                     ]);
 
-                    echo $form->field($model, 'group',[
+                    /*echo $form->field($model, 'group',[
                         'options' => ['tag'=>false]
                     ])->radioList([
                         '0' => '普通用户',
@@ -71,7 +71,7 @@ use yii\widgets\ActiveForm;
                         '2' => '后台管理'
                     ])->hint('请根据用户活动范围给予对应权限。',[
                         'class'=>'help-block',
-                    ]);
+                    ]);*/
 
                     if(!$model->isNewRecord){
                         echo $form->field($model, 'reset_image',['options'=>[

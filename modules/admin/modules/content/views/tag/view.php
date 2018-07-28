@@ -41,7 +41,13 @@ use yii\widgets\DetailView;
                                         return $model->topic->name;
                                     }
                                 ],
-                                'user_id',
+                                [
+                                    'attribute' => 'user_id',
+                                    'label' => '创建者',
+                                    'value' => function($model){
+                                        return $model->user->username;
+                                    }
+                                ],
                             ],
                         ]);
                         ?>

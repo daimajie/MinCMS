@@ -2,7 +2,6 @@
 use yii\helpers\Url;
 
 $menu = Yii::$app->params['menu'];
-
 ?>
 <div id="hou-app">
     <div class="hou-layout hou-layout-admin">
@@ -66,7 +65,7 @@ $menu = Yii::$app->params['menu'];
                                     $flag = 'hide';
                                     if(Yii::$app->user->can($item['url']))
                                         $flag = 'show';
-                                    if(Yii::$app->user->can($child['url']))
+                                    elseif(Yii::$app->user->can($child['url']))
                                         $flag = 'show';
                                 ?>
                                 <a class="item <?= $flag?>" target="contentFrame" href="<?= Url::to([$child['url']])?>">

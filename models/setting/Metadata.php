@@ -3,6 +3,7 @@
 namespace app\models\setting;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%metadata}}".
@@ -47,6 +48,16 @@ class Metadata extends \yii\db\ActiveRecord
             'keywords' => '关键字',
             'description' => '站点描述',
             'updated_at' => '修改时间',
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class'=>TimestampBehavior::class,
+                'createdAtAttribute'=>false,
+            ],
         ];
     }
 }

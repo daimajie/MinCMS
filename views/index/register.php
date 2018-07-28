@@ -5,6 +5,8 @@ use yii\helpers\Url;
 
 $this->registerCssFile('static/home/css/sign.css');
 $this->params['hideSearch'] = true;
+
+$this->title = '注册页 - ' . $this->params['name'];
 ?>
 <section id="login">
     <div class="login">

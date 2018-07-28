@@ -68,6 +68,11 @@ $action = $this->context->action->id;
                             'tableOptions' => [
                                 'class' => 'ui grey table celled',
                             ],
+                            'pager' => [
+                                'options'=>['class'=>'ui pagination menu tiny','style'=>'list-style:none'],
+                                'linkOptions' => ['tag'=>'a', 'class' => 'item'],
+                            ],
+
 
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
@@ -77,7 +82,13 @@ $action = $this->context->action->id;
                                     'attribute' => 'title',
                                     'options' => ['width'=>650],
                                 ],
-                                'user_id',
+                                [
+                                    'attribute' => 'user_id',
+                                    'label' => '创建者',
+                                    'value' =>function($model){
+                                        return $model->user->username;
+                                    }
+                                ],
                                 [
                                     'attribute'=>'checked',
                                     'format' => 'raw',
@@ -85,7 +96,7 @@ $action = $this->context->action->id;
                                         global $user;
                                         $checkBtn = Html::a('点击通过',null,['data-id'=>$model->id,'href'=>'javascript:;','class'=>'check-btn']);
                                         $text = '待审核';
-                                        $text = Yii::$app->user->identity->group == 2 ? $checkBtn : $text;
+                                        $text = Yii::$app->user->can('admin') ? $checkBtn : $text;
 
                                         return $model->checked ? '审查通过' : $text;
                                     }
@@ -144,7 +155,7 @@ $action = $this->context->action->id;
 
 <?php
 $checkUrl = Url::to(['article/check']);
-$this->registerCss("body {padding:20px;}");
+$this->registerCss("body {padding:20px;}.summary{float:left}.pagination{float:right}.panel-content{overflow: hidden;}");
 $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         tab.init('_tabs');

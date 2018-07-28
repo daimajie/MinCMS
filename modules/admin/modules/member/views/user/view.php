@@ -46,13 +46,7 @@ use yii\widgets\DetailView;
                                             return Html::img(Yii::$app->params['image']);
                                     }
                                 ],
-                                [
-                                    'attribute'=>'group',
-                                    'value' => function($model){
-                                        $arr = ['普通用户','社区作者','后台管理'];
-                                        return $arr[$model->group];
-                                    }
-                                ],
+
                                 [
                                     'attribute'=>'count',
                                     'visited' => false

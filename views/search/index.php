@@ -6,6 +6,8 @@ use app\components\helper\Helper;
 
 $defaultImage = Yii::$app->params['image'];
 $this->params['keyword'] = $keyword;
+
+$this->title = '搜索页 - ' . $this->params['name'];
 ?>
 
 <!--content-->

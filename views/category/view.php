@@ -3,6 +3,8 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 
+
+$this->title = Html::encode($category['name']) . ' - ' . $this->params['name'];
 ?>
 <!--content-->
 <section id="content">

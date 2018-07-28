@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
                                     <i class="plus icon"></i>
                                     新建话题
                                 </a>
-                                <?php if($user->group == 2):?>
+                                <?php if(Yii::$app->user->can('admin')):?>
                                 <a class="item" id="batch-del">
                                     <i class="trash icon"></i>
                                     批量删除
@@ -53,6 +53,10 @@ use yii\widgets\ActiveForm;
                             'tableOptions' => [
                                 'class' => 'ui grey table celled',
                             ],
+                            'pager' => [
+                                'options'=>['class'=>'ui pagination menu tiny','style'=>'list-style:none'],
+                                'linkOptions' => ['tag'=>'a', 'class' => 'item'],
+                            ],
 
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
@@ -80,6 +84,13 @@ use yii\widgets\ActiveForm;
                                     }
                                 ],
                                 'count',
+                                [
+                                    'attribute'=>'user_id',
+                                    'label' => '创建者',
+                                    'value'=>function($model){
+                                        return $model->user->username;
+                                    }
+                                ],
                                 'created_at:date',
                                 'updated_at:date',
                                 [
@@ -112,7 +123,7 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php
-$this->registerCss("body {padding:20px;}");
+$this->registerCss("body {padding:20px;}.summary{float:left}.pagination{float:right}.panel-content{overflow: hidden;}");
 $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         tab.init('_tabs');

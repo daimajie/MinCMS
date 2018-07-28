@@ -76,7 +76,12 @@ use yii\helpers\Url;
 
                                 ],
                                 'desc:html',
-                                'user_id',
+                                [
+                                    'attribute' => 'user_id',
+                                    'value' => function($model){
+                                        return $model->user->username;
+                                    }
+                                ],
                                 'created_at:datetime',
                                 'updated_at:datetime',
                             ],

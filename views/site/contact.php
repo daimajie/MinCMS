@@ -6,7 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+$this->title = '联系我 - ' . $this->params['name'];
 ?>
 <section id="content">
     <div class="ui container">

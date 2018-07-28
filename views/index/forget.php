@@ -5,6 +5,8 @@ use yii\helpers\Html;
 
 $this->registerCssFile('static/home/css/sign.css');
 $this->params['hideSearch'] = true;
+
+$this->title = '找回密码 - ' . $this->params['name'];
 ?>
 
 <section id="login">

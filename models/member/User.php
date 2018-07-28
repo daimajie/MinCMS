@@ -65,7 +65,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'qqopenid' => 'qq登陆',
             'wxopenid' => 'wx登陆',
             'profile_id' => '用户详情',
-            'group' => '群组',
+            //'group' => '群组',
             'count' => '文章数',
             'created_at' => '注册时间',
             'updated_at' => '修改时间',
@@ -177,6 +177,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getProfile(){
         return $this->hasOne(Profile::class, ['user_id'=>'id'])->select(['user_id','sign','id','created_at','realname','blog','address']);
     }
+
+
 
     /**
      * 根据用户ID获取用户实例

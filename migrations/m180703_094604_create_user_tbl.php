@@ -30,7 +30,7 @@ class m180703_094604_create_user_tbl extends Migration
             'wxopenid'  => $this->string()->notNull()->defaultValue('')->comment('wx登陆'),
 
             //'profile_id'=> $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('用户详情'),
-            'group'   => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('角色'),
+            //'group'   => $this->tinyInteger()->unsigned()->notNull()->defaultValue(0)->comment('角色'),
 
             'count'     => $this->integer()->unsigned()->notNull()->defaultValue(0)->comment('文章数'),
 

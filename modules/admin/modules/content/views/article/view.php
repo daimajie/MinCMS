@@ -39,7 +39,13 @@ use yii\widgets\DetailView;
                                 'comment',
                                 'likes',
                                 'collect',
-                                'user_id',
+                                [
+                                    'attribute' => 'user_id',
+                                    'label' => '创建者',
+                                    'value' =>function($model){
+                                        return $model->user->username;
+                                    }
+                                ],
                                 [
                                     'attribute' => 'image',
                                     'format' => 'raw',

@@ -5,6 +5,8 @@ $this->registerCssFile('static/home/css/sign.css');
 $this->params['hideSearch'] = true;
 
 $step = Yii::$app->request->get('step', 'sent');
+
+$this->title = '设置新密码 - ' . $this->params['name'];
 ?>
 
 <section id="login">

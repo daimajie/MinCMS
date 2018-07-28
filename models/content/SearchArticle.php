@@ -19,8 +19,8 @@ class SearchArticle extends Article
 
     public function search($params, $type='index')
     {
-        $query = Article::find();
-        if(Yii::$app->user->identity->group < 2){
+        $query = Article::find()->with(['user']);
+        if(!Yii::$app->user->can('admin')){
             //如果不是管理员的就显示自己的文章
             $query->where(['user_id'=>Yii::$app->user->id]);
         }

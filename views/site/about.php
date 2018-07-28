@@ -1,5 +1,7 @@
 <?php
 use yii\helpers\Url;
+
+$this->title = '关于我 - ' . $this->params['name'];
 ?>
 
 <section id="content">

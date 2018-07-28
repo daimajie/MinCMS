@@ -6,6 +6,10 @@ use yii\widgets\LinkPager;
 
 $this->params['hideSearch'] = true;
 $defaultImage = Yii::$app->params['image'];
+
+$this->title = $article['title'] .' - '. $this->params['name'];
+$this->params['keywords'] = $this->title ;
+$this->params['description'] = $article['brief'] ;
 ?>
 
 

@@ -7,6 +7,7 @@ use app\components\helper\Helper;
 $defaultImage = Yii::$app->params['image'];
 $this->params['hideSearch'] = true;
 
+$this->title = $user->username . ' - 作者中心 - ' . $this->params['name'];
 ?>
 <!--content-->
 <section id="content">
@@ -21,8 +22,11 @@ $this->params['hideSearch'] = true;
                             <?= $user->username?>
                             <small>
                                 <?php
-                                $tem = ['『普通用户』','『社区作者』','『后台管理』'];
-                                echo $tem[$user->group];
+                                if(Yii::$app->authManager->checkAccess($user->id, 'admin')){
+                                    echo '『后台管理』';
+                                }else{
+                                    echo '『社区作者』';
+                                }
                                 ?>
                             </small>
                             <br>

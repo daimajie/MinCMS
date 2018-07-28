@@ -51,6 +51,10 @@ use yii\widgets\ActiveForm;
                             'tableOptions' => [
                                 'class' => 'ui grey table celled',
                             ],
+                            'pager' => [
+                                'options'=>['class'=>'ui pagination menu tiny','style'=>'list-style:none'],
+                                'linkOptions' => ['tag'=>'a', 'class' => 'item'],
+                            ],
 
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
@@ -71,7 +75,10 @@ use yii\widgets\ActiveForm;
                                 ],
                                 [
                                     'attribute' => 'user_id',
-                                    'label' => '创建者'
+                                    'label' => '创建者',
+                                    'value' => function($model){
+                                        return $model->user->username;
+                                    }
                                 ],
                                 [
                                     'class' => 'yii\grid\ActionColumn',
@@ -103,7 +110,7 @@ use yii\widgets\ActiveForm;
     </div>
 
 <?php
-$this->registerCss("body {padding:20px;}");
+$this->registerCss("body {padding:20px;}.summary{float:left}.pagination{float:right}.panel-content{overflow: hidden;}");
 $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         tab.init('_tabs');

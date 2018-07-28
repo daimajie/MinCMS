@@ -20,13 +20,28 @@ class AssignController extends BaseController
 {
     //列表
     public function actionIndex(){
+/*        $test = (new Query())
+            ->from(['assign'=>'{{%auth_assignment}}'])
+            ->leftJoin('{{%user}}','assign.user_id=user.id')
+            ->distinct()
+            ->groupBy('user_id')
+            ->select(['user_id', 'user.username', 'roles'=>'group_concat(item_name)'])
+            ->all();
+            //->createCommand()->getSql();
+
+        VarDumper::dump($test, 10, 1);die;*/
+
+
         $dataProvider = new ArrayDataProvider([
             'allModels' => (new Query())
-                ->from('{{%auth_assignment}}')
+                ->from(['assign'=>'{{%auth_assignment}}'])
+                ->leftJoin('{{%user}}','assign.user_id=user.id')
+                ->select(['assign.*','user.username'])
                 ->distinct()
                 ->groupBy('user_id')
-                ->select(['user_id', 'roles'=>'group_concat(item_name)'])
+                ->select(['user_id', 'user.username', 'roles'=>'group_concat(item_name)'])
                 ->all(),
+
         ]);
 
         return $this->render('index',[

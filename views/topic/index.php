@@ -6,6 +6,10 @@ use app\components\helper\Helper;
 
 
 $defaultImage = Yii::$app->params['image']; //默认头像
+
+$this->title = $topic['name'] . ' - ' . $this->params['name'];
+$this->params['keywords'] = $this->title;
+$this->params['description'] = $topic['desc'];
 ?>
 <!--content-->
 <section id="content">

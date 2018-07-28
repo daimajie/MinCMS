@@ -45,6 +45,10 @@ $action = $this->context->action->id;
                             'tableOptions' => [
                                 'class' => 'ui grey table celled',
                             ],
+                            'pager' => [
+                                'options'=>['class'=>'ui pagination menu tiny','style'=>'list-style:none'],
+                                'linkOptions' => ['tag'=>'a', 'class' => 'item'],
+                            ],
 
                             'dataProvider' => $dataProvider,
                             'layout' => "{items}\n{summary}\n{pager}",
@@ -79,7 +83,7 @@ $action = $this->context->action->id;
     </div>
 
 <?php
-$this->registerCss("body {padding:20px;}");
+$this->registerCss("body {padding:20px;}.summary{float:left}.pagination{float:right}.panel-content{overflow: hidden;}");
 $jsStr = <<<JS
 require(['mods/tab','mods/progress','mods/modal'],function(tab,progress,modal){
         tab.init('_tabs');

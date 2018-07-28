@@ -18,13 +18,13 @@ class UserForm extends User{
     public function rules()
     {
         return [
-            [['username','email','group'], 'required', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
+            [['username','email'], 'required', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
             [['password','re_password'], 'required', 'on'=>[static::SCENARIO_CREATE]],
             [['username'], 'string', 'min'=>5, 'max'=>18, 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
             [['email'], 'email', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
             [['password'], 'string', 'min'=>6, 'max'=>12, 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
             [['re_password'], 'compare', 'compareAttribute' => 'password', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
-            [['group'], 'integer', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
+            //[['group'], 'integer', 'on'=>[static::SCENARIO_CREATE,static::SCENARIO_UPDATE]],
 
             [['reset_image'], 'safe', 'on'=>[static::SCENARIO_UPDATE]]
         ];

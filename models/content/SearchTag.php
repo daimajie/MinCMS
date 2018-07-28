@@ -15,7 +15,7 @@ class SearchTag extends Tag
 
     public function search($params)
     {
-        $query = Tag::find()->with('topic');
+        $query = Tag::find()->with(['topic','user']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
