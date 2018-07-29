@@ -15,7 +15,7 @@ return [
     ],
 
     //域名
-    'domain' => 'http://www.dev.com/',
+    'domain' => 'http://www.cms.com/',
 
     //一个话题下允许有多少个标签
     'tagUpperLimit' => 35,

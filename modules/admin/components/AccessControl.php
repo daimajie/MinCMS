@@ -28,6 +28,9 @@ class AccessControl extends \yii\base\ActionFilter
 
 
         //如果没有后台权限 如果没有跳到网站首页
+        if($actionRoute == 'admin/default/error')
+            return true;
+
         if(
             ($user->can('admin') || $user->can('author'))
             &&

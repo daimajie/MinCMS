@@ -21,8 +21,10 @@ $this->params['hideSearch'] = true;
                                 <?php
                                 if(Yii::$app->authManager->checkAccess($user->id, 'admin')){
                                     echo '『后台管理』';
-                                }else{
+                                }elseif(Yii::$app->authManager->checkAccess($user->id, 'author')){
                                     echo '『社区作者』';
+                                }else{
+                                    echo '『社区成员』';
                                 }
                                 ?>
                             </small>
@@ -78,8 +80,10 @@ $this->params['hideSearch'] = true;
                             'value' => function($model){
                                 if(Yii::$app->authManager->checkAccess($model->id, 'admin')){
                                     return '『管理』';
-                                }else{
+                                }elseif(Yii::$app->authManager->checkAccess($model->id, 'author')){
                                     return '『作者』';
+                                }else{
+                                    return '『成员』';
                                 }
                             }
                         ],

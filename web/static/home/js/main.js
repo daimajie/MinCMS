@@ -1,14 +1,12 @@
 /**
  * 配置requireJs
  */
-/*
 define('jquery',function(){
     return jQuery;
 });
-*/
 
 requirejs.config({
-    //urlArgs: "r=" + (new Date()).getTime(),
+    urlArgs: "r=" + (new Date()).getTime(),
     //baseUrl: '/static/admin/js/',
     paths: {
         'mods': '/static/admin/js/mods',
@@ -21,9 +19,6 @@ requirejs.config({
         'simplemde': '/static/libs/simplemde/simplemde',
         'simplemdeCss': '/static/libs/simplemde/simplemde.min',
         'css': '/static/admin/js/mods/css',
-
-        'cropper' : '/static/libs/cropper/cropper',
-        'cropperCss' : '/static/libs/cropper/cropper',
     },
     map: {
         '*': {
@@ -38,9 +33,6 @@ requirejs.config({
         'simplemde':{
             deps:['css!simplemdeCss']
         },
-        'cropper':{
-            deps:['css!cropperCss']
-        }
     }
 });
 
