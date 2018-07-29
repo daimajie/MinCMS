@@ -65,7 +65,7 @@ use yii\widgets\ActiveForm;
                                     'class' => 'yii\grid\CheckboxColumn',
                                     'headerOptions' => ['id'=>'select-all'],
                                     'name' => 'topics_id[]',
-                                    'visible' => $user->group == 2,
+                                    'visible' => Yii::$app->user->can('admin'),
                                 ],
                                 'id',
                                 'name',

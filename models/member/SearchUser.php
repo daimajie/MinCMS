@@ -7,7 +7,7 @@ class SearchUser extends User
     public function rules()
     {
         return [
-            [['group'], 'in', 'range' => [0,1,2], 'message'=>'请选择正确群组数据'],
+            //[['group'], 'in', 'range' => [0,1,2], 'message'=>'请选择正确群组数据'],
         ];
     }
 
@@ -30,8 +30,8 @@ class SearchUser extends User
         }
 
         //按话题搜索
-        if(!empty($this->role_id))
-            $query->andFilterWhere(['group' => $this->role_id]);
+        /*if(!empty($this->role_id))
+            $query->andFilterWhere(['group' => $this->role_id]);*/
 
 
 
